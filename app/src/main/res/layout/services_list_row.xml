@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:weightSum="1"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp">
+
+        <ImageView
+            android:id="@+id/service_icon"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="0.01"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/home_green"/>
+
+        <TextView
+            android:id="@+id/service_title"
+            android:layout_weight="0.99"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="MODALITATI DE PLATA"
+            android:paddingLeft="10dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"/>
+
+        <ImageView
+            android:layout_weight="0.01"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/list_arrow"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray"/>
+
+</LinearLayout>

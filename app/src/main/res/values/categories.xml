@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories_array">
+        <item>Bricolaj</item>
+        <item>Construcții</item>
+        <item>Amenajare baie</item>
+        <item>Amenajare Bucătărie</item>
+        <item>Electricitate/Iluminat</item>
+        <item>Aranjare/Depozitare</item>
+        <item>Decorațiuni/Vopsea</item>
+        <item>Uși/Ferestre</item>
+        <item>Renovări casă</item>
+        <item>Instalații sanitare și încălzire</item>
+        <item>Terasă și grădină</item>
+        <item>Copii</item>
+        <item>Altele</item>
+    </string-array>
+</resources>

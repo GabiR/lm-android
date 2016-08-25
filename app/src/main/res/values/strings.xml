@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LEROY MERLIN</string>
+    <string name="pass_forgot"><u>AM UITAT PAROLA</u></string>
+    <string name="visit"><u>INTRĂ CA VIZITATOR...</u></string>
+    <string name="category">Alege o categorie</string>
+    <string name="facebookid">1002994899713823</string>
+    <string name="lista_service">Vezi lista service-urilor partenere</string>
+</resources>

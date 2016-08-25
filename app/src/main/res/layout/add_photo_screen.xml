@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/new_photo"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fă o fotografie"
+                android:gravity="center_horizontal"
+                android:textColor="@color/lightGreen"
+                android:textSize="22sp" />
+            <ImageView
+                android:id="@+id/camera_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/camera_icon"
+                android:layout_marginBottom="24dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/photo"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGreen"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_marginTop="24dp"
+                android:id="@+id/gallery_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/gallery_icon"/>
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Încarcă o poză din galerie"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="22sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/mascota_icon"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:src="@drawable/mascota_circle"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

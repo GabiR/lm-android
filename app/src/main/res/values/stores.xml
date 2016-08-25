@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="stores">
+        <item>LEROY MERLIN Sediu Central</item>
+        <item>LEROY MERLIN Colosseum București</item>
+        <item>LEROY MERLIN Electroputere Craiova</item>
+        <item>LEROY MERIN Ploiești</item>
+        <item>LEROY MERLIN Sun Plaza</item>
+        <item>LEROY MERLIN Alexandriei</item>
+        <item>LEROY MERLIN Brasov</item>
+        <item>LEROY MERLIN Cluj-Napoca Turzii</item>
+        <item>LEROY MERLIN Sibiu</item>
+        <item>LEROY MERLIN Constanta</item>
+        <item>LEROY MERLIN Cluj-Napoca Vlaicu</item>
+        <item>LEROY MERLIN Targu Mures</item>
+        <item>LEROY MERLIN Suceava</item>
+        <item>LEROY MERLIN Bacau</item>
+        <item>LEROY MERLIN Iasi</item>
+    </string-array>
+</resources>

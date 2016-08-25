@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/project_border"
+    android:padding="10dp">
+    <ImageView
+        android:id="@+id/main_image"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="220dp"
+        android:src="@drawable/temp_pic"/>
+    <View
+        android:id="@+id/helper"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@id/main_image"/>
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/project_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:text="Vopsire camera"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:layout_below="@id/helper"
+        android:layout_marginTop="10dp"/>
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/avatar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/unknown"
+        android:layout_alignBottom="@id/helper"/>
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="realizat de DjDeeNo"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_alignBottom="@id/avatar"
+        android:layout_toRightOf="@id/avatar"/>
+    <com.cypien.leroy.utils.CustomButton
+        android:layout_marginTop="5dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/share_button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/project_name"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:background="@drawable/green_button"
+        android:text="DISTRIBUIE ACEST PROIECT"
+        android:textColor="@color/white" />
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/share_button1">
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/viz_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="75"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginRight="5dp"
+            android:textStyle="bold"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/viz_n" />
+        <TextView
+            android:id="@+id/comm_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/comm_n" />
+        <TextView
+            android:id="@+id/like_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/like_n" />
+    </LinearLayout>
+</RelativeLayout>

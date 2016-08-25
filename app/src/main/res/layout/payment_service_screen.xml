@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="36dp"
+        android:layout_width="184dp"
+        android:layout_height="106dp"
+        android:src="@drawable/plata"
+        android:layout_gravity="center_horizontal"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Iti oferim mai multe modalitati de plata in magazinele noastre:\n\n1)      Plata  in numerar\n2)      Plata cu card Visa, Maestro si Mastercard"/>
+            <ImageView
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/plata_card"
+                />
+            <TextView
+                android:id="@+id/go_to_finance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:textSize="16sp"
+                android:text="3)      Finantare in Magazin"
+                android:clickable="true"
+                android:background="?android:selectableItemBackground"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="4)      Virament bancar – se face in baza unei facturi proforme emise de magazin. Livrarea produselor se face dupa confirmarea platii facturii proforme in contul specificat pe aceasta. "/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

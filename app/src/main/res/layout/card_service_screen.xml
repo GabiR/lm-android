@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="36dp"
+        android:layout_width="184dp"
+        android:layout_height="106dp"
+        android:src="@drawable/card"
+        android:layout_gravity="center_horizontal"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Cu ajutorul cardului de client LEROY MERLIN beneficiezi de urmatoarele avantaje:\n\u2023 stai fara grija bonului de casa in cazul returului si a garantiei\n\u2023 factura se emite rapid la casa\n\u2023 esti informat rapid atunci cand iti soseste comanda\n\nDaca inca nu ai un card de client te asteptam in magazinele LEROY MERLIN pentru emiterea cardului.\n\nCARD CLIENT LEROY MERLIN"
+                />
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/card_client"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

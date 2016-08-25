@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="400dp"
+    android:background="@drawable/main_background">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Reguli forum"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Doar numele de utilizator va aparea public pe site."
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:text="Inregistrarea pe acest forum este gratuită! Insistăm pe respectarea regulilor și politicilor de mai jos. Dacă sunteți de acord cu termenii, vă rugăm să verificați caseta de validare și apăsați butonul CREEAZA CONT." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:text="Deși administratorii și moderatorii acestui forum vor incerca să țină la distanță toate mesajele neplăcute din acest forum, este imposibil pentru noi să revizuim toate mesajele. Toate mesajele exprimă părerea autorului, și membri administrației forumului nu vor fi trași la răspundere pentru conținutul mesajelor." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:text="Fiind de acord cu aceste reguli, vei garanta că nu vei posta mesaje cu conținut obscen, vulgar, cu orientare sexuală, cu ură, amenințări, sau interzise de lege."/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:text="Administratorii forumului iși rezervă dreptul de a șterge, edita, muta sau inchide orice forum pentru orice motiv."/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:layout_marginBottom="5dp"
+            android:text="Pentru a trece la urmatorul pas trebuie sa fiti de acord cu termenii si conditiile site-ului."/>
+        <com.cypien.leroy.utils.CustomButton
+            android:id="@+id/close_button"
+            android:layout_marginTop="10dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:text="ÎNCHIDE"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:background="@drawable/green_button"/>
+    </LinearLayout>
+</ScrollView>

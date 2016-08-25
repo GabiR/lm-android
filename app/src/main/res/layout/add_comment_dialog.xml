@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/main_background"
+    android:padding="20dp">
+
+    <com.cypien.leroy.utils.CustomTextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comentariu"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+    <EditText
+        android:id="@+id/comment"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:background="@drawable/round_corners_black_border"
+        android:inputType="textMultiLine"/>
+    <com.cypien.leroy.utils.CustomTextView
+        android:id="@+id/comment_error"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VĂ RUGĂM SĂ COMPLETAȚI CU COMENTARIUL DUMNEAVOASTRĂ"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        android:visibility="gone"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <com.cypien.leroy.utils.CustomButton
+            android:id="@+id/add_comment"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/green_button"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="POSTEAZĂ COMENTARIUL"
+            android:layout_weight="1" />
+        <com.cypien.leroy.utils.CustomButton
+            android:id="@+id/cancel"
+            android:layout_marginLeft="20dp"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/orange_button"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="ANULARE" />
+    </LinearLayout>
+</LinearLayout>

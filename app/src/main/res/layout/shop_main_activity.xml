@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@color/white">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:src="@drawable/back_arrow"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logo_circle"/>
+
+        <TextView
+            android:paddingLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leroy Merlin Romania"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </android.support.v7.widget.Toolbar>
+
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_weight="0.999"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+
+    <LinearLayout
+        android:layout_weight="0.001"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/menu_bg_gray">
+
+        <LinearLayout
+            android:tag="home"
+            android:paddingLeft="10dp"
+            android:id="@+id/home_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/home_green"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:textColor="@color/colorPrimary"
+                android:text="Home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:tag="catalog"
+            android:id="@+id/catalog_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/catalog_gray"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:textColor="@color/unpressedblack"
+                android:text="Catalog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:tag="shop"
+            android:id="@+id/shop_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/shops_gray"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:textColor="@color/unpressedblack"
+                android:text="Magazine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:tag="services"
+            android:id="@+id/services_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/services_gray"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:textColor="@color/unpressedblack"
+                android:text="Servicii"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:tag="community"
+            android:paddingRight="10dp"
+            android:id="@+id/community_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:background="@color/gray"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/community_icon"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

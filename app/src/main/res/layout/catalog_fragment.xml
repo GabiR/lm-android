@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/white">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/txtCatalogActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="22dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:text="CATALOG IUNIE"
+            android:textSize="18sp"
+            android:textColor="@color/unpressedblack"/>
+        <ImageView
+            android:id="@+id/coperta_catalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="22dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="8dp"
+            android:text="CATALOAGE TEMATICE"
+            android:textSize="18sp"
+            android:textColor="@color/unpressedblack"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:paddingLeft="16dp"/>
+        <TextView
+            android:id="@+id/seeAllOffers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:layout_marginTop="14dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:text="Vezi toate ofertele..."
+            android:textSize="18sp"
+            android:textColor="#878080" />
+
+    </LinearLayout>
+
+</ScrollView>
