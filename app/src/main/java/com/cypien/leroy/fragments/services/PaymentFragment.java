@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.activities.ShopMainActivity;
+import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.models.Service;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -55,7 +55,7 @@ public class PaymentFragment extends Fragment{
             public void onClick(View v) {
                 Fragment fragment = new FinancingFragment();
                 Bundle bundle=new Bundle();
-                bundle.putSerializable("service", ((ShopMainActivity) getActivity()).getServices().get(5));
+                bundle.putSerializable("service", ((ShopDashboard) getActivity()).getServices().get(5));
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null);

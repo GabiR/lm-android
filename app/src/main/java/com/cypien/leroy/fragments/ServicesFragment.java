@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cypien.leroy.R;
-import com.cypien.leroy.activities.ShopMainActivity;
+import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.adapters.ServiceListAdapter;
 import com.cypien.leroy.fragments.services.CardFragment;
 import com.cypien.leroy.fragments.services.DeliveryFragment;
@@ -64,7 +64,7 @@ public class ServicesFragment extends Fragment {
             }
         });
 
-        services = ShopMainActivity.getServices();
+        services = ShopDashboard.getServices();
         if(services == null)
             services = new ArrayList<>();
 

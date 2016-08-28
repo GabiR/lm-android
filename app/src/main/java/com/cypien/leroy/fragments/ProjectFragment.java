@@ -1,11 +1,12 @@
 package com.cypien.leroy.fragments;
 
 import android.content.SharedPreferences;
-
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.cypien.leroy.adapters.ImagesAdapter;
 import com.cypien.leroy.models.Project;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
@@ -31,7 +33,7 @@ import com.viewpagerindicator.PageIndicator;
  */
 public class ProjectFragment extends Fragment{
     private View view;
-    private ImageView avatar;
+    private CircularImageView avatar;
     private TextView userName;
     private TextView projectName;
     private TextView views;
@@ -41,7 +43,8 @@ public class ProjectFragment extends Fragment{
     private TextView time;
     private TextView cost;
     private TextView details;
-    private Button likeButton,addCommentButton;
+    private Button likeButton;
+    private TextView addCommentButton;
     private Project project;
     private SharedPreferences sp;
     private ImagesAdapter adapter;
@@ -68,7 +71,21 @@ public class ProjectFragment extends Fragment{
         mTracker.setScreenName("Screen:" + "ProjectFragment");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
-        avatar = (ImageView) view.findViewById(R.id.avatar);
+        ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(project.getTitle());
+
+        ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
+        back_arrow.setVisibility(View.VISIBLE);
+        back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+        });
+
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
+
+
+        avatar = (CircularImageView) view.findViewById(R.id.avatar);
         userName = (TextView) view.findViewById(R.id.user_name);
         projectName = (TextView) view.findViewById(R.id.project_name);
         views = (TextView) view.findViewById(R.id.viz_n);
@@ -126,7 +143,7 @@ public class ProjectFragment extends Fragment{
         commentsList.setAdapter(commAdapter);
         setListViewHeightBasedOnChildren();
 
-        addCommentButton = (Button)view.findViewById(R.id.add_comment);
+        addCommentButton = (TextView)view.findViewById(R.id.add_comment);
         addCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

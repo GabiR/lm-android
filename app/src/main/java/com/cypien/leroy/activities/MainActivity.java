@@ -297,7 +297,7 @@ public class MainActivity extends FragmentActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this,OldLoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -310,7 +310,7 @@ public class MainActivity extends FragmentActivity {
                 spEditor=sp.edit();
                 spEditor.clear();
                 spEditor.commit();
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this,OldLoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -439,6 +439,8 @@ public class MainActivity extends FragmentActivity {
         } catch (ExecutionException e1) {
             e1.printStackTrace();
         }
+
+
 
         return null;
     }

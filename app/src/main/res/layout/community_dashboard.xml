@@ -27,20 +27,34 @@
             android:paddingTop="5dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logo_circle"/>
+            android:src="@drawable/logo_circle"
+            android:adjustViewBounds="true"/>
 
         <TextView
             android:paddingLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Leroy Merlin Romania"
+            android:text="Facem-FacemFacem-FacemFacem-FacemFacem-FacemFacem-Facem"
+            android:singleLine="true"
+            android:layout_marginRight="70dp"
             android:textColor="@color/white"
             android:textSize="18sp"/>
+
+        <ImageView
+            android:id="@+id/logout"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="16dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:src="@drawable/logout_icon"
+            android:onClick="logoutClicked"/>
     </android.support.v7.widget.Toolbar>
 
 
     <FrameLayout
-        android:id="@+id/content_frame"
+        android:id="@+id/content_frame_community"
         android:layout_weight="0.999"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
@@ -79,8 +93,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:tag="catalog"
-            android:id="@+id/catalog_button"
+            android:tag="projects"
+            android:id="@+id/projects_button"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:layout_weight="0.20"
@@ -89,13 +103,59 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/catalog_gray"
+                android:src="@drawable/projects_gray"
                 android:layout_width="30dp"
                 android:layout_height="30dp" />
             <TextView
                 android:layout_marginTop="@dimen/menu_button_text_padding"
                 android:textColor="@color/unpressedblack"
-                android:text="Catalog"
+                android:text="Proiecte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:tag="discussions"
+            android:id="@+id/discussions_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/discussions_gray"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:textColor="@color/unpressedblack"
+                android:text="Discutii"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:tag="contests"
+            android:id="@+id/contests_button"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_weight="0.20"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/contests_gray"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:textColor="@color/unpressedblack"
+                android:text="Concursuri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -103,54 +163,8 @@
 
         <LinearLayout
             android:tag="shop"
-            android:id="@+id/shop_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_weight="0.20"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/shops_gray"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-            <TextView
-                android:layout_marginTop="@dimen/menu_button_text_padding"
-                android:textColor="@color/unpressedblack"
-                android:text="Magazine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:tag="services"
-            android:id="@+id/services_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_weight="0.20"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/services_gray"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-            <TextView
-                android:layout_marginTop="@dimen/menu_button_text_padding"
-                android:textColor="@color/unpressedblack"
-                android:text="Servicii"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:tag="community"
             android:paddingRight="10dp"
-            android:id="@+id/community_button"
+            android:id="@+id/shop_button"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:layout_weight="0.20"
@@ -168,9 +182,10 @@
             <ImageView
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/community_icon"
+                android:src="@drawable/shop_icon"
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"/>
 
         </LinearLayout>
 

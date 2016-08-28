@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Project;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 /**
  * Created by Alex on 21/10/15.
@@ -28,13 +28,13 @@ public class ProjectsAdapter extends ArrayAdapter<Project>{
 
     static class ViewHolder {
         ImageView image;
-        ImageView avatar;
+        CircularImageView avatar;
         TextView projectName;
         TextView userName;
         TextView rating;
         TextView views;
         TextView comments;
-        Button share;
+        TextView share;
     }
 
     @Override
@@ -46,14 +46,14 @@ public class ProjectsAdapter extends ArrayAdapter<Project>{
         if (convertView == null) {
             view = inflater.inflate(R.layout.project_item, parent,false);
             holder = new ViewHolder();
-            holder.image=(ImageView) view.findViewById(R.id.main_image);
-            holder.avatar=(ImageView) view.findViewById(R.id.avatar);
+            holder.image= (ImageView) view.findViewById(R.id.main_image);
+            holder.avatar= (CircularImageView) view.findViewById(R.id.avatar);
             holder.projectName = (TextView) view.findViewById(R.id.project_name);
             holder.userName = (TextView) view.findViewById(R.id.user_name);
             holder.rating = (TextView) view.findViewById(R.id.like_n);
             holder.views = (TextView) view.findViewById(R.id.viz_n);
             holder.comments = (TextView) view.findViewById(R.id.comm_n);
-            holder.share = (Button) view.findViewById(R.id.share_button1);
+            holder.share = (TextView) view.findViewById(R.id.share_button1);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

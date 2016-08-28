@@ -247,4 +247,6 @@ public class CatalogFragment extends Fragment {
         }
     }
 
+
+
 }

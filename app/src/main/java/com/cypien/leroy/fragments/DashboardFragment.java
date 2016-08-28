@@ -130,7 +130,7 @@ public class DashboardFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 if(Connections.isNetworkConnected(getActivity())){
-                    ForumFragment f = new ForumFragment();
+                    DiscussionsFragment f = new DiscussionsFragment();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.fragment_container, f).addToBackStack(null);
                     transaction.commit();

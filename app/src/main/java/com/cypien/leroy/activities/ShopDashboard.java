@@ -9,20 +9,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.CatalogFragment;
 import com.cypien.leroy.fragments.ServicesFragment;
 import com.cypien.leroy.fragments.StoresFragment;
 import com.cypien.leroy.models.Service;
-import com.cypien.leroy.utils.MapUtil;
 import com.cypien.leroy.utils.WebServiceConnector;
 
 import org.json.JSONArray;
@@ -31,20 +28,16 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by GabiRotaru on 31/07/16.
  */
-public class ShopMainActivity extends AppCompatActivity {
+public class ShopDashboard extends AppCompatActivity {
 
     LinearLayout home_button, catalog_button, shop_button, services_button, community_button;
     LinearLayout prevLayout;
-    ImageView back_arrow;
     Context context;
     private WebView currentWebview;
     private Stack<String> htmlStack;
@@ -55,8 +48,8 @@ public class ShopMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = ShopMainActivity.this;
-        setContentView(R.layout.shop_main_activity);
+        context = ShopDashboard.this;
+        setContentView(R.layout.shop_dashboard);
 
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
 
@@ -67,14 +60,6 @@ public class ShopMainActivity extends AppCompatActivity {
         toolbar.getChildAt(0).setVisibility(View.GONE);
         toolbar.getChildAt(1).setVisibility(View.VISIBLE);
         ((TextView) toolbar.getChildAt(2)).setText("Leroy Merlin România");
-
-        back_arrow = (ImageView) findViewById(R.id.back_arrow);
-        back_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "back pressed", Toast.LENGTH_LONG).show();
-            }
-        });
 
         home_button = (LinearLayout) findViewById(R.id.home_button);
         prevLayout = home_button;
@@ -100,6 +85,7 @@ public class ShopMainActivity extends AppCompatActivity {
                 if(! linearLayout.getTag().toString().equals("community")) resolvePrevBtn(linearLayout);
                 switch(linearLayout.getTag().toString()) {
                     case "home":
+                        //TODO
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         //goToFragment(new ShopHomeFragment());
@@ -120,7 +106,13 @@ public class ShopMainActivity extends AppCompatActivity {
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "community":
-                        Intent intent = new Intent(ShopMainActivity.this, CommunityMainActivity.class);
+                        Intent intent;
+                        if(sp.getBoolean("isConnected",false) == false) {
+                            intent = new Intent(ShopDashboard.this, LoginActivity.class);
+                            intent.putExtra("source", "shop_dashboard");
+                        } else {
+                            intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
+                        }
                         startActivity(intent);
                         finish();
                         break;
@@ -185,47 +177,6 @@ public class ShopMainActivity extends AppCompatActivity {
     public void setCurrentWebview(WebView webview){
         currentWebview=webview;
         htmlStack=new Stack<>();
-    }
-
-    // intoarce stiva ce contine paginile html pe care le-a parcurs userul
-    public Stack<String> getHtmlStack(){
-        return htmlStack;
-    }
-
-    //intoarce cookieurile site-ului
-    public Map<String,String > getCookies(){
-        Map<String,String> cookies;
-        cookies= MapUtil.stringToMap(sp.getString("cookies", ""));
-        return cookies;
-    }
-
-    //controleaza apasarea butoanelor de back
-    private boolean goBack(){
-        if(currentWebview!=null) {
-            if (currentWebview.canGoBack()&&htmlStack.size()>0) {
-                if(currentWebview.copyBackForwardList().getCurrentIndex()==1){
-                    currentWebview.loadDataWithBaseURL(null, htmlStack.pop(), "text/html", "UTF-8", null);
-                    currentWebview.clearHistory();
-                }else {
-                    currentWebview.goBack();
-                }
-                return true;
-            }
-            if (htmlStack.size() > 1) {
-                htmlStack.pop();
-                currentWebview.loadDataWithBaseURL(null, htmlStack.lastElement(), "text/html", "UTF-8", null);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // transforma timpul din milisecunde in data calendaristica
-    private String getDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time);
-        String date = DateFormat.format("dd.MM.yyyy", cal).toString();
-        return date;
     }
 
     public JSONObject makeRequest(String... params){

@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.MainActivity;
-import com.cypien.leroy.activities.ShopMainActivity;
+import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.utils.PageLoader;
 
 /**
@@ -27,8 +27,8 @@ import com.cypien.leroy.utils.PageLoader;
 public class FacebookFragment extends Fragment {
     private View view;
     private WebView mWebView;
-    private View loading;
     private String url;
+    private ImageView share, clipboard;
 
 
     public FacebookFragment(){
@@ -57,12 +57,13 @@ public class FacebookFragment extends Fragment {
             }
         });
 
+        share = (ImageView) view.findViewById(R.id.share);
+        clipboard = (ImageView) view.findViewById(R.id.clipboard);
+
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
 
-        loading=view.findViewById(R.id.loading);
-
         mWebView = (WebView) view.findViewById(R.id.web_view);
-        ((ShopMainActivity)getActivity()).setCurrentWebview(mWebView);
+        ((ShopDashboard)getActivity()).setCurrentWebview(mWebView);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new MyWebViewClient());
@@ -91,14 +92,12 @@ public class FacebookFragment extends Fragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            loading.setVisibility(View.VISIBLE);
             mWebView.setVisibility(View.GONE);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            loading.setVisibility(View.GONE);
             mWebView.setVisibility(View.VISIBLE);
         }
     }
