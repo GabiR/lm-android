@@ -10,4 +10,10 @@
         <item name="android:textColorPrimary">#333333</item>
         <item name="android:background">#FFFFFF</item>
     </style>
+    <style name="CheckBoxStyle">
+
+
+        <item name="android:textColor">@color/black</item>
+
+    </style>
 </resources>

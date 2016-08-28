@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:singleLine="true"
-    android:background="@drawable/round_corners_black_border"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:ellipsize="marquee"
-    android:textColor="@color/green"
-    android:textSize="18sp"
-    android:padding="10dp"/>
+    android:textColor="#333333"
+    android:textSize="14sp" />

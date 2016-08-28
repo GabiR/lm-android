@@ -1,16 +1,27 @@
 package com.cypien.leroy.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cypien.leroy.LeroyApplication;
@@ -18,7 +29,9 @@ import com.cypien.leroy.R;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.Encrypt;
 import com.cypien.leroy.utils.MapUtil;
+import com.cypien.leroy.utils.MyGestureListener;
 import com.cypien.leroy.utils.NotificationDialog;
+import com.cypien.leroy.utils.TimeUtils;
 import com.cypien.leroy.utils.WebServiceConnector;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -35,103 +48,221 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * Created by Alex on 8/12/2015.
+ * Created by GabiRotaru on 23/08/16.
  */
-public class LoginActivity extends Activity {
-    private Button loginButton;
-    private ImageView facebookLoginButton;
-    private Button newAccountButton;
-    private EditText userName, password;
-    private TextView userNameError, passwordError;
-    private TextView forgot,vistor;
+public class LoginActivity extends AppCompatActivity {
+    private ImageView skyImage, shopInfoBtn, footer;
+    private TextView shopInfoText, btnContact, txtBack, btnLogin, btnLoginFb, forgot, createAccount;
+    private EditText edtUser, edtPass;
+    private RelativeLayout main_layout, bottom_dialog;
+    private Context context;
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
-    private boolean ok;
     private final int SUCCESS_REGISTRATION=60;
+    private int screenWidth, screenHeight, skyImageSize;
+
     private String fbFirstName,fbLastName,fbEmail,fbName,fbId,fbAccessToken;
+
+    boolean ok;
+
+    boolean visibleBottomView = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.new_main_activity);
+        context = LoginActivity.this;
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+            if (new TimeUtils().isMorning())
+                window.setStatusBarColor(ContextCompat.getColor(context, R.color.sky_day));
+            else
+                window.setStatusBarColor(ContextCompat.getColor(context, R.color.sky_night));
+        }
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
-
-        setContentView(R.layout.login_screen);
-
 
         LeroyApplication application = (LeroyApplication) getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "LoginActivity");
+        mTracker.setScreenName("Screen:" + "OldLoginActivity");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
-        loginButton             = (Button) findViewById(R.id.login);
-        newAccountButton        = (Button) findViewById(R.id.new_user);
-        facebookLoginButton     = (ImageView) findViewById(R.id.facebook_login);
-        userName                = (EditText) findViewById(R.id.user_name);
-        password                = (EditText) findViewById(R.id.password);
-        userNameError           = (TextView) findViewById(R.id.user_name_error);
-        passwordError           = (TextView) findViewById(R.id.password_error);
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
 
-        vistor = (TextView) findViewById(R.id.visit);
-        vistor.setOnClickListener(new View.OnClickListener() {
+        main_layout = (RelativeLayout) findViewById(R.id.mainLayout);
+        skyImage = (ImageView) findViewById(R.id.skyImage);
+        shopInfoBtn = (ImageView) findViewById(R.id.shopInfoBtn);
+        shopInfoText = (TextView) findViewById(R.id.shopInfoText);
+        footer = (ImageView) findViewById(R.id.footer);
+        btnContact = (TextView) findViewById(R.id.btnContact);
+        bottom_dialog = (RelativeLayout) findViewById(R.id.bottom_dialog);
+
+        txtBack = (TextView) findViewById(R.id.txtBack);
+        btnLogin = (TextView) findViewById(R.id.btnLogin);
+        edtUser = (EditText) findViewById(R.id.edtUser);
+        edtPass = (EditText) findViewById(R.id.edtPass);
+        btnLogin = (TextView) findViewById(R.id.btnLogin);
+        btnLoginFb = (TextView) findViewById(R.id.btnFb);
+        forgot = (TextView) findViewById(R.id.forgot);
+        createAccount = (TextView) findViewById(R.id.create_account);
+
+        bottom_dialog.animate().translationY(screenHeight - skyImageSize);
+
+        if (new TimeUtils().isMorning())
+            skyImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.sky_day));
+        else
+            skyImage.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.sky_night));
+
+        shopInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spEditor=sp.edit();
-                spEditor.clear();
-                spEditor.commit();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(context, ShopMainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        forgot = (TextView) findViewById(R.id.forgot);
-        forgot.setOnClickListener(new View.OnClickListener() {
+        btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Connections.isNetworkConnected(getApplicationContext())) {
-                    showForgotPasswordDialog();
-                } else {
-                    new NotificationDialog(LoginActivity.this, "Pentru a vă putea reseta parola trebuie sa fiți conectat la internet!").show();
-                }
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + "0374 133 000"));
+                startActivity(intent);
             }
         });
 
-        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        final MyGestureListener footerGestureListener = new MyGestureListener();
+        final MyGestureListener bottomViewGestureListener = new MyGestureListener();
+        footer.setOnTouchListener(footerGestureListener);
+        footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    MyGestureListener.Action action = footerGestureListener.getAction();
+                    if(action == MyGestureListener.Action.BT || action == MyGestureListener.Action.None){
+                        Log.e("footer", "open"+action.toString());
+                        visibleBottomView = true;
+                        bottom_dialog.animate().translationY(0).withLayer().start();
+                    }
+
+            }
+        });
+       /* footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                visibleBottomView = true;
+                bottom_dialog.animate().translationY(0).withLayer().start();
+            }
+        });
+        footer.setOnTouchListener(new OnSwipeTouchListener(context) {
+            public void onSwipeTop() {
+                visibleBottomView = true;
+                bottom_dialog.animate().translationY(0).withLayer().start();
+
+            }
+
+        });*/
+
+        bottom_dialog.setOnTouchListener(bottomViewGestureListener);
+        bottom_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(bottomViewGestureListener.getAction() == MyGestureListener.Action.TB){
+                    visibleBottomView = false;
+                    bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+                }
+            }
+        });
+       /* bottom_dialog.setOnTouchListener(new OnSwipeTouchListener(context) {
+            public void onSwipeBottom() {
+                visibleBottomView = false;
+                bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+
+            }
+        });
+*/
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                visibleBottomView = false;
+                bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+
+            }
+        });
+
+        edtUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    v.setBackgroundResource(R.drawable.round_corners_black_border);
-                    passwordError.setVisibility(View.GONE);
+                if(hasFocus) {
+                    edtUser.setHintTextColor(ContextCompat.getColor(context, R.color.light_grey));
+                    edtUser.setHint("Nume utilizator");
                 }
             }
         });
 
-        userName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        edtPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    v.setBackgroundResource(R.drawable.round_corners_black_border);
-                    userNameError.setVisibility(View.GONE);
+                if(hasFocus) {
+                    edtPass.setHintTextColor(ContextCompat.getColor(context, R.color.light_grey));
+                    edtPass.setHint("Parola");
                 }
             }
         });
 
-        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ok = true;
+                if (edtUser.getText().toString().equals("")) {
+                    edtUser.setText("");
+                    edtUser.setHintTextColor(ContextCompat.getColor(context, R.color.light_red));
+                    edtUser.setHint("Introduceti e-mail");
+
+                    ok = false;
+                }
+                if (edtPass.getText().toString().equals("")) {
+                    edtPass.setText("");
+                    edtPass.setHintTextColor(ContextCompat.getColor(context, R.color.light_red));
+                    edtPass.setHint("Introduceti parola");
+
+                    ok = false;
+                }
+                if (ok) {
+                    if (Connections.isNetworkConnected(getApplicationContext())) {
+                        login(edtUser.getText().toString(), edtPass.getText().toString());
+                    } else {
+                        new NotificationDialog(LoginActivity.this,"Vă rugăm să vă conectați la internet pentru a putea intra în cont!").show();
+                    }
+                }
+            }
+        });
+
+        btnLoginFb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initFacebook();
                 if (Connections.isNetworkConnected(getApplicationContext())) {
                     SimpleFacebook.getInstance(LoginActivity.this).login(new OnLoginListener() {
+
+
                         @Override
                         public void onLogin(final String accessToken, List<Permission> acceptedPermissions, List<Permission> declindedPermissions) {
+                            Log.e("login", accessToken);
                             fbAccessToken = accessToken;
                             Profile.Properties properties = new Profile.Properties.Builder()
                                     .add(Profile.Properties.ID)
@@ -141,6 +272,17 @@ public class LoginActivity extends Activity {
                                     .add(Profile.Properties.EMAIL)
                                     .build();
                             SimpleFacebook.getInstance().getProfile(properties, new OnProfileListener() {
+
+                                @Override
+                                public void onFail(String reason) {
+                                    super.onFail(reason);
+                                }
+
+                                @Override
+                                public void onException(Throwable throwable) {
+                                    super.onException(throwable);
+                                }
+
                                 @Override
                                 public void onComplete(Profile profile) {
                                     if (profile.getEmail() != null) {
@@ -180,66 +322,56 @@ public class LoginActivity extends Activity {
 
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.focus_thief).requestFocus();
-                ok = true;
-                if (userName.getText().toString().equals("")) {
-                    userName.setBackgroundResource(R.drawable.round_corners_red_border);
-                    userNameError.setVisibility(View.VISIBLE);
-                    ok = false;
-                }
-                if (password.getText().toString().equals("")) {
-                    password.setBackgroundResource(R.drawable.round_corners_red_border);
-                    passwordError.setVisibility(View.VISIBLE);
-                    ok = false;
-                }
-                if (ok) {
-                    if (Connections.isNetworkConnected(getApplicationContext())) {
-                        login(userName.getText().toString(), password.getText().toString());
-                    } else {
-                        new NotificationDialog(LoginActivity.this,"Vă rugăm să vă conectați la internet pentru a putea intra în cont!").show();
-                    }
+                if (Connections.isNetworkConnected(getApplicationContext())) {
+                    showForgotPasswordDialog();
+                } else {
+                    new NotificationDialog(context, "Pentru a vă putea reseta parola trebuie sa fiți conectat la internet!").show();
                 }
             }
         });
 
-        newAccountButton.setOnClickListener(new View.OnClickListener() {
+        createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
-                intent.putExtra("source", "new");
-                startActivityForResult(intent, SUCCESS_REGISTRATION);
+                Intent intent = new Intent(LoginActivity.this, NewCreateAccountActivity.class);
+                startActivity(intent);
+
             }
         });
 
-        JSONObject response = makeContactRequest();
-
-
-        if ( sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext()))
-            login(sp.getString("username",""),sp.getString("password",""));
-    }
-
-    public JSONObject makeContactRequest(){
-        try {
-            String request = "{\"method\":\"catalog_get_all\",\"params\": [0, 100]}";
-            return new JSONObject(new WebServiceConnector().execute("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + URLEncoder.encode(request)).get());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
+        if ( sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
+            boolean a = true;
+            login(sp.getString("username", ""), sp.getString("password", ""));
         }
 
-        return null;
+
     }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if(hasFocus) {
+            float shopBtnWidth = screenWidth / 1.29f;
+            shopInfoBtn.getLayoutParams().width = (int) shopBtnWidth;
+            shopInfoBtn.requestLayout();
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, (int) (shopInfoBtn.getHeight() / 4.55f));
+            params.addRule(RelativeLayout.ALIGN_BOTTOM, shopInfoBtn.getId());
+            shopInfoText.setLayoutParams(params);
+
+            skyImageSize = skyImage.getHeight();
+        }
+    }
+
 
     private void facebookConnect(){
         try {
-            String answer=LeroyApplication.getInstance().makeRequest("user_get_id_by_fbid",fbId).getString("result");
+            String answer= LeroyApplication.getInstance().makeRequest("user_get_id_by_fbid",fbId).getString("result");
             if(answer.equals("false")){
                 if (init()) {
                     // adugam utilizator nou
@@ -280,76 +412,6 @@ public class LoginActivity extends Activity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-
-
-    //preluarea informatiilor de autentificare de la pagina de register.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        SimpleFacebook.getInstance(LoginActivity.this).onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SUCCESS_REGISTRATION) {
-                userName.setText(data.getStringExtra("username"));
-                password.setText(data.getStringExtra("password"));
-            }
-        }
-    }
-
-    //Conectarea utilizatorului la platforma si obtinerea cookie-urilor din site.
-    private void login(String username, String password){
-        if(init()) {
-            String result = "";
-            String link = "http://facem-facem.ro/api.php";
-            String parameters = "api_m=" + "login_login" +
-                    "&vb_login_md5password_utf=" + Encrypt.getMD5UTFEncryptedPass(password) +
-                    "&vb_login_username=" + username +
-                    "&api_c=" + sp.getString("apiclientid", "") +
-                    "&api_s=" + sp.getString("apiaccesstoken", "") +
-                    "&api_v=" + sp.getString("apiversion", "") +
-                    "&api_sig=" + sp.getString("signature", "");
-            try {
-                result = new WebServiceConnector().execute(link, parameters).get(5, TimeUnit.SECONDS);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                JSONObject response = new JSONObject(result);
-                String acces = response.getJSONObject("response").getString("errormessage");
-                if (acces.contains("redirect_login")) {
-                    spEditor=sp.edit();
-                    spEditor.putString("username",username);
-                    spEditor.putString("password", password);
-                    spEditor.putString("userid", response.getJSONObject("session").getString("userid"));
-                    spEditor.putString("sessionhash",response.getJSONObject("session").getString("dbsessionhash"));
-                    spEditor.putBoolean("isConnected", true);
-                    try {
-                        Map<String,String> cookeis = new GetCookies().execute(username, password).get();
-                        if(cookeis!=null){
-                            spEditor.putString("cookies", MapUtil.mapToString(cookeis));
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    spEditor.commit();
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else
-                    new NotificationDialog(LoginActivity.this,"Numele de utilizator sau parola sunt incorecte").show();
-            } catch (JSONException e){
-                new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
-                e.printStackTrace();
-            }
-        }else{
-            new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Veti putea utiliza aplicatia in modul vizitator.").show();
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(intent);
-            finish();
         }
     }
 
@@ -405,6 +467,34 @@ public class LoginActivity extends Activity {
         }
     }
 
+    //TODO
+//    //preluarea informatiilor de autentificare de la pagina de register.
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        SimpleFacebook.getInstance(OldLoginActivity.this).onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == SUCCESS_REGISTRATION) {
+//                userName.setText(data.getStringExtra("username"));
+//                password.setText(data.getStringExtra("password"));
+//            }
+//        }
+//    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        SimpleFacebook.getInstance(LoginActivity.this).onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SUCCESS_REGISTRATION) {
+                Log.e("fmm", "facebook");
+//                userName.setText(data.getStringExtra("username"));
+//                password.setText(data.getStringExtra("password"));
+            }
+        }
+    }
+
     //initializare facebook
     private void initFacebook(){
         Permission[] permissions = new Permission[] {
@@ -418,60 +508,153 @@ public class LoginActivity extends Activity {
         SimpleFacebook.setConfiguration(configuration);
     }
 
+    //Conectarea utilizatorului la platforma si obtinerea cookie-urilor din site.
+    private void login(String username, String password){
+        if(init()) {
+            String result = "";
+            String link = "http://facem-facem.ro/api.php";
+            String parameters = "api_m=" + "login_login" +
+                    "&vb_login_md5password_utf=" + Encrypt.getMD5UTFEncryptedPass(password) +
+                    "&vb_login_username=" + username +
+                    "&api_c=" + sp.getString("apiclientid", "") +
+                    "&api_s=" + sp.getString("apiaccesstoken", "") +
+                    "&api_v=" + sp.getString("apiversion", "") +
+                    "&api_sig=" + sp.getString("signature", "");
+            try {
+                result = new WebServiceConnector().execute(link, parameters).get(5, TimeUnit.SECONDS);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                JSONObject response = new JSONObject(result);
+                String acces = response.getJSONObject("response").getString("errormessage");
+                if (acces.contains("redirect_login")) {
+                    spEditor=sp.edit();
+                    spEditor.putString("username",username);
+                    spEditor.putString("password", password);
+                    spEditor.putString("userid", response.getJSONObject("session").getString("userid"));
+                    spEditor.putString("sessionhash",response.getJSONObject("session").getString("dbsessionhash"));
+                    spEditor.putBoolean("isConnected", true);
+                    try {
+                        Map<String,String> cookeis = new GetCookies().execute(username, password).get();
+                        if(cookeis!=null){
+                            spEditor.putString("cookies", MapUtil.mapToString(cookeis));
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    spEditor.commit();
+                    Intent intent = new Intent(LoginActivity.this, CommunityMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else
+                    new NotificationDialog(LoginActivity.this,"Numele de utilizator sau parola sunt incorecte").show();
+            } catch (JSONException e){
+                new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
+                e.printStackTrace();
+            }
+        }else{
+            new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Vă redirecţionăm spre secţiunea informaţii magazine.").show();
+            Intent intent = new Intent(LoginActivity.this, ShopMainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     private void showForgotPasswordDialog() {
         final Dialog dialog = new Dialog(this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.forgot_password_dialog);
-//        dialog.setCancelable(false);
-//        Button cancelButton = (Button)dialog.findViewById(R.id.cancel);
-//        Button resetButton = (Button)dialog.findViewById(R.id.reset);
-//        final EditText email = (EditText)dialog.findViewById(R.id.email);
-//        final TextView emailError = (TextView)dialog.findViewById(R.id.email_error);
-//
-//        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    v.setBackgroundResource(R.drawable.round_corners_black_border);
-//                    emailError.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-//
-//        resetButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ok = true;
-//                if (email.getText().toString().equals("")||!email.getText().toString().contains("@")||!email.getText().toString().contains(".")) {
-//                    email.setBackgroundResource(R.drawable.round_corners_red_border);
-//                    emailError.setVisibility(View.VISIBLE);
-//                    ok = false;
-//                }
-//                if(ok){
-//                    if(init()){
-//                        String link = "http://facem-facem.ro/api.php";
-//                        String parameters = "api_m=" + "login_emailpassword"+
-//                                "&email=" + email.getText().toString()+
-//                                "&api_c=" + sp.getString("apiclientid", "") +
-//                                "&api_s=" + sp.getString("apiaccesstoken", "") +
-//                                "&api_v=" + sp.getString("apiversion", "") +
-//                                "&api_sig=" + sp.getString("signature", "");
-//                        new WebServiceConnector().execute(link,parameters);
-//                        dialog.dismiss();
-//                    }
-//                }
-//            }
-//        });
-//
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.dismiss();
-//            }
-//        });
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.forgot_password_dialog);
+        dialog.setCancelable(true);
+
+        final TextView titluPopup = (TextView) dialog.findViewById(R.id.titluPopup);
+        final TextView contentPopup = (TextView) dialog.findViewById(R.id.contentPopup);
+
+
+        final TextView resetButton = (TextView) dialog.findViewById(R.id.reset);
+        final TextView inchideButton = (TextView) dialog.findViewById(R.id.inchide_popup);
+
+        final EditText email = (EditText)dialog.findViewById(R.id.email);
+        RelativeLayout root_view_forgot = (RelativeLayout)dialog.findViewById(R.id.root_view_forgot);
+
+        //views that need to catch Touch event
+
+        LinearLayout bg_white = (LinearLayout) dialog.findViewById(R.id.bg_white);
+
+        bg_white.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        //end
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ok = true;
+                if (email.getText().toString().equals("")||!email.getText().toString().contains("@")||!email.getText().toString().contains(".")) {
+                    email.setText("");
+                    email.setHintTextColor(ContextCompat.getColor(context, R.color.light_red));
+                    email.setHint("Adresa de e-mail incorectă");
+                    email.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_edt_rounded_red));
+
+                    ok = false;
+                }
+                if(ok){
+                    if(init()){
+                        String link = "http://facem-facem.ro/api.php";
+                        String parameters = "api_m=" + "login_emailpassword"+
+                                "&email=" + email.getText().toString()+
+                                "&api_c=" + sp.getString("apiclientid", "") +
+                                "&api_s=" + sp.getString("apiaccesstoken", "") +
+                                "&api_v=" + sp.getString("apiversion", "") +
+                                "&api_sig=" + sp.getString("signature", "");
+                        new WebServiceConnector().execute(link,parameters);
+
+                        titluPopup.setText("Vă mulțumim!");
+                        titluPopup.setTypeface(null, Typeface.BOLD);
+                        contentPopup.setText("Instrucțiuni pentru resetarea parolei au fost trimise pe adresa dumneavoastră de e-mail.");
+
+                        email.setVisibility(View.GONE);
+                        resetButton.setVisibility(View.GONE);
+                        inchideButton.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
+        root_view_forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        inchideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+        if(visibleBottomView){
+            visibleBottomView = false;
+            bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+        }
+        else
+            super.onBackPressed();
+    }
 }
-
-

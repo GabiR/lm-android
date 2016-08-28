@@ -3,6 +3,7 @@ package com.cypien.leroy.utils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 
 import com.cypien.leroy.R;
 
@@ -22,7 +23,7 @@ public class NotificationDialog {
 
     public void show() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-        builder.setMessage("" + message);
+        builder.setMessage(Html.fromHtml(message));
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
