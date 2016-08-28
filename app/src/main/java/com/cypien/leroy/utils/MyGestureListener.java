@@ -1,6 +1,4 @@
-package com.cypien.leroy.utils;/*
- * Created by Alex on 26.08.2016.
- */
+package com.cypien.leroy.utils;
 
 import android.view.MotionEvent;
 import android.view.View;
