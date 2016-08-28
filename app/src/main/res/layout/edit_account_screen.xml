@@ -215,7 +215,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/unknown"/>
+                android:src="@drawable/unknown_default"/>
             <com.cypien.leroy.utils.CustomButton
                 android:layout_toLeftOf="@id/picture"
                 android:layout_centerInParent="true"

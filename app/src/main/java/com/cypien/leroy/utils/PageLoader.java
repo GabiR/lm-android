@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Created by Alex on 8/20/2015.
+ * Created by GabiRotaru on 25/08/16.
  */
-public class PageLoader extends AsyncTask<String,Void,String>{
+public class PageLoader extends AsyncTask<String,Void,String> {
     private WebView mWebView;
     private MainActivity mainActivity;
     private Map<String,String > cookies;
@@ -32,26 +32,26 @@ public class PageLoader extends AsyncTask<String,Void,String>{
                 Document doc = Jsoup.connect(params[0]).cookies(cookies).get();
                 doc.body().appendElement("style").prepend(
                         "#wrapper_et,\n"+
-                        "#qr_preview, \n" +
-                        "#footer-container, \n" +
-                        ".menu,\n" +
-                        ".friends_wr,\n" +
+                                "#qr_preview, \n" +
+                                "#footer-container, \n" +
+                                ".menu,\n" +
+                                ".friends_wr,\n" +
 //                        ".user_middle_tabs,\n" +
-                        ".see_more_wrapper,\n" +
-                            ".add_to_contest,\n" +
-                        ".cookie_bar,\n" +
-                        ".green_left,\n" +
-                        ".carousel,\n" +
-                        ".see_more.reply_t.top_button\n"+
+                                ".see_more_wrapper,\n" +
+                                ".add_to_contest,\n" +
+                                ".cookie_bar,\n" +
+                                ".green_left,\n" +
+                                ".carousel,\n" +
+                                ".see_more.reply_t.top_button\n"+
 //                        "ol"+
                                 "{\n" +
-                        "    display: none;\n" +
-                        "}  \n" +
-                        "#wrapper_et," +
-                        ".home_icon{\n" +
-                        "\tvisibility: hidden;\n" +
-                        "}" +
-                        "\n");
+                                "    display: none;\n" +
+                                "}  \n" +
+                                "#wrapper_et," +
+                                ".home_icon{\n" +
+                                "\tvisibility: hidden;\n" +
+                                "}" +
+                                "\n");
                 return doc.outerHtml();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,27 +60,27 @@ public class PageLoader extends AsyncTask<String,Void,String>{
             try {
                 Document doc = Jsoup.connect(params[0]).get();
                 doc.body().appendElement("style").prepend(
-                    "#wrapper_et,\n" +
-                        "#qr_preview, \n" +
-                        "#footer-container, \n" +
-                        "#content_container, \n" +
-                        ".menu,\n" +
-                        ".friends_wr,\n" +
+                        "#wrapper_et,\n" +
+                                "#qr_preview, \n" +
+                                "#footer-container, \n" +
+                                "#content_container, \n" +
+                                ".menu,\n" +
+                                ".friends_wr,\n" +
 //                        ".user_middle_tabs,\n" +
-                        ".see_more_wrapper,\n" +
-                        ".add_to_contest,\n" +
-                        ".cookie_bar,\n" +
-                        ".green_left,\n" +
-                        ".carousel,\n" +
-                        ".see_more.reply_t.top_button\n" +
+                                ".see_more_wrapper,\n" +
+                                ".add_to_contest,\n" +
+                                ".cookie_bar,\n" +
+                                ".green_left,\n" +
+                                ".carousel,\n" +
+                                ".see_more.reply_t.top_button\n" +
 //                        "ol"+
-                        "{\n" +
-                        "    display: none;\n" +
-                        "}  \n" +
-                        "#wrapper_et{\n" +
-                        "\tvisibility: hidden;\n" +
-                        "}\n");
-              return doc.outerHtml();
+                                "{\n" +
+                                "    display: none;\n" +
+                                "}  \n" +
+                                "#wrapper_et{\n" +
+                                "\tvisibility: hidden;\n" +
+                                "}\n");
+                return doc.outerHtml();
             } catch (IOException e) {
                 e.printStackTrace();
             }

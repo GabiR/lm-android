@@ -3,44 +3,114 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/no_internet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nu aveti conexiune la internet. Apasati aici pentru a reincarca pagina!"
-        android:textColor="@color/green"
-        android:background="@color/ligh_grey"
-        android:gravity="center"
-        android:padding="5dp"
-        />
-    <WebView
-        android:id="@+id/web_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+
     <RelativeLayout
-        android:id="@+id/loading"
-        android:gravity="center"
+        android:id="@+id/no_internet"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
-        <ImageView
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/logo"
-            android:adjustViewBounds="true"
-            android:padding="100dp"/>
+        android:background="@color/white"
+        android:gravity="center">
+
         <TextView
-            android:layout_centerInParent="true"
-            android:layout_alignParentBottom="true"
+            android:id="@+id/txtMesaj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Va rugam sa activati internetul pentru a putea vedea catalogul de oferte!"
+            android:textColor="@color/unpressedblack"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:textSize="18sp"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="   Se încarcă..."
-            android:textColor="@color/green"
-            android:textSize="22sp"
-            android:layout_marginBottom="130dp" />
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:layout_below="@+id/txtMesaj"
+            android:id="@+id/retry"
+            >
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/retry_icon"
+
+                android:padding="5dp"/>
+
+            <TextView
+                android:clickable="true"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reincercare"
+                android:textSize="18sp"
+                android:textColor="@color/lightGreen"/>
+        </LinearLayout>
+
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/webViewContainer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/ligh_grey"
+            android:weightSum="1">
+            <TextView
+                android:id="@+id/url"
+                android:layout_weight="0.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="www.facem-facem.ro/concursuriiiiiidddddd"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:layout_marginRight="12dp"/>
+            <ImageView
+                android:id="@+id/share"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/share_icon"
+                android:layout_marginRight="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
+            <ImageView
+                android:id="@+id/clipboard"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/clipboard_icon"
+                android:layout_marginRight="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:progressDrawable="@drawable/customprogressbar"/>
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
 
 </LinearLayout>

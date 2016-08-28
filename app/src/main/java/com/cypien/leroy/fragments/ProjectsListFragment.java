@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,7 +35,7 @@ public class ProjectsListFragment extends Fragment {
     private View view;
     private ProjectsAdapter adapter;
     private ListView list;
-    private Button seeMoreButton;
+    private TextView seeMoreButton;
     private SharedPreferences sp;
 
 
@@ -46,12 +45,12 @@ public class ProjectsListFragment extends Fragment {
         view = getActivity().getLayoutInflater().inflate(R.layout.projects_list, container, false);
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
 
-        View actionBarView = getActivity().findViewById(R.id.actionbar);
-        ((TextView) actionBarView.findViewById(R.id.title)).setText("Proiecte");
-        ((ImageView) actionBarView.findViewById(R.id.logo)).setImageResource(R.drawable.logo);
-        actionBarView.findViewById(R.id.back_button).setVisibility(View.VISIBLE);
+        ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Proiecte");
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
 
-        seeMoreButton = (Button) view.findViewById(R.id.see_more);
+
+        seeMoreButton = (TextView) view.findViewById(R.id.see_more);
         list = (ListView) view.findViewById(R.id.projects_list);
         adapter = new ProjectsAdapter(getActivity());
         list.setAdapter(adapter);
@@ -80,7 +79,7 @@ public class ProjectsListFragment extends Fragment {
                 bundle.putInt("position", position);
                 projectFragment.setArguments(bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, projectFragment, "project").addToBackStack(null);
+                transaction.replace(R.id.content_frame_community, projectFragment, "project").addToBackStack(null);
                 transaction.commit();
             }
         });

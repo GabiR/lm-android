@@ -22,7 +22,7 @@
                     android:layout_height="120dp"
                     android:adjustViewBounds="true"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/unknown" />
+                    android:src="@drawable/unknown_default" />
                 <com.cypien.leroy.utils.CustomTextView
                     android:id="@+id/last_name"
                     android:layout_width="wrap_content"
