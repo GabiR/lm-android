@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean ok;
 
+    boolean visibleBottomView = false;
 
 
     @Override
@@ -620,4 +621,3 @@ public class LoginActivity extends AppCompatActivity {
 
 
 }
->>>>>>> master
