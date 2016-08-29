@@ -27,17 +27,19 @@
                 android:src="@drawable/unknown_default"
                 app:civ_border_color="#EEEEEE"
                 app:civ_border_width="2dp"
+                android:layout_gravity="center_horizontal"
                 app:civ_shadow="false"/>
             <TextView
                 android:id="@+id/user_name"
                 android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="14sp"
+                android:gravity="center"
                 android:text="Ion Gheorghe"
-                android:paddingTop="8dp"
+
                 android:textColor="@color/username_gray"
-                android:paddingBottom="8dp"/>
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_marginLeft="24dp"
@@ -77,6 +79,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="200"
+                            android:textStyle="bold"
                             android:textColor="@color/lightGreen"
                             android:textSize="20sp"/>
                     </LinearLayout>
@@ -106,6 +109,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="5"
+                            android:textStyle="bold"
                             android:textColor="@color/lightGreen"
                             android:textSize="20sp"/>
                     </LinearLayout>
@@ -135,6 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="103"
+                            android:textStyle="bold"
                             android:textColor="@color/lightGreen"
                             android:textSize="20sp"/>
                     </LinearLayout>
@@ -142,16 +147,17 @@
             </LinearLayout>
 
 
-            <TextView
+            <Button
                 android:id="@+id/btnEditAccount"
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Editează-ţi contul"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="6dp"
+                android:textSize="16sp"
+                android:paddingBottom="6dp"
                 android:textColor="@color/username_gray"
                 android:background="@drawable/edit_btn"
                 />
@@ -180,6 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
             <ImageView
+                android:id="@+id/back1"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:layout_width="wrap_content"
@@ -189,7 +196,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Proiect"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@id/back1"
+                android:layout_marginBottom="4dp"
                 android:textSize="16sp"
+                android:gravity="center"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"/>
         </RelativeLayout>
@@ -200,6 +211,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="14dp">
             <ImageView
+                android:id="@+id/back2"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:layout_width="wrap_content"
@@ -210,6 +222,10 @@
                 android:layout_height="wrap_content"
                 android:text="Discuţie"
                 android:textSize="16sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@id/back2"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"/>
         </RelativeLayout>
@@ -220,6 +236,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="14dp">
             <ImageView
+                android:id="@+id/back3"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:layout_width="wrap_content"
@@ -230,6 +247,9 @@
                 android:layout_height="wrap_content"
                 android:text="Proiect în\nconcurs"
                 android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@id/back3"
+                android:layout_marginBottom="4dp"
                 android:lineSpacingMultiplier="0.8"
                 android:textSize="16sp"
                 android:layout_centerInParent="true"
@@ -259,12 +279,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Topul\nmeseriaşilor"
+                android:text="Topul meseriaşilor"
                 android:lineSpacingMultiplier="0.8"
-                android:paddingBottom="2dp"
+                android:paddingBottom="4dp"
+                android:layout_alignLeft="@id/img1"
+                android:layout_alignStart="@+id/img1"
+                android:layout_alignEnd="@+id/img1"
+                android:layout_alignRight="@+id/img1"
                 android:textSize="14sp"
+                android:paddingLeft="2dp"
+
+                android:paddingRight="2dp"
                 android:textColor="@color/black"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_alignBottom="@+id/img1"/>
         </RelativeLayout>
@@ -285,9 +312,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Evenimente"
-                android:paddingBottom="10dp"
-                android:gravity="center_horizontal"
+                android:paddingBottom="6dp"
+                android:layout_alignRight="@+id/img2"
+                android:layout_alignStart="@+id/img2"
+                android:layout_alignLeft="@+id/img2"
+                android:layout_alignEnd="@+id/img2"
+                android:gravity="center"
+
                 android:textSize="14sp"
+                android:paddingLeft="2dp"
+                android:paddingTop="4dp"
+                android:paddingRight="2dp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/black"
                 android:layout_alignBottom="@+id/img2"/>
@@ -312,9 +347,16 @@
                 android:layout_height="wrap_content"
                 android:text="Sfatul\nmeseriaşului"
                 android:layout_alignBottom="@+id/img3"
-                android:paddingBottom="2dp"
+                android:paddingBottom="4dp"
+                android:layout_alignLeft="@id/img3"
+                android:layout_alignStart="@+id/img3"
+                android:layout_alignEnd="@+id/img3"
+                android:layout_alignRight="@+id/img3"
                 android:lineSpacingMultiplier="0.8"
                 android:textSize="14sp"
+                android:paddingLeft="2dp"
+
+                android:paddingRight="2dp"
                 android:textColor="@color/black"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>

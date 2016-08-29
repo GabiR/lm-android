@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:src="@drawable/back_arrow"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingEnd="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingStart="8dp"
+            android:text="Contul meu"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:paddingBottom="10dp">
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/user_image"
+        android:layout_width="132dp"
+        android:layout_height="142dp"
+        android:src="@drawable/unknown_default"
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="2dp"
+
+        android:layout_gravity="center_horizontal"
+        app:civ_shadow="false"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/edit_account"
+            android:layout_alignEnd="@+id/user_image"
+            android:layout_alignRight="@+id/user_image"
+            android:layout_alignBottom="@+id/user_image"
+            />
+</RelativeLayout>
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="32dp"
+        android:paddingLeft="32dp"
+        android:paddingEnd="32dp"
+        android:paddingRight="32dp"
+        android:textSize="24sp"
+        android:text="Alexandru Vlad"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/username_gray"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:layout_marginTop="36dp"
+        android:text="INFORMAȚII UTILIZATOR"
+        android:textAllCaps="true"
+        android:textColor="#333333" />
+
+    <include layout="@layout/divider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:paddingEnd="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingStart="16dp"
+            android:text="Nume utilizator"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:lines="1"
+            android:paddingEnd="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingStart="8dp"
+            android:singleLine="true"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp"
+            android:text="alexandru.vlad1208"/>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:paddingEnd="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingStart="16dp"
+            android:text="Telefon"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:lines="1"
+            android:paddingEnd="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingStart="8dp"
+            android:singleLine="true"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp"
+            android:text="0748974233"
+            />
+
+
+    </LinearLayout>
+
+    <include layout="@layout/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:paddingEnd="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingStart="16dp"
+            android:textColor="@color/username_gray"
+            android:text="Email"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:lines="1"
+            android:paddingEnd="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingStart="8dp"
+            android:singleLine="true"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp"
+            android:text="alexandru.vlad1208@gmail.com"
+          />
+
+
+    </LinearLayout>
+
+    <include layout="@layout/divider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:paddingEnd="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingStart="16dp"
+            android:textColor="@color/username_gray"
+            android:text="Data nașterii"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/birth_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:lines="1"
+            android:paddingEnd="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingStart="8dp"
+            android:singleLine="true"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp"
+            android:text="23.04.2014"
+            />
+
+
+    </LinearLayout>
+
+    <include layout="@layout/divider" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:layout_marginTop="36dp"
+        android:text="INFORMAȚII UTILIZATOR"
+        android:textAllCaps="true"
+        android:textColor="#333333" />
+
+    <include layout="@layout/divider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:ellipsize="end"
+            android:gravity="start|center_vertical"
+            android:maxLines="1"
+            android:paddingEnd="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:paddingStart="16dp"
+            android:text="Data înscrierii"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/signup_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:background="@null"
+            android:gravity="center_vertical|end"
+            android:lines="1"
+            android:paddingEnd="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingStart="8dp"
+            android:singleLine="true"
+            android:textColor="@color/username_gray"
+            android:textSize="14sp"
+            android:text="26.08.2015"/>
+
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="16dp">
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#a9a9a9"
+            android:id="@+id/divider"
+           />
+        <LinearLayout
+            android:layout_below="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:weightSum="1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/projects_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="@color/username_gray"
+                android:gravity="center"
+                android:padding="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Proiecte"
+                android:textSize="12sp"
+                android:textColor="@color/username_gray"
+                android:gravity="center"
+                android:padding="4dp"/>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/posts_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="24sp"
+                    android:textColor="@color/username_gray"
+                    android:gravity="center"
+                    android:padding="4dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Postări"
+                    android:textSize="12sp"
+                    android:textColor="@color/username_gray"
+                    android:gravity="center"
+                    android:padding="4dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/views_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="727"
+                    android:textSize="24sp"
+                    android:textColor="@color/username_gray"
+                    android:gravity="center"
+                    android:padding="4dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vizualizări"
+                    android:textSize="12sp"
+                    android:textColor="@color/username_gray"
+                    android:gravity="center"
+                    android:padding="4dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/friends_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textSize="24sp"
+                    android:textColor="@color/username_gray"
+                    android:gravity="center"
+                    android:padding="4dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Prieteni"
+                    android:textSize="12sp"
+                    android:textColor="@color/username_gray"
+                    android:gravity="center"
+                    android:padding="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+            </LinearLayout>
+    </ScrollView>
+</LinearLayout>
