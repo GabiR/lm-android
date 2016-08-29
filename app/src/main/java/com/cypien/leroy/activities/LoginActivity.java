@@ -59,7 +59,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class LoginActivity extends AppCompatActivity {
     private ImageView skyImage, shopInfoBtn, footer;
-    private TextView shopInfoText, btnContact, txtBack, btnLogin, btnLoginFb, forgot;
+    private TextView shopInfoText, btnContact, txtBack, btnLogin, btnLoginFb, forgot, createAccount;
     private EditText edtUser, edtPass;
     private RelativeLayout main_layout, bottom_dialog;
     private Context context;
@@ -120,7 +120,14 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (TextView) findViewById(R.id.btnLogin);
         btnLoginFb = (TextView) findViewById(R.id.btnFb);
         forgot = (TextView) findViewById(R.id.forgot);
-
+        createAccount = (TextView) findViewById(R.id.create_account);
+        createAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, NewCreateAccountActivity.class);
+                startActivity(intent);
+            }
+        });
         Intent i = getIntent();
         if(i==null || i.getStringExtra("source") == null) {
             bottom_dialog.animate().translationY(screenHeight - skyImageSize);

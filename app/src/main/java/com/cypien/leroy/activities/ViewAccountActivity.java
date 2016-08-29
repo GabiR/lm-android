@@ -3,10 +3,13 @@ package com.cypien.leroy.activities;/*
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cypien.leroy.R;
@@ -17,6 +20,7 @@ public class ViewAccountActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private CircularImageView userImage;
     private TextView name;
+    private ImageView back, edit;
     private TextView birthDate, signUpDate, email, phone, username, friends, views, projects, posts;
 
     @Override
@@ -31,6 +35,25 @@ public class ViewAccountActivity extends AppCompatActivity {
         email = (TextView) findViewById(R.id.email);
         phone = (TextView) findViewById(R.id.phone);
         username = (TextView) findViewById(R.id.username);
+        posts = (TextView) findViewById(R.id.posts_number);
+        views = (TextView) findViewById(R.id.views_number);
+        friends = (TextView) findViewById(R.id.friends_number);
+        projects = (TextView) findViewById(R.id.projects_number);
+        back = (ImageView) findViewById(R.id.back_arrow);
+        edit = (ImageView) findViewById(R.id.edit_account);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewAccountActivity.this, EditAccountActivity.class);
+                startActivity(intent);
+            }
+        });
         initData();
     }
 
@@ -44,13 +67,17 @@ public class ViewAccountActivity extends AppCompatActivity {
         projects.setText(sp.getString("blognum",""));
         email.setText(sp.getString("email",""));
        phone.setText(sp.getString("phone", ""));
-//        String daily=sp.getString("dailyposts","");
-//        if(daily.length()>5)
-//            nrDaily.setText(daily.substring(0,5));
-//        else
-//            nrDaily.setText(daily);
+        name.setText(sp.getString("firstname", "")+" "+sp.getString("lastname", ""));
+        signUpDate.setText(sp.getString("joindate", ""));
+        birthDate.setText(sp.getString("birthdate", ""));
+
        friends.setText(sp.getString("friendcount",""));
-        signUpDate.setText(sp.getString("joindate",""));
-//        nrProjects.setText(sp.getString("blognum",""));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 }

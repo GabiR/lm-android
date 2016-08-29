@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.cypien.leroy.LeroyApplication;
@@ -38,8 +36,8 @@ public class AddPhotoActivity extends Activity{
     private String path;
     private Uri fileUri;
 
-    private ImageView camera_icon, gallery_icon, mascota_icon;
-    private int screenHeight;
+   // private ImageView camera_icon, gallery_icon, mascota_icon;
+   // private int screenHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,7 @@ public class AddPhotoActivity extends Activity{
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        screenHeight = metrics.heightPixels;
+       // screenHeight = metrics.heightPixels;
 
 
         // cazul in care se doreste capturarea unei imagini cu camera telefonului
@@ -78,12 +76,12 @@ public class AddPhotoActivity extends Activity{
             }
         });
 
-        mascota_icon.setOnTouchListener(new View.OnTouchListener() {
+       /* mascota_icon.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
-        });
+        });*/
     }
 
     // preluarea imaginii ,transmiterea adresei imaginii catre fragmentul care a solicitat-o si revenirea la acel fragment
@@ -131,7 +129,7 @@ public class AddPhotoActivity extends Activity{
         return mediaFileName;
     }
 
-    public void onWindowFocusChanged(boolean hasFocus) {
+    /*public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
         if(hasFocus) {
@@ -139,5 +137,5 @@ public class AddPhotoActivity extends Activity{
             gallery_icon.getLayoutParams().height = (int) (screenHeight / 9.14f);
             mascota_icon.getLayoutParams().height = (int) (screenHeight / 4.67f);
         }
-    }
+    }*/
 }

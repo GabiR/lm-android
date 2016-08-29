@@ -66,6 +66,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ViewAccountActivity"/>
+        <activity android:name=".activities.EditAccountActivity"/>
         <activity
             android:name=".activities.ShopDashboard"
             android:configChanges="orientation|screenSize"

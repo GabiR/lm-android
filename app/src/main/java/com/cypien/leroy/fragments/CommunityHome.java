@@ -131,6 +131,12 @@ public class CommunityHome extends Fragment {
 //        nrProjects.setText(sp.getString("blognum",""));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initProfileInformation();
+    }
+
     // transforma un string base64 in imagine
     public static Bitmap decodeBase64(String input){
         byte[] decodedByte = Base64.decode(input, 0);
