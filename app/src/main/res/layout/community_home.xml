@@ -199,7 +199,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignBottom="@id/back1"
                 android:layout_marginBottom="4dp"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"/>
@@ -221,7 +221,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Discuţie"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:layout_alignParentTop="true"
                 android:layout_alignBottom="@id/back2"
                 android:layout_marginBottom="4dp"
@@ -251,7 +251,7 @@
                 android:layout_alignBottom="@id/back3"
                 android:layout_marginBottom="4dp"
                 android:lineSpacingMultiplier="0.8"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"/>
         </RelativeLayout>

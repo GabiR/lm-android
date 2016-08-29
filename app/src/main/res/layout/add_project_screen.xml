@@ -1,213 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:focusableInTouchMode="false">
-    <LinearLayout
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="false"
+    android:background="@color/white">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:background="@drawable/main_background">
-        <View
-            android:id="@+id/focus_thief"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            />
-        <com.cypien.leroy.utils.CustomTextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="NUME PROIECT"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Alege un nume pentru proiectul tău"
-            android:textColor="@color/grey"
-            />
-        <EditText
-            android:id="@+id/project_name"
-            android:padding="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:background="@drawable/round_corners_black_border"
-            android:inputType="textCapSentences"/>
-        <com.cypien.leroy.utils.CustomTextView
-            android:id="@+id/title_error"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="VĂ RUGĂM SĂ COMPLETAȚI TITLUL PROIECTULUI"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:visibility="gone"
-            />
-        <com.cypien.leroy.utils.CustomTextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="COSTURI"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aici treci costurile totale pentru proiect"
-            android:textColor="@color/grey"
-            />
-        <EditText
-            android:id="@+id/project_cost"
-            android:padding="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:background="@drawable/round_corners_black_border"
-            android:inputType="text"/>
-        <com.cypien.leroy.utils.CustomTextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DURATA"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aici treci durata totală a proiectului tău\n(ex. 3 ore sau 1 zi)"
-            android:textColor="@color/grey"
-            />
-        <EditText
-            android:id="@+id/project_time"
-            android:padding="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:background="@drawable/round_corners_black_border"
-            android:inputType="text"/>
-        <com.cypien.leroy.utils.CustomTextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DETALII PROIECT"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Spune-ne mai multe despre proiectul tău"
-            android:textColor="@color/grey"
-            />
-        <EditText
-            android:id="@+id/project_details"
-            android:padding="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:background="@drawable/round_corners_black_border"
-            android:inputType="textMultiLine|textCapSentences"/>
-        <com.cypien.leroy.utils.CustomTextView
-            android:id="@+id/details_error"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="MESAJUL PE CARE L-AȚI INTRODUS ESTE PREA SCURT. VĂ RUGĂM SĂ INTRODUCEȚI UN MESAJ DE CEL PUȚIN 10 CARACTERE"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:visibility="gone"
-            />
-        <com.cypien.leroy.utils.CustomTextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CATEGORII PROIECT"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Alege categoriile din care face parte proiectul tău."
-            android:textColor="@color/grey"
-            />
-        <TextView
-            android:id="@+id/categories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/green"
-            android:padding="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/round_corners_black_border"/>
-        <com.cypien.leroy.utils.CustomTextView
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ADAUGĂ POZE"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Spune-ne mai multe despre proiectul tău"
-            android:textColor="@color/grey"
-            />
+        android:layout_height="match_parent">
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp">
-            <ImageView
-                android:id="@+id/picture1"
-                android:layout_width="85dp"
-                android:layout_height="80dp"
-                android:src="@drawable/add_picture" />
-            <ImageView
-                android:id="@+id/picture2"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="85dp"
-                android:layout_height="80dp"
-                android:src="@drawable/add_picture" />
-            <ImageView
-                android:id="@+id/picture3"
-                android:layout_width="85dp"
-                android:layout_height="80dp"
-                android:src="@drawable/add_picture" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <View
+                android:id="@+id/focus_thief"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:focusableInTouchMode="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:text="INFORMAȚII PROIECT"
+                android:textAllCaps="true"
+                android:textColor="#333333" />
+
+            <include layout="@layout/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:lines="1"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingStart="16dp"
+                    android:singleLine="true"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:maxLines="1"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="8dp"
+                    android:text="Titlu"
+                    android:textColor="#878080"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <EditText
+                    android:id="@+id/costs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:lines="1"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingStart="16dp"
+                    android:singleLine="true"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:maxLines="1"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="8dp"
+                    android:text="Costuri"
+                    android:textColor="#878080"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/divider" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <EditText
+                    android:id="@+id/duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:lines="1"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingStart="16dp"
+                    android:singleLine="true"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:maxLines="1"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="8dp"
+                    android:text="Durata"
+                    android:textColor="#878080"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <EditText
+                    android:id="@+id/categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:lines="1"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingStart="16dp"
+                    android:singleLine="true"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:maxLines="1"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="8dp"
+                    android:text="Categorie"
+                    android:textColor="#878080"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/divider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:text="DETALII PROIECT"
+                android:textAllCaps="true"
+                android:textColor="#333333" />
+
+            <include layout="@layout/divider" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <EditText
+                    android:id="@+id/details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionNext"
+                    android:inputType="textMultiLine"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="8dp"
+                    android:paddingStart="16dp"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:maxLines="1"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="8dp"
+                    android:text="Detalii"
+                    android:textColor="#878080"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <include layout="@layout/divider" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:text="IMAGINI PROIECT"
+                android:textAllCaps="true"
+                android:textColor="#333333" />
+
+            <include layout="@layout/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp">
+                <ImageView
+                    android:id="@+id/picture1"
+                    android:layout_width="85dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/add_picture" />
+                <ImageView
+                    android:id="@+id/picture2"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="85dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/add_picture" />
+                <ImageView
+                    android:id="@+id/picture3"
+                    android:layout_width="85dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/add_picture" />
+            </LinearLayout>
+
+
         </LinearLayout>
-        <com.cypien.leroy.utils.CustomButton
-            android:id="@+id/add_project"
+        <Button
+            android:id="@+id/create"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/green_button"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:text="Creează cont"
+            android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="30sp"
-            android:text="ADAUGĂ PROIECTUL TĂU" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/linearLayout"/>
+    </RelativeLayout>
+
 </ScrollView>

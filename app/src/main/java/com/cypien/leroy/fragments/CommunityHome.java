@@ -30,6 +30,7 @@ public class CommunityHome extends Fragment {
     private TextView user_name, posts, views, projects;
 
     private RelativeLayout topul_meseriasilor, sfatul_meseriasului, evenimente;
+    private RelativeLayout btnAddProject, btnAddDiscussion, btnAddContest;
     private android.widget.Button editAccount;
 
     @Nullable
@@ -82,6 +83,19 @@ public class CommunityHome extends Fragment {
                 goToFragment(new EventsFragment());
             }
         });
+
+
+        btnAddProject = (RelativeLayout) view.findViewById(R.id.btnAddProject);
+        btnAddDiscussion = (RelativeLayout) view.findViewById(R.id.btnAddDiscussion);
+        btnAddContest = (RelativeLayout) view.findViewById(R.id.btnAddContest);
+
+        btnAddProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToFragment(new AddProjectFragment());
+            }
+        });
+
 
 
         return view;

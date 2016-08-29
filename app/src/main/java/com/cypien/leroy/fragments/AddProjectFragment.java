@@ -11,6 +11,8 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,11 +52,12 @@ import java.util.concurrent.ExecutionException;
  */
 public class AddProjectFragment extends Fragment {
     private View view;
+
+    private EditText title, costs, duration, categories, details;
+
     private ImageView image1, image2, image3;
     private Button addProjectButton;
     private String path1, path2, path3;
-    private EditText title, cost, time, details;
-    private TextView titleError, detailsError, categories;
     private SharedPreferences sp;
     private ListView categoriesList;
     private PopupWindow categoriesWindow;
@@ -62,18 +65,28 @@ public class AddProjectFragment extends Fragment {
     private static String selectedCategoriesIndexes,selectedCategories;
     private final int IMAGE1=175,IMAGE2=176,IMAGE3=177;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = getActivity().getLayoutInflater().inflate(R.layout.add_project_screen, container, false);
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
 
-        View actionBarView = getActivity().findViewById(R.id.actionbar);
-        ((TextView) actionBarView.findViewById(R.id.title)).setText("Adaugă proiect");
-        ((ImageView) actionBarView.findViewById(R.id.logo)).setImageResource(R.drawable.logo);
-        actionBarView.findViewById(R.id.back_button).setVisibility(View.VISIBLE);
+        ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Adaugă proiect");
 
-        addProjectButton = (Button) view.findViewById(R.id.add_project);
+        ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
+        back_arrow.setVisibility(View.VISIBLE);
+        back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+        });
+
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
+
+        addProjectButton = (Button) view.findViewById(R.id.create);
 
         image1 = (ImageView) view.findViewById(R.id.picture1);
         image1.setTag(IMAGE1);
@@ -87,13 +100,11 @@ public class AddProjectFragment extends Fragment {
         image3.setTag(IMAGE3);
         getImage(image3);
 
-        title = (EditText) view.findViewById(R.id.project_name);
-        cost = (EditText) view.findViewById(R.id.project_cost);
-        time = (EditText) view.findViewById(R.id.project_time);
-        details = (EditText) view.findViewById(R.id.project_details);
-        titleError = (TextView) view.findViewById(R.id.title_error);
-        detailsError = (TextView) view.findViewById(R.id.details_error);
-        categories = (TextView) view.findViewById(R.id.categories);
+        title = (EditText) view.findViewById(R.id.title);
+        costs = (EditText) view.findViewById(R.id.costs);
+        duration = (EditText) view.findViewById(R.id.duration);
+        details = (EditText) view.findViewById(R.id.details);
+        categories = (EditText) view.findViewById(R.id.categories);
         initCategoriesWindow();
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,25 +115,25 @@ public class AddProjectFragment extends Fragment {
         categories.setText(selectedCategories);
 
         // controleaza disparitia erorilor
-        title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    v.setBackgroundResource(R.drawable.round_corners_black_border);
-                    titleError.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        details.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    v.setBackgroundResource(R.drawable.round_corners_black_border);
-                    detailsError.setVisibility(View.GONE);
-                }
-            }
-        });
+//        title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    v.setBackgroundResource(R.drawable.round_corners_black_border);
+//                    titleError.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+//
+//        details.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    v.setBackgroundResource(R.drawable.round_corners_black_border);
+//                    detailsError.setVisibility(View.GONE);
+//                }
+//            }
+//        });
 
         placeImages();
 
@@ -135,12 +146,10 @@ public class AddProjectFragment extends Fragment {
                     details.clearFocus();
                     if (title.getText().toString().equals("")) {
                         title.setBackgroundResource(R.drawable.round_corners_red_border);
-                        titleError.setVisibility(View.VISIBLE);
                         ok = false;
                     }
                     if (details.getText().toString().length() < 10) {
                         details.setBackgroundResource(R.drawable.round_corners_red_border);
-                        detailsError.setVisibility(View.VISIBLE);
                         ok = false;
                     }
                     if (ok) {
@@ -151,9 +160,9 @@ public class AddProjectFragment extends Fragment {
                             jsn.put("views","0");
                             jsn.put("description",details.getText().toString());
                             jsn.put("title",title.getText().toString());
-                            jsn.put("costs",cost.getText().toString());
+                            jsn.put("costs",costs.getText().toString());
                             jsn.put("userid",sp.getString("userid", ""));
-                            jsn.put("duration", time.getText().toString());
+                            jsn.put("duration", duration.getText().toString());
                             jsn.put("categories",selectedCategoriesIndexes);
                             JSONObject images = new JSONObject();
                             if (path1 != null)
@@ -322,7 +331,7 @@ public class AddProjectFragment extends Fragment {
 
     private void pathIsNull(String path){
         if(path==null)
-            new NotificationDialog(getActivity(),"Ne pare rau, dar imaginea pe care ati selectat-o nu se gaseste stocata pe dispozivul dumneavoastra!").show();
+            new NotificationDialog(getActivity(),"Ne pare rău, dar imaginea pe care ați selectat-o nu se găseste stocată pe dispozivul dumneavoastră!").show();
     }
 
 }
