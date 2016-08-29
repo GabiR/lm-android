@@ -72,8 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     private final int SUCCESS_REGISTRATION=60;
 
     boolean ok;
-
-    boolean visibleBottomView = false;
+    private boolean visibleBottomView = false;
 
 
     @Override

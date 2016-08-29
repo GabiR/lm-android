@@ -1,5 +1,6 @@
 package com.cypien.leroy.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cypien.leroy.R;
+import com.cypien.leroy.activities.ViewAccountActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 /**
@@ -28,6 +30,7 @@ public class CommunityHome extends Fragment {
     private TextView user_name, posts, views, projects;
 
     private RelativeLayout topul_meseriasilor, sfatul_meseriasului, evenimente;
+    private android.widget.Button editAccount;
 
     @Nullable
     @Override
@@ -52,6 +55,14 @@ public class CommunityHome extends Fragment {
         topul_meseriasilor = (RelativeLayout) view.findViewById(R.id.topul_meseriasilor);
         sfatul_meseriasului = (RelativeLayout) view.findViewById(R.id.sfatul_meseriasului);
         evenimente = (RelativeLayout) view.findViewById(R.id.evenimente);
+        editAccount = (android.widget.Button) view.findViewById(R.id.btnEditAccount);
+        editAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ViewAccountActivity.class);
+                startActivity(intent);
+            }
+        });
 
         topul_meseriasilor.setOnClickListener(new View.OnClickListener() {
             @Override
