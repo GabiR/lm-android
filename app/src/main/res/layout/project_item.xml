@@ -3,8 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/project_border"
-    android:padding="10dp">
+    android:background="@drawable/project_background"
+    android:paddingTop="10dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="25dp">
     <ImageView
         android:id="@+id/main_image"
         android:layout_width="match_parent"
@@ -17,16 +20,16 @@
         android:layout_height="30dp"
         android:layout_below="@id/main_image"/>
     <TextView
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="16dp"
         android:id="@+id/project_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/green"
+        android:textColor="@color/colorPrimary"
         android:text="Vopsire camera"
-        android:textStyle="bold"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:layout_below="@id/helper"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
     <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_marginLeft="10dp"
         android:id="@+id/avatar"
@@ -40,24 +43,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="realizat de DjDeeNo"
-        android:textColor="@color/black"
+        android:textColor="@color/username_gray"
         android:textSize="14sp"
+
         android:layout_alignBottom="@id/avatar"
-        android:layout_toRightOf="@id/avatar"/>
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_marginBottom="4dp"
+        />
+    <include layout="@layout/divider"
+        android:layout_below="@+id/user_name"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_width="match_parent" />
+    <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_centerHorizontal="true"
         android:id="@+id/share_button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/project_name"
         android:gravity="center"
-        android:textSize="20sp"
-        android:paddingBottom="8dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="8dp"
-        android:background="@drawable/green_button"
+        android:textSize="18sp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:background="@color/colorPrimary"
         android:text="DISTRIBUIE ACEST PROIECT"
         android:textColor="@color/white" />
     <LinearLayout
@@ -65,22 +80,25 @@
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
         android:layout_below="@id/share_button1">
         <TextView
-            android:layout_marginLeft="10dp"
-            android:id="@+id/viz_n"
+            android:id="@+id/like_n"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="75"
             android:textSize="15sp"
             android:textColor="@color/black"
-            android:layout_marginRight="5dp"
-            android:textStyle="bold"/>
+            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/viz_n" />
+            android:src="@drawable/like_n" />
         <TextView
             android:id="@+id/comm_n"
             android:layout_width="wrap_content"
@@ -88,28 +106,30 @@
             android:text="7"
             android:textSize="15sp"
             android:textColor="@color/black"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:textStyle="bold"/>
+            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:src="@drawable/comm_n" />
         <TextView
-            android:id="@+id/like_n"
+            android:id="@+id/viz_n"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5"
             android:textSize="15sp"
             android:textColor="@color/black"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:textStyle="bold"/>
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="6dp"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:src="@drawable/like_n" />
+            android:src="@drawable/viz_n" />
     </LinearLayout>
 </RelativeLayout>
