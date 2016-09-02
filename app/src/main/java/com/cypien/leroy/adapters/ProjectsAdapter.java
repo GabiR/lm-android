@@ -107,7 +107,7 @@ public class ProjectsAdapter extends ArrayAdapter<Project>{
     @Override
     public void add(Project object) {
         super.add(object);
-        object.buidImage();
+        object.buildImage();
         object.buildAvatar();
     }
 }

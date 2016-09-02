@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cypien.leroy.R;
+import com.cypien.leroy.activities.AddContestProjectActivity;
+import com.cypien.leroy.activities.AddDiscussionActivity;
+import com.cypien.leroy.activities.AddProjectActivity;
 import com.cypien.leroy.activities.ViewAccountActivity;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -92,12 +95,27 @@ public class CommunityHome extends Fragment {
         btnAddProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToFragment(new AddProjectFragment());
+                Intent intent = new Intent(getActivity(), AddProjectActivity.class);
+                startActivity(intent);
+             //   goToFragment(new AddProjectActivity());
             }
         });
 
+        btnAddDiscussion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddDiscussionActivity.class);
+                startActivity(intent);
+            }
+        });
 
-
+        btnAddContest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddContestProjectActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

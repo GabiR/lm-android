@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+
+        >
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/avatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
+
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/com_facebook_profile_picture_blank_square"/>
         <TextView
             android:id="@+id/user_name"
@@ -21,81 +28,100 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:textAllCaps="true"
+            android:paddingTop="20dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_alignTop="@id/avatar"
-            android:layout_toRightOf="@id/avatar"/>
+            android:layout_toRightOf="@id/avatar"
+            android:layout_toEndOf="@+id/avatar"/>
         <TextView
             android:id="@+id/project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Renovare baie"
-            android:textColor="@color/green"
+            android:textColor="@color/colorPrimary"
             android:textSize="20sp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
             android:textStyle="bold"
             android:layout_below="@id/avatar"
             android:layout_marginTop="16dp"/>
         <LinearLayout
             android:layout_marginTop="8dp"
             android:id="@+id/linear"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/project_name"
             android:gravity="center_vertical">
             <TextView
-                android:id="@+id/viz_n"
+                android:id="@+id/like_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="75"
-                android:textColor="@color/black"
                 android:textSize="15sp"
-                android:layout_marginRight="5dp"
-                android:textStyle="bold"/>
+                android:textColor="@color/black"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/viz_n" />
+                android:src="@drawable/like_n" />
             <TextView
                 android:id="@+id/comm_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="7"
-                android:textColor="@color/black"
                 android:textSize="15sp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:textStyle="bold"/>
+                android:textColor="@color/black"
+                android:layout_marginRight="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:src="@drawable/comm_n" />
             <TextView
-                android:id="@+id/like_n"
+                android:id="@+id/viz_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5"
-                android:textColor="@color/black"
                 android:textSize="15sp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:textStyle="bold"/>
+                android:textColor="@color/black"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="6dp"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/like_n" />
+                android:src="@drawable/viz_n" />
             <Button
                 android:id="@+id/like_project"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
-                android:background="@drawable/green_button"
+                android:background="@color/colorPrimary"
                 android:drawableLeft="@drawable/like_b"
-                android:text="   ÎMI PLACE"
+                android:drawableStart="@drawable/like_b"
+                android:drawablePadding="8dp"
+                android:text="Îmi place"
                 android:textSize="16sp"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:padding="8dp"
-                android:layout_marginLeft="20dp" />
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"/>
         </LinearLayout>
         <TextView
             android:id="@+id/publish_date"
@@ -104,8 +130,13 @@
             android:layout_below="@id/linear"
             android:text="Publicat pe 24.09.2015 09:27PM"
             android:textColor="@color/black"
+            android:paddingBottom="2dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
             android:layout_marginTop="16dp"
-            android:textSize="15sp"/>
+            android:textSize="16sp"/>
         <TextView
             android:id="@+id/project_time"
             android:layout_width="wrap_content"
@@ -113,6 +144,12 @@
             android:text="Durata proiectului: 1-2 zile"
             android:layout_below="@id/publish_date"
             android:textStyle="bold"
+            android:textSize="14sp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingBottom="2dp"
             android:textColor="@color/grey"
             />
         <TextView
@@ -122,6 +159,11 @@
             android:text="Costuri: 300-400 lei"
             android:layout_below="@id/project_time"
             android:textStyle="bold"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:textSize="14sp"
             android:textColor="@color/grey"
             />
         <TextView
@@ -131,6 +173,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
             android:layout_below="@id/project_cost"
             />
         <LinearLayout
@@ -139,6 +185,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/project_details"
             android:orientation="vertical"
+            android:layout_marginRight="16dp"
+           android:layout_marginEnd="16dp"
+           android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:gravity="center">
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
@@ -148,16 +198,35 @@
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp" />
+                android:padding="10dp"
+                app:fillColor="@color/colorPrimaryDark"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:radius="4dp"/>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Comentarii"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:layout_below="@id/images"/>
         <ListView
             android:layout_marginTop="5dp"
             android:id="@+id/comments"
             android:layout_width="match_parent"
+            android:divider="#eeeeee"
+            android:dividerHeight="2dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/images" />
-        <TextView
+            android:layout_below="@id/title" />
+        <Button
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
@@ -165,9 +234,10 @@
             android:layout_below="@id/comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/green_button"
-            android:text="ADAUGĂ  COMENTARIU"
+            android:background="@color/colorPrimary"
+            android:text="Adaugă comentariu"
             android:textSize="18sp"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:paddingLeft="16dp"
             android:paddingTop="8dp"
@@ -178,7 +248,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/not_connected"
-            android:text="Pentru a putea comenta trebuie sa fii inregistrat"
+            android:text="Pentru a putea comenta trebuie să fii înregistrat"
             android:gravity="center"
             android:padding="5dp"
             android:textColor="@color/black"

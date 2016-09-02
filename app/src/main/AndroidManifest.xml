@@ -67,6 +67,10 @@
         </activity>
         <activity android:name=".activities.ViewAccountActivity"/>
         <activity android:name=".activities.EditAccountActivity"/>
+        <activity android:name=".activities.AddProjectActivity"/>
+        <activity android:name=".activities.AddDiscussionActivity"/>
+        <activity android:name=".activities.AddContestProjectActivity" android:windowSoftInputMode="adjustPan"/>
+
         <activity
             android:name=".activities.ShopDashboard"
             android:configChanges="orientation|screenSize"

@@ -172,9 +172,17 @@ public class Project implements Serializable{
         return inSampleSize;
     }
 
-    public void buidImage(){
+    public String getImageBase() {
+        return imageBase;
+    }
+
+    public void setImageBase(String imageBase) {
+        this.imageBase = imageBase;
+    }
+
+    public void buildImage(){
         image=decodeBase64(imageBase);
-        imageBase=null;
+        //       imageBase=null;
     }
 
     public void buildAvatar(){
