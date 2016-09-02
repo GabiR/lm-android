@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ public class ProjectsListFragment extends Fragment {
     private View view;
     private ProjectsAdapter adapter;
     private ListView list;
-    private TextView seeMoreButton;
+    private Button seeMoreButton;
     private SharedPreferences sp;
 
 
@@ -50,13 +51,12 @@ public class ProjectsListFragment extends Fragment {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
 
 
-        seeMoreButton = (TextView) view.findViewById(R.id.see_more);
+        seeMoreButton = (Button) view.findViewById(R.id.see_more);
         list = (ListView) view.findViewById(R.id.projects_list);
         adapter = new ProjectsAdapter(getActivity());
         list.setAdapter(adapter);
 
-        Type myObjectType = new TypeToken<Integer>() {
-        }.getType();
+        Type myObjectType = new TypeToken<Integer>() {}.getType();
         Integer nrProjects = (Integer) LeroyApplication.getCacheManager().get("projects_nr", Integer.class, myObjectType);
         myObjectType = new TypeToken<Project>() {
         }.getType();

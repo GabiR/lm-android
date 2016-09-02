@@ -44,7 +44,7 @@ public class ProjectFragment extends Fragment{
     private TextView cost;
     private TextView details;
     private Button likeButton;
-    private TextView addCommentButton;
+    private Button addCommentButton;
     private Project project;
     private SharedPreferences sp;
     private ImagesAdapter adapter;
@@ -119,10 +119,10 @@ public class ProjectFragment extends Fragment{
         indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
         ((CirclePageIndicator) indicator).setSnap(true);
-        ((CirclePageIndicator) indicator).setRadius(15);
+      /*  ((CirclePageIndicator) indicator).setRadius(15);
         ((CirclePageIndicator) indicator).setStrokeColor(0xFF499840);
         ((CirclePageIndicator) indicator).setFillColor(0xFF56bd4f);
-
+*/
         likeButton = (Button)view.findViewById(R.id.like_project);
         if(project.isLiked())
             likeButton.setVisibility(View.GONE);
@@ -133,6 +133,7 @@ public class ProjectFragment extends Fragment{
                 v.setVisibility(View.GONE);
                 rating.setText("" + (Integer.parseInt(rating.getText().toString()) + 1));
                 project.setLiked(true);
+
                 project.setRating(""+(Integer.parseInt(project.getRating())+1));
                 LeroyApplication.getCacheManager().put("project_" + position, project);
             }
@@ -143,7 +144,7 @@ public class ProjectFragment extends Fragment{
         commentsList.setAdapter(commAdapter);
         setListViewHeightBasedOnChildren();
 
-        addCommentButton = (TextView)view.findViewById(R.id.add_comment);
+        addCommentButton = (Button) view.findViewById(R.id.add_comment);
         addCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

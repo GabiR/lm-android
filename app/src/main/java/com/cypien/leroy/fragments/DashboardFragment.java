@@ -65,7 +65,7 @@ public class DashboardFragment extends Fragment{
         // controleaza afisarea ultimului proiect
         if(Connections.isNetworkConnected(getActivity())){
             Project project = getLastProject();
-            project.buidImage();
+            project.buildImage();
             project.buildAvatar();
             ((TextView)view.findViewById(R.id.project_name)).setText(project.getTitle());
             ((TextView)view.findViewById(R.id.user_name)).setText(project.getUsername());

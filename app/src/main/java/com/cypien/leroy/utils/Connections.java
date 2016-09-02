@@ -16,12 +16,10 @@ public class Connections {
     }
 
     public static boolean isNetworkConnected(Context context) {
+
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            return false;
-        } else
-            return true;
+        return ni != null;
     }
 
     public static boolean isGPSEnabled(Context context){

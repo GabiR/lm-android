@@ -107,7 +107,7 @@ public class ShopDashboard extends AppCompatActivity {
                         break;
                     case "community":
                         Intent intent;
-                        if(sp.getBoolean("isConnected",false) == false) {
+                        if(!sp.getBoolean("isConnected", false)) {
                             intent = new Intent(ShopDashboard.this, LoginActivity.class);
                             intent.putExtra("source", "shop_dashboard");
                         } else {
@@ -187,12 +187,8 @@ public class ShopDashboard extends AppCompatActivity {
             request.put("params",array);
             return new JSONObject(new WebServiceConnector().execute("http://www.leroymerlin.ro/api/privateEndpoint/v1", "q=" + URLEncoder.encode(request.toString())).get());
 
-        } catch (JSONException e) {
+        } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
         }
 
         return null;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
@@ -98,7 +100,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
             holder.like.setVisibility(View.GONE);
             holder.delete.setVisibility(View.GONE);
             holder.answer.setVisibility(View.GONE);
-            ((ImageView)view.findViewById(R.id.hands)).setVisibility(View.GONE);
+            view.findViewById(R.id.hands).setVisibility(View.GONE);
         }
         if(!comment.getUserid().equals(sp.getString("userid","")))
             holder.delete.setVisibility(View.GONE);
@@ -135,7 +137,10 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         });
 
         holder.userName.setText(comment.getUser().getUserName());
-        holder.rating.setText(comment.getRating());
+        if(comment.getRating()== null || comment.getRating().equals(""))
+            holder.rating.setText("0");
+        else
+            holder.rating.setText(comment.getRating());
         if(type.equals("CMS")){
             holder.rating.setVisibility(View.GONE);
             holder.like.setVisibility(View.GONE);
@@ -162,49 +167,35 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
     public void showAddCommentDialog() {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.add_comment_dialog);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
-        Button postButton = (Button)dialog.findViewById(R.id.add_comment);
-        Button cancel = (Button)dialog.findViewById(R.id.cancel);
+        TextView postButton = (TextView) dialog.findViewById(R.id.add_comment);
+
         final EditText comment = (EditText)dialog.findViewById(R.id.comment);
-        final TextView commentError = (TextView)dialog.findViewById(R.id.comment_error);
 
-        comment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    v.setBackgroundResource(R.drawable.round_corners_black_border);
-                    commentError.setVisibility(View.GONE);
-                }
-            }
-        });
 
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ok = true;
                 if (comment.getText().toString().equals("")) {
-                    comment.setBackgroundResource(R.drawable.round_corners_red_border);
-                    commentError.setVisibility(View.VISIBLE);
-                    ok = false;
+
+                    Toast.makeText(getContext(), "Vă rugăm să completați cu comentariul dumneavoastră!", Toast.LENGTH_LONG).show();
+                    return;
                 }
-                if (ok) {
+
                     LeroyApplication.getInstance().makeRequest(type+"_add_comment",sp.getString("userid",""),blogId,comment.getText().toString());
                     getComments();
                     notifyDataSetChanged();
                     ((ProjectFragment)fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();
                     dialog.dismiss();
-                }
+
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+
 
         dialog.show();
     }

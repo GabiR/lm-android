@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+ <!--   <RelativeLayout
         android:id="@+id/no_internet"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -50,8 +50,8 @@
                 android:textColor="@color/lightGreen"/>
         </LinearLayout>
 
-    </RelativeLayout>
-
+    </RelativeLayout>-->
+    <include layout="@layout/no_internet_layout"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -15,9 +15,6 @@ import android.widget.TextView;
 
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.fragments.AddContestProjectFragment;
-import com.cypien.leroy.fragments.AddDiscussionFragment;
-import com.cypien.leroy.fragments.AddProjectFragment;
 import com.cypien.leroy.fragments.AdvicesFragment;
 import com.cypien.leroy.fragments.CatalogViewFragment;
 import com.cypien.leroy.fragments.DashboardFragment;
@@ -114,8 +111,8 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawer(drawer);
                 if ( sp.getBoolean("isConnected", false)) {
-                    f = new AddProjectFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();
+                   /* f = new AddProjectActivity();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();*/
                 }else
                     new NotificationDialog(MainActivity.this,"Pentru a putea adăuga proiecte, vă rugăm să vă autentificați!").show();
             }
@@ -127,8 +124,8 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawer(drawer);
                 if ( sp.getBoolean("isConnected", false)) {
-                    f = new AddContestProjectFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();
+               /*     f = new AddContestProjectActivity();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();*/
                 }else
                     new NotificationDialog(MainActivity.this,"Pentru a putea adăuga proiecte, vă rugăm să vă autentificați!").show();
             }
@@ -141,8 +138,8 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 drawerLayout.closeDrawer(drawer);
                 if ( sp.getBoolean("isConnected", false)) {
-                     f= new AddDiscussionFragment();
-                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();
+                 /*    f= new AddDiscussionFragment();
+                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();*/
                 }else
                     new NotificationDialog(MainActivity.this,"Pentru a putea adăuga discuții, vă rugăm să vă autentificați!").show();
             }

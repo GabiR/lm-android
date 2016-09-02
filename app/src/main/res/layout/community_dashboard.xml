@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
     android:background="@color/white">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+
+    <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
         android:layout_height="56dp"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
         <ImageView
             android:id="@+id/back_arrow"
@@ -52,17 +54,32 @@
             android:onClick="logoutClicked"/>
     </android.support.v7.widget.Toolbar>
 
-
     <FrameLayout
         android:id="@+id/content_frame_community"
         android:layout_weight="0.999"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/toolbar"
+        >
 
+        </FrameLayout>
 
+    <!--<View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/bottom_shadow"
+        android:layout_below="@+id/toolbar"/>-->
+    <include layout="@layout/toolbar_shadow"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/top_shadow"
+       android:layout_above="@+id/bottom_bar" />
     <LinearLayout
         android:layout_weight="0.001"
         android:weightSum="1"
+        android:id="@+id/bottom_bar"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -132,7 +149,7 @@
             <TextView
                 android:layout_marginTop="@dimen/menu_button_text_padding"
                 android:textColor="@color/unpressedblack"
-                android:text="Discutii"
+                android:text="Discuții"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -191,5 +208,4 @@
 
 
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

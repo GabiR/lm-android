@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 
@@ -66,19 +67,13 @@ public class LeroyApplication extends Application{
 
     public JSONObject makeRequest(String... params){
         ArrayList<String> parameters = new ArrayList<>();
-        for(int i = 1;i<params.length;i++){
-            parameters.add(params[i]);
-        }
+        parameters.addAll(Arrays.asList(params).subList(1, params.length));
         JSONObject request = new JSONObject();
         try {
             request.put("method", params[0]);
             request.put("params",new JSONArray(parameters));
             return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+APIVersion, "q=" + request.toString()).get());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
@@ -92,8 +87,7 @@ public class LeroyApplication extends Application{
         final Runtime rt = Runtime.getRuntime();
         final float bytesUsed = rt.totalMemory();
         final float mbUsed = bytesUsed/BYTES_IN_MB;
-        final float mbFree = megabytesAvailable() - mbUsed;
-        return mbFree;
+        return megabytesAvailable() - mbUsed;
     }
 
     public static float megabytesAvailable() {
