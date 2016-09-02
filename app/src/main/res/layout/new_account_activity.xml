@@ -45,8 +45,12 @@
         android:fillViewport="true"
         android:layout_below="@+id/toolbar">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
 
+            android:layout_marginBottom="100dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -590,6 +594,8 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+
+        </LinearLayout>
             <Button
                 android:id="@+id/create"
                 style="?android:attr/borderlessButtonStyle"
@@ -601,6 +607,7 @@
                 android:text="Creează cont"
                 android:textAllCaps="true"
                 android:textColor="@color/white" />
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
+    <include layout="@layout/toolbar_shadow"/>
 </RelativeLayout>

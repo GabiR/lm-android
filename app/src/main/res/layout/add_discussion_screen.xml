@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_above="@+id/post_discussion"
+            android:layout_marginBottom="100dp"
             android:layout_alignParentTop="true"
 
            >

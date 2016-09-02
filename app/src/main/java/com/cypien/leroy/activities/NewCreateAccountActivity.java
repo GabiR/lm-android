@@ -104,7 +104,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
         firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (errors[0]) {
+                if (errors[0] && hasFocus) {
                     errors[0] = false;
                     firstName.setText("");
                 }
