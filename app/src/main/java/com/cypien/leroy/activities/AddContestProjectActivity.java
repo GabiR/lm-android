@@ -184,7 +184,6 @@ public class AddContestProjectActivity extends AppCompatActivity{
                                 });
                                 builder.show();
                                 LeroyApplication.getCacheManager().unset("projects_nr");
-                                getFragmentManager().popBackStack();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

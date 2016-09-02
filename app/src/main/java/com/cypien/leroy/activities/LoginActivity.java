@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -153,8 +152,7 @@ public class LoginActivity extends AppCompatActivity {
         btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + "0374 133 000"));
+                Intent intent = new Intent(LoginActivity.this, VoiceActivity.class);
                 startActivity(intent);
             }
         });
@@ -506,9 +504,7 @@ public class LoginActivity extends AppCompatActivity {
                         if(cookeis!=null){
                             spEditor.putString("cookies", MapUtil.mapToString(cookeis));
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
                     }
                     spEditor.commit();
