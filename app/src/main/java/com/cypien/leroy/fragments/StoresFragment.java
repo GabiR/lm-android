@@ -349,5 +349,15 @@ public class StoresFragment extends Fragment {
         store.setDirections("");
         store.setFacebookAddress("LeroyMerlinIasi");
         stores.add(store);
+
+
+        store = new Store(45.703744, 21.183396);
+        store.setName("LEROY MERLIN TIMISOARA");
+        store.setAddress("Calea Sagului, DN 59, Timisoara");
+        store.setOpen("Luni - Sambata: 7:00 - 21:00\n" + "Duminica: 9:00 - 19:00");
+        store.setPhone("0374 411 860");
+        store.setDirections("");
+        store.setFacebookAddress("LeroyMerlinTimisoara");
+        stores.add(store);
     }
 }

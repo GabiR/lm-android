@@ -116,7 +116,7 @@ public class CommunityDashboard extends AppCompatActivity {
                     case "shop":
                         Intent intent = new Intent(CommunityDashboard.this, ShopDashboard.class);
                         startActivity(intent);
-                        finish();
+
                         break;
                 }
             }

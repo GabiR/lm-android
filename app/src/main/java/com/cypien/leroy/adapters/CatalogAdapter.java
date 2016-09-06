@@ -28,10 +28,10 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
 
     public class CatalogViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
-
         public CatalogViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.imageView);
+
         }
     }
 
@@ -54,28 +54,30 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
     public void onBindViewHolder(final CatalogViewHolder holder, final int position) {
         final Catalog catalog = cataloage.get(position);
 
-        if(Connections.isNetworkConnected(context)) {
+            if (Connections.isNetworkConnected(context)) {
 
-            Picasso.with(context).load(catalog.getCoverImageURL()).fit().into(holder.imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-                    if (notCached) {
-                        BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.imageView.getDrawable();
-                        catalog.buildImageBase(bitmapDrawable.getBitmap());
-                        LeroyApplication.getCacheManager().put("catalog_" + (position + 1), catalog);
-                        if(position==getItemCount()-1)
-                            notCached = false;
+                Picasso.with(context).load(catalog.getCoverImageURL()).fit().into(holder.imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                        if (notCached) {
+                            BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.imageView.getDrawable();
+                            catalog.buildImageBase(bitmapDrawable.getBitmap());
+                            LeroyApplication.getCacheManager().put("catalog_" + (position + 1), catalog);
+                            if (position == getItemCount() - 1)
+                                notCached = false;
+                        }
                     }
-                }
 
-                @Override
-                public void onError() {
+                    @Override
+                    public void onError() {
 
-                }
-            });
-        }
-        else
-            holder.imageView.setImageBitmap(catalog.getCover());
+                    }
+                });
+            } else {
+                holder.imageView.setImageBitmap(catalog.getCover());
+
+            }
 
       /*  Picasso.with(context).load(catalog.getCoverImageURL()).into(new Target() {
             @Override

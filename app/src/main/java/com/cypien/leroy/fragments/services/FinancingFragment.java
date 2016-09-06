@@ -1,5 +1,7 @@
 package com.cypien.leroy.fragments.services;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
@@ -8,6 +10,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +38,7 @@ public class FinancingFragment extends Fragment{
     private View view;
     private int phoneNumbers[]={R.id.phone1,R.id.phone2,R.id.phone3,R.id.phone4,R.id.phone5,R.id.phone6,
                             R.id.phone7,R.id.phone8,R.id.phone9,R.id.phone10,R.id.phone11, R.id.phone12,
-                            R.id.phone13, R.id.phone14};
+                            R.id.phone13, R.id.phone14, R.id.phone15};
 
     @Nullable
     @Override
@@ -70,14 +73,14 @@ public class FinancingFragment extends Fragment{
             }
         });
 
-        for (int i=0; i<phoneNumbers.length;i++){
-          view.findViewById(phoneNumbers[i]).setOnClickListener(new View.OnClickListener() {
+        for (int phoneNumber : phoneNumbers) {
+            view.findViewById(phoneNumber).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (Connections.isTelephonyEnabled(getActivity()))
-                         makePhoneCall(((TextView)v).getText().toString());
+                        makePhoneCall(((TextView) v).getText().toString());
                     else
-                        new NotificationDialog(getActivity(),"Ne pare rau dar nu puteți efectua apeluri de pe acest dispozitiv!").show();
+                        new NotificationDialog(getActivity(), "Ne pare rau dar nu puteți efectua apeluri de pe acest dispozitiv!").show();
                 }
             });
         }
@@ -94,15 +97,20 @@ public class FinancingFragment extends Fragment{
     private void saveFile() {
         AssetManager assetManager = getActivity().getAssets();
         InputStream in = null;
+        long length = 0;
+        String path="";
         OutputStream out = null;
         try {
             in = assetManager.open("finance.pdf");
             File outFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Formular de finantare.pdf");
             out = new FileOutputStream(outFile);
+            path = outFile.getAbsolutePath();
             byte[] buffer = new byte[1024];
             int read;
             while((read = in.read(buffer)) != -1){
+                Log.e("bla", String.valueOf(read));
                 out.write(buffer, 0, read);
+                length += read;
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -122,6 +130,11 @@ public class FinancingFragment extends Fragment{
                     // NOOP
                 }
             }
+
+            Log.e("bla", String.valueOf(length));
+            DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+
+            manager.addCompletedDownload("Formular de finantare.pdf", "LeroyMerlin", true, "application/pdf", path,length,true);
             new NotificationDialog(getActivity(),"Formularul de finantare a fost descarcat. Va rugam sa verificati directorul de descarcari .").show();
         }
     }

@@ -11,12 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -33,8 +33,6 @@ import com.cypien.leroy.activities.CommunityDashboard;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.PageLoaderCommunity;
 
-import java.util.Map;
-
 public class ViewCatalogFragment  extends Fragment {
 
     private View view;
@@ -46,22 +44,33 @@ public class ViewCatalogFragment  extends Fragment {
     private TextView urlLabel;
     private LinearLayout retry;
     private String urlLink = "";
+    private FragmentActivity mActivity;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.web_screen, container, false);
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         urlLink = bundle.getString("url", "");
-        ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(bundle.getString("title", "Catalog"));
-        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
-        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
+        ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText(bundle.getString("title", "Catalog"));
+        ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
+        ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
 
-        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
+
+        ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed();
+                ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText("Cataloage");
+                if(!bundle.getBoolean("fromList")) {
+                    ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
+                    ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
+                }
+                else{
+                    ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
+                    ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
+                }
+                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
@@ -90,10 +99,10 @@ public class ViewCatalogFragment  extends Fragment {
         clipboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("url",urlLink );
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(getActivity(), "Link copiat in clipboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, "Link copiat in clipboard", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -128,7 +137,7 @@ public class ViewCatalogFragment  extends Fragment {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if(Connections.isNetworkConnected(getActivity())){
+            if(Connections.isNetworkConnected(mActivity)){
                 noInternet.setVisibility(View.GONE);
                 if(url.contains("http://"))
                     urlLabel.setText(url.substring(url.indexOf("http://")+"http://".length()));
@@ -143,7 +152,7 @@ public class ViewCatalogFragment  extends Fragment {
                         view.loadUrl(url);
                         return false;
                     }
-                    new PageLoaderCommunity(((CommunityDashboard) getActivity()),view).execute(url);
+                    new PageLoaderCommunity(((CommunityDashboard) mActivity),view).execute(url);
                     return true;
                 }else {
                     view.loadUrl(url);
@@ -170,11 +179,11 @@ public class ViewCatalogFragment  extends Fragment {
 
     // verfica daca exista internet si incarca pagina
     private void loadPage(){
-        if(Connections.isNetworkConnected(getActivity())){
+        if(Connections.isNetworkConnected(mActivity)){
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
             mWebView.loadUrl(urlLink);
-         //   new PageLoaderCommunity(getActivity(), mWebView).execute(urlLink);
+         //   new PageLoaderCommunity(mActivity, mWebView).execute(urlLink);
         }else {
             noInternet.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
@@ -182,15 +191,10 @@ public class ViewCatalogFragment  extends Fragment {
     }
 
 
-    // adauga cookieurile site-ului pentru a fi folosite de catre webview
-    private void injectCookies() {
-        Map<String, String> cookies = ((CommunityDashboard) getActivity()).getCookies();
-        CookieSyncManager.createInstance(getActivity());
-        CookieManager cookieManager = CookieManager.getInstance();
-        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
-            String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
-            cookieManager.setCookie("www.facem-facem.ro", cookieString);
-            CookieSyncManager.getInstance().sync();
-        }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof FragmentActivity)
+            mActivity = (FragmentActivity) context;
     }
 }

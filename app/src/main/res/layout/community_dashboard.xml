@@ -25,11 +25,11 @@
             />
 
         <ImageView
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logo_circle"
+            android:src="@drawable/logo_ff"
             android:adjustViewBounds="true"/>
 
         <TextView

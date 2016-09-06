@@ -110,7 +110,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:tag="shop"
+            android:tag="shops"
             android:id="@+id/shop_button"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"

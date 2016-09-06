@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -91,17 +92,17 @@ public class ShopDashboard extends AppCompatActivity {
                         //goToFragment(new ShopHomeFragment());
                         break;
                     case "catalog":
-                        goToFragment(new CatalogFragment());
+                        goToFragment(new CatalogFragment(), "catalog");
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
-                    case "shop":
-                        goToFragment(new StoresFragment());
+                    case "shops":
+                        goToFragment(new StoresFragment(), "shops");
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "services":
-                        goToFragment(new ServicesFragment());
+                        goToFragment(new ServicesFragment(), "services");
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.services_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
@@ -114,7 +115,6 @@ public class ShopDashboard extends AppCompatActivity {
                             intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
                         }
                         startActivity(intent);
-                        finish();
                         break;
                 }
             }
@@ -131,7 +131,7 @@ public class ShopDashboard extends AppCompatActivity {
                 case "catalog":
                     ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_gray));
                     break;
-                case "shop":
+                case "shops":
                     ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_gray));
                     break;
                 case "services":
@@ -145,10 +145,11 @@ public class ShopDashboard extends AppCompatActivity {
         prevLayout = linearLayout;
     }
 
-    public void goToFragment (Fragment fragment) {
+    public void goToFragment (Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
+
+            ft.replace(R.id.content_frame, fragment).addToBackStack(tag);
             ft.commit();
         }
     }
@@ -194,7 +195,39 @@ public class ShopDashboard extends AppCompatActivity {
         return null;
     }
 
+    @Override
+    public void onBackPressed() {
 
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            getSupportFragmentManager().popBackStack();
+            if(getSupportFragmentManager().getBackStackEntryCount()-2>0) {
+                String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
+                LinearLayout button;
+                switch (name){
 
+                    case "catalog":
+                        button = catalog_button;
+                        break;
+                    case "shops":
+                        button = shop_button;
+                        break;
+                    case "services":
+                        button = services_button;
+                        break;
+                    default:
+                        button = home_button;
+
+                }
+
+                ((ImageView)button.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, getResources().getIdentifier(name+"_green","drawable", getPackageName())));
+                ((TextView)button.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                resolvePrevBtn(button);
+                Log.e("bla", name);
+            }
+        }
+        else
+            super.onBackPressed();
+
+    }
 
 }
