@@ -12,7 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +50,7 @@ public class CommunityDashboard extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
+    private CookieManager cookieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class CommunityDashboard extends AppCompatActivity {
 
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
         if(sp.getBoolean("isConnected",false)){
+          //  injectCookies();
             getUserInformation();
         }
 
@@ -85,6 +90,26 @@ public class CommunityDashboard extends AppCompatActivity {
         setOnClickAction(contests_button);
 
         prevLayout.callOnClick();
+    }
+
+    private void injectCookies() {
+        Map<String, String> cookies = MapUtil.stringToMap(sp.getString("endpointCookie", ""));
+        Log.e("endpointCookie", sp.getString("endpointCookie", "NUUUUUUUUUU"));
+        CookieSyncManager.createInstance(this);
+
+        String cookieString = "";
+        cookieManager = CookieManager.getInstance();
+        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
+
+            cookieString += cookie.getKey() + "=" + cookie.getValue() + "; ";
+            Log.e("cookieString", cookieString);
+
+
+        }
+        cookieString = "auth="+ cookies.get("value")+"; path=/; domain=www.facem-facem.ro";
+        Log.e("bla",  cookieString);
+    cookieManager.setCookie("www.facem-facem.ro", cookieString);
+    CookieSyncManager.getInstance().sync();
     }
 
     void setOnClickAction(final LinearLayout linearLayout) {
@@ -184,8 +209,11 @@ public class CommunityDashboard extends AppCompatActivity {
     //ia de pe server informatiile despre utilizator
     private void getUserInformation(){
         try {
-            JSONObject response = ((LeroyApplication)getApplication()). makeRequest("user_get",sp.getString("userid", ""));
+
+            JSONObject response = ((LeroyApplication)getApplication()). makeRequest("user_get",sp.getString("endpointCookie", ""), sp.getString("userid", ""));
+            //Log.e("response", response.toString());
             response = response.getJSONObject("result");
+
             spEditor = sp.edit();
             spEditor.putString("email", response.getString("email"));
             spEditor.putString("birthday", response.getString("birthday"));
@@ -264,6 +292,5 @@ public class CommunityDashboard extends AppCompatActivity {
         }
         return false;
     }
-
 
 }

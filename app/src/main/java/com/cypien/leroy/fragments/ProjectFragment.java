@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,7 +131,7 @@ public class ProjectFragment extends Fragment{
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeroyApplication.getInstance().makeRequest(type+"_like", sp.getString("userid", ""), project.getBlogid());
+                LeroyApplication.getInstance().makeRequest(type+"_like",sp.getString("endpointCookie", ""), sp.getString("userid", ""), project.getBlogid());
                 v.setVisibility(View.GONE);
                 rating.setText("" + (Integer.parseInt(rating.getText().toString()) + 1));
                 project.setLiked(true);
@@ -177,8 +179,13 @@ public class ProjectFragment extends Fragment{
             totalHeight += view.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = commentsList.getLayoutParams();
-        params.height = totalHeight + (commentsList.getDividerHeight() * (commAdapter.getCount()))+100;
+        params.height = totalHeight + (commentsList.getDividerHeight() * (commAdapter.getCount()))+dipToPixels(200);
         commentsList.setLayoutParams(params);
         commentsList.requestLayout();
+    }
+
+    public int dipToPixels( float dipValue) {
+        DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
 }

@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -109,6 +110,11 @@ public class AddProjectActivity extends AppCompatActivity {
 
         placeImages();
 
+        setFocus(findViewById(R.id.title_focus), title);
+        setFocus(findViewById(R.id.costs_focus), costs);
+        setFocus(findViewById(R.id.duration_focus), duration);
+        setFocus(findViewById(R.id.details_focus), details);
+
         title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -167,7 +173,8 @@ public class AddProjectActivity extends AppCompatActivity {
                             if (path3 != null)
                                 images.put("image3.jpg",encodeImageTobase64(path3));
                             jsn.put("images",images);
-                            jsn = makeRequest("project_create",sp.getString("userid",""), jsn.toString());
+                            jsn = makeRequest("project_create",sp.getString("endpointCookie", ""),sp.getString("userid",""), jsn.toString());
+                            Log.e("project", jsn.toString());
                             if (jsn!=null && jsn.getJSONObject("result").getString("username").equals(sp.getString("username",""))){
                                // new NotificationDialog(AddProjectActivity.this, "Proiectul dumneavoastră a fost adăugat cu succes!").show();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProjectActivity.this, R.style.AppCompatAlertDialogStyle);
@@ -185,6 +192,7 @@ public class AddProjectActivity extends AppCompatActivity {
 
                             }
                         } catch (Exception e) {
+                            Log.e("eroare", e.toString());
                             e.printStackTrace();
                         }
                     }
@@ -194,6 +202,14 @@ public class AddProjectActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void setFocus(View viewById, final View view) {
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.requestFocus();
+            }
+        });
     }
 
 
@@ -287,14 +303,15 @@ public class AddProjectActivity extends AppCompatActivity {
     public JSONObject makeRequest(String... params){
         JSONArray array = new JSONArray();
         try {
-            array.put(params[1]);
-            array.put(new JSONObject(params[2]));
+            array.put(params[2]);
+            array.put(new JSONObject(params[3]));
             JSONObject request = new JSONObject();
             request.put("method", params[0]);
             request.put("params",array);
-            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+LeroyApplication.getInstance().APIVersion, "q=" + URLEncoder.encode(request.toString())).get());
+            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+LeroyApplication.getInstance().APIVersion, params[1], "q=" + URLEncoder.encode(request.toString())).get());
 
         } catch (JSONException | InterruptedException | ExecutionException e) {
+            Log.e("eroare iar", e.toString());
             e.printStackTrace();
         }
 

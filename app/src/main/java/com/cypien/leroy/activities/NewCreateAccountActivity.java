@@ -3,7 +3,6 @@ package com.cypien.leroy.activities;/*
  */
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.text.Html;
 import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,19 +48,18 @@ public class NewCreateAccountActivity extends AppCompatActivity {
     private final String emailError = "<font color=\"#D50000\">Adresă de email invalidă</font>";
     private final String passwordError = "<font color=\"#D50000\">Parolele nu sunt identice</font>";
     private final String inexistentPassword = "<font color=\"#D50000\">Completați parola</font>";
-    private final String codeError = "<font color=\"#D50000\">Codul trebuie să conțină 17 cifre</font>";
     private final String cityError = "<font color=\"#D50000\">Completați localitatea</font>";
     private final String usernameTaken = "<font color=\"#D50000\">Acest nume de utilizator este deja utilizat</font>";
     private final String emailTaken = "<font color=\"#D50000\">Această adresă este deja utilizată</font>";
 
 
-    EditText lastName, firstName, city, email, confirmPassword, password, code, username, phone;
+    EditText lastName, firstName, city, email, confirmPassword, password, username, phone;
     com.rey.material.widget.Spinner county;
     com.rey.material.widget.CheckBox agreement;
     TextView rules;
     Button create;
     ImageView back;
-    boolean[] errors = new boolean[9];
+    boolean[] errors = new boolean[8];
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
     private boolean ok;
@@ -70,7 +67,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
     private String lastEmail = "";
     private String lastPassword = "";
     private String lastConfirmPassword = "";
-    private String lastCode = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +80,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         password = (EditText) findViewById(R.id.password);
-        code = (EditText) findViewById(R.id.code);
+
         username = (EditText) findViewById(R.id.username);
         phone = (EditText) findViewById(R.id.phone);
 
@@ -100,6 +97,15 @@ public class NewCreateAccountActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
 
         county.setAdapter(adapter);
+
+        setFocus(findViewById(R.id.first_name_focus), firstName);
+        setFocus(findViewById(R.id.last_name_focus), lastName);
+        setFocus(findViewById(R.id.email_focus), email);
+        setFocus(findViewById(R.id.phone_focus), phone);
+        setFocus(findViewById(R.id.username_focus), username);
+        setFocus(findViewById(R.id.password_focus), password);
+        setFocus(findViewById(R.id.confirm_password_focus), confirmPassword);
+        setFocus(findViewById(R.id.city), city);
 
         firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -192,23 +198,12 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                 }
             }
         });
-        code.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+        city.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (errors[7] && hasFocus) {
                     errors[7] = false;
-                    if(!lastCode.equals(Jsoup.parse(codeError).text()))
-                    code.setText(lastCode);
-                    else
-                        code.setText("");
-                }
-            }
-        });
-        city.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (errors[8] && hasFocus) {
-                    errors[8] = false;
                     city.setText("");
                 }
             }
@@ -248,7 +243,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                 lastEmail = email.getText().toString();
                 lastPassword = password.getText().toString();
                 lastConfirmPassword = confirmPassword.getText().toString();
-                lastCode = code.getText().toString();
+
                 ok = true;
                 if (firstName.getText().toString().equals("")) {
                     firstName.setText(Html.fromHtml(firstNameError));
@@ -304,14 +299,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                     ok = false;
 
                 }
-                pattern = Pattern.compile("\\d{17}");
-                matcher = pattern.matcher(lastCode);
-                if (!matcher.matches() && !lastCode.equals("")) {
-                    code.setText(Html.fromHtml(codeError));
-                    ok = false;
-                    errors[7] = true;
 
-                }
                 if (city.getText().toString().equals("")) {
                     city.setText(Html.fromHtml(cityError));
                     ok = false;
@@ -344,7 +332,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                                     "&userfield[field6]=" + lastName.getText().toString() +
                                     "&userfield[field9]=" + "l" +
                                     "&userfield[field10]=" + phone.getText().toString() +
-                                    "&userfield[field11]=" + code.getText().toString() +
+                                    "&userfield[field11]=" + "" +
                                     "&userfield[field12]=" + (county.getSelectedItemPosition() + 1) +
                                     "&userfield[field13]=" + city.getText().toString() +
                                     "&dst=" + "1" +
@@ -398,19 +386,16 @@ public class NewCreateAccountActivity extends AppCompatActivity {
         });
     }
 
-
-    private void showRulesPopup() {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.rules_dialog);
-        dialog.findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
+    private void setFocus(View viewById, final View view) {
+        viewById.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                view.requestFocus();
             }
         });
-        dialog.show();
     }
+
+
 
     private boolean init() {
         String result = "";

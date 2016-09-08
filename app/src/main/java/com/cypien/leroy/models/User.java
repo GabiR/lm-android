@@ -20,8 +20,8 @@ public class User implements Serializable{
     private transient Bitmap avatar;
     private String avatarBase;
 
-    public User (String userid){
-        JSONObject jsn = LeroyApplication.getInstance().makeRequest("user_get",userid);
+    public User (String userid, String ssh){
+        JSONObject jsn = LeroyApplication.getInstance().makeRequest("user_get",ssh, userid);
         try {
             jsn = jsn.getJSONObject("result");
             this.userName = jsn.getString("username");

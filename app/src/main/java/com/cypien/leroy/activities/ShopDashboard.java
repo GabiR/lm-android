@@ -21,16 +21,9 @@ import com.cypien.leroy.fragments.CatalogFragment;
 import com.cypien.leroy.fragments.ServicesFragment;
 import com.cypien.leroy.fragments.StoresFragment;
 import com.cypien.leroy.models.Service;
-import com.cypien.leroy.utils.WebServiceConnector;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by GabiRotaru on 31/07/16.
@@ -180,7 +173,7 @@ public class ShopDashboard extends AppCompatActivity {
         htmlStack=new Stack<>();
     }
 
-    public JSONObject makeRequest(String... params){
+    /*public JSONObject makeRequest(String... params){
         JSONArray array = new JSONArray();
         try {
             JSONObject request = new JSONObject();
@@ -193,7 +186,7 @@ public class ShopDashboard extends AppCompatActivity {
         }
 
         return null;
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

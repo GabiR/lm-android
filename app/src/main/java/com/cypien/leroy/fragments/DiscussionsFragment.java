@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,6 +186,7 @@ public class DiscussionsFragment extends Fragment {
         CookieManager cookieManager = CookieManager.getInstance();
         for (Map.Entry<String, String> cookie : cookies.entrySet()) {
             String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
+            Log.e("cookieString", cookieString);
             cookieManager.setCookie("www.facem-facem.ro", cookieString);
             CookieSyncManager.getInstance().sync();
         }

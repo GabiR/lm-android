@@ -132,6 +132,7 @@
 
                 <TextView
 
+                    android:id="@+id/last_name_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
@@ -176,6 +177,7 @@
 
                 <TextView
 
+                    android:id="@+id/first_name_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
@@ -222,6 +224,7 @@
 
                 <TextView
 
+                    android:id="@+id/phone_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
@@ -266,6 +269,7 @@
 
                 <TextView
 
+                    android:id="@+id/email_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
@@ -310,6 +314,7 @@
 
                 <TextView
 
+                    android:id="@+id/password_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
@@ -354,6 +359,7 @@
 
                 <TextView
 
+                    android:id="@+id/confirm_password_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
@@ -445,6 +451,7 @@
 
                 <TextView
 
+                    android:id="@+id/city_focus"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"

@@ -21,21 +21,18 @@ public class Comment {
     private boolean liked;
     private String type;
 
-    public Comment fromJson(JSONObject jsn) {
+    public Comment fromJson(JSONObject jsn, String ssh) {
         try {
             if(type.equals("project")){
                 this.blogtextid = jsn.getString("blogtextid");
                 this.bloguserid = jsn.getString("bloguserid");
                 this.rating = ""+jsn.getInt("likenum");
-                if(jsn.getInt("isliked")==0){
-                    liked=false;
-                }else
-                    liked = true;
+                liked = jsn.getInt("isliked") != 0;
             }else{
                 this.blogtextid = jsn.getString("postid");
             }
             this.userid= jsn.getString("userid");
-            this.user= new User(jsn.getString("userid"));
+            this.user= new User(jsn.getString("userid"), ssh);
             Date dt = new Date(Long.parseLong(jsn.getString("dateline")+"000"));
             SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             this.date = df.format(dt);

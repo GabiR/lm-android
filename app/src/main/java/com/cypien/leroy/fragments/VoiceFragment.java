@@ -1,11 +1,11 @@
 package com.cypien.leroy.fragments;
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Base64OutputStream;
 import android.view.LayoutInflater;
@@ -22,12 +22,10 @@ import android.widget.TextView;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.utils.NotificationDialog;
-import com.cypien.leroy.utils.WebServiceConnector;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,9 +35,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Alex on 9/10/2015.
@@ -166,7 +161,7 @@ public class VoiceFragment extends Fragment {
                         jsn.put("email_from_name", firstname + " " + lastname);
                         jsn.put("email_attachment", fileToBase64(filePath));
                         jsn.put("email_attachment_name", new File(filePath).getName());
-                        jsn = makeRequest("email_send", jsn.toString());
+                        jsn = LeroyApplication.getInstance().makePublicRequest("email_send", jsn.toString());
                         if (jsn!=null && jsn.getString("result").equals("null")){
                             new NotificationDialog(getActivity(), "Mesajul dumneavoastră a fost expediat cu succes !").show();
                             getFragmentManager().popBackStack();
@@ -199,21 +194,7 @@ public class VoiceFragment extends Fragment {
         }
     }
 
-    public JSONObject makeRequest(String... params){
-        ArrayList<JSONObject> parameters = new ArrayList<>();
-        try {
-            for(int i = 1;i<params.length;i++){
-                parameters.add(new JSONObject(params[i]) );
-            }
-            JSONObject request = new JSONObject();
-            request.put("method", params[0]);
-            request.put("params",new JSONArray(parameters));
-            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+ LeroyApplication.getInstance().APIVersion, "q=" + URLEncoder.encode(request.toString())).get());
-        } catch (JSONException | InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 
     private String fileToBase64(String filePath){
         InputStream inputStream = null;

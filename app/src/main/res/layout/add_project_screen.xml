@@ -103,7 +103,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-
+                        android:id="@+id/title_focus"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
@@ -147,7 +147,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-
+                        android:id="@+id/costs_focus"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
@@ -191,6 +191,7 @@
 
                     <TextView
 
+                        android:id="@+id/duration_focus"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"
@@ -303,6 +304,7 @@
 
                     <TextView
 
+                        android:id="@+id/details_focus"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.7"

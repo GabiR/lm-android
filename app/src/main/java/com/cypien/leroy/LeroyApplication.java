@@ -3,6 +3,7 @@ package com.cypien.leroy;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.cypien.leroy.utils.WebServiceConnector;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -35,7 +36,8 @@ public class LeroyApplication extends Application{
     private static DiskCache diskCache;
     public static final float BYTES_IN_MB = 1024.0f * 1024.0f;
 
-    public final String APIVersion="v1";
+   // public final String APIVersion="v1";
+    public final String APIVersion="v2";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,12 +69,30 @@ public class LeroyApplication extends Application{
 
     public JSONObject makeRequest(String... params){
         ArrayList<String> parameters = new ArrayList<>();
+        parameters.addAll(Arrays.asList(params).subList(2, params.length));
+        JSONObject request = new JSONObject();
+        Log.e("count", "accese privateEndpoint");
+        try {
+            request.put("method", params[0]);
+            request.put("params",new JSONArray(parameters));
+            Log.e("request", request.toString());
+            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+APIVersion,params[1],  "q=" + request.toString()).get());
+        } catch (JSONException | InterruptedException | ExecutionException e) {
+            Log.e("eroare app", e.toString());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public JSONObject makePublicRequest(String... params){
+        ArrayList<String> parameters = new ArrayList<>();
         parameters.addAll(Arrays.asList(params).subList(1, params.length));
         JSONObject request = new JSONObject();
         try {
             request.put("method", params[0]);
             request.put("params",new JSONArray(parameters));
-            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+APIVersion, "q=" + request.toString()).get());
+
+            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/publicEndpoint/"+APIVersion, "q=" + request.toString()).get());
         } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

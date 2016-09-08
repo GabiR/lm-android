@@ -17,6 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -350,10 +352,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void facebookConnect(){
         try {
-            String answer= LeroyApplication.getInstance().makeRequest("user_get_id_by_fbid",fbId).getString("result");
+            String answer= LeroyApplication.getInstance().makePublicRequest("user_get_id_by_fbid",fbId).getString("result");
             if(answer.equals("false")){
                 if (init()) {
-                    // adugam utilizator nou
+                    // adaugam utilizator nou
                     String link = "http://facem-facem.ro/api.php";
                     String parameters = "api_m=" + "register_addmember" +
                             "&agree=" + 1 +
@@ -378,16 +380,24 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         new WebServiceConnector().execute(link, parameters).get(5, TimeUnit.SECONDS);
                         login(fbName,fbId);
-                        LeroyApplication.getInstance().makeRequest("user_update_fbdata", sp.getString("userid", ""), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
+                        LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", sp.getString("userid", ""), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
                     } catch (Exception e) {
+                        Log.e("eroare", e.toString());
                         e.printStackTrace();
                     }
                 }
             }else{
-                LeroyApplication.getInstance().makeRequest("user_update_fbdata",answer,fbId,fbName,Encrypt.getMD5UTFEncryptedPass(fbId),fbAccessToken);
-                JSONObject response = LeroyApplication.getInstance().makeRequest("user_get",answer);
-                response = response.getJSONObject("result");
-                login(response.getString("username"),fbId);
+
+                JSONObject jsonObject = new JSONObject(answer);
+                Log.e("json", jsonObject.getString("userid"));
+
+                LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId,fbName,Encrypt.getMD5UTFEncryptedPass(fbId),fbAccessToken);
+                injectCookies();
+                //JSONObject response = LeroyApplication.getInstance().makeRequest("user_get",answer);
+
+             //   response = response.getJSONObject("result");
+              //  Log.e("response", response.toString());
+                login(fbName,fbId);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -499,6 +509,20 @@ public class LoginActivity extends AppCompatActivity {
                     spEditor.putString("userid", response.getJSONObject("session").getString("userid"));
                     spEditor.putString("sessionhash",response.getJSONObject("session").getString("dbsessionhash"));
                     spEditor.putBoolean("isConnected", true);
+
+
+
+                   /* Map<String, String> endpointCookie = new HashMap<>();
+                    endpointCookie.put("name", "auth");
+                    endpointCookie.put("domain", "www.facem-facem.ro");
+                    endpointCookie.put("path", "/");
+                    endpointCookie.put("value",response.getJSONObject("session").getString("dbsessionhash"));*/
+                    spEditor.putString("endpointCookie",response.getJSONObject("session").getString("dbsessionhash"));
+
+
+
+
+
                     try {
                         Map<String,String> cookeis = new GetCookies().execute(username, password).get();
                         if(cookeis!=null){
@@ -518,7 +542,7 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }else{
-            new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Vă redirecţionăm spre secţiunea informaţii magazine.").show();
+            Toast.makeText(this,"Ne cerem scuze, dar platforma nu funcționează. Vă redirecţionăm spre secţiunea informaţii magazine.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(LoginActivity.this, ShopDashboard.class);
             startActivity(intent);
             finish();
@@ -619,7 +643,19 @@ public class LoginActivity extends AppCompatActivity {
             super.onBackPressed();
     }
 
+    private void injectCookies() {
+        Map<String, String> cookies = MapUtil.stringToMap(sp.getString("endpointCookie", ""));
+        Log.e("endpointCookie", sp.getString("endpointCookie", "NUUUUUUUUUU"));
+        CookieSyncManager.createInstance(this);
 
+        CookieManager cookieManager = CookieManager.getInstance();
+        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
+            String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
+            Log.e("cookieString", cookieString);
+            cookieManager.setCookie("www.facem-facem.ro", cookieString);
+            CookieSyncManager.getInstance().sync();
+        }
+    }
 
 
 }

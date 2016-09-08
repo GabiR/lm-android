@@ -23,11 +23,9 @@ import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.NotificationDialog;
-import com.cypien.leroy.utils.WebServiceConnector;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.rey.material.widget.Spinner;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,9 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -190,7 +185,7 @@ public class VoiceActivity extends AppCompatActivity {
                         jsn.put("email_from_name", firstName.getText().toString()+ " " + lastName.getText().toString());
                         jsn.put("email_attachment", fileToBase64(filePath));
                         jsn.put("email_attachment_name", new File(filePath).getName());
-                        jsn = makeRequest("email_send", jsn.toString());
+                        jsn = LeroyApplication.getInstance().makePublicRequest("email_send", jsn.toString());
                         if (jsn != null && jsn.getString("result").equals("null")) {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(VoiceActivity.this, R.style.AppCompatAlertDialogStyle);
@@ -237,7 +232,7 @@ public class VoiceActivity extends AppCompatActivity {
                 break;
         }
     }
-    public JSONObject makeRequest(String... params){
+    /*public JSONObject makeRequest(String... params){
         ArrayList<JSONObject> parameters = new ArrayList<>();
         try {
             for(int i = 1;i<params.length;i++){
@@ -251,7 +246,7 @@ public class VoiceActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     private String fileToBase64(String filePath){
         InputStream inputStream = null;

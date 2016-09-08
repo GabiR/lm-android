@@ -105,6 +105,13 @@ public class EditAccountActivity extends AppCompatActivity {
 
         county.setAdapter(adapter);
 
+        setFocus(findViewById(R.id.first_name_focus), firstName);
+        setFocus(findViewById(R.id.last_name_focus), lastName);
+        setFocus(findViewById(R.id.phone_focus),phone);
+        setFocus(findViewById(R.id.email_focus), email);
+        setFocus(findViewById(R.id.password_focus), password);
+        setFocus(findViewById(R.id.confirm_password_focus), confirmPassword);
+        setFocus(findViewById(R.id.city_focus), city);
         firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -306,6 +313,15 @@ public class EditAccountActivity extends AppCompatActivity {
         initData();
     }
 
+    private void setFocus(View viewById, final View view) {
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.requestFocus();
+            }
+        });
+    }
+
 
     private void initData() {
 
@@ -379,7 +395,7 @@ public class EditAccountActivity extends AppCompatActivity {
     //ia de pe server informatiile despre utilizator
     private void getUserInformation(){
         try {
-            JSONObject response = LeroyApplication.getInstance().makeRequest("user_get", sp.getString("userid", ""));
+            JSONObject response = LeroyApplication.getInstance().makeRequest("user_get",sp.getString("endpointCookie", ""), sp.getString("userid", ""));
             response = response.getJSONObject("result");
             spEditor = sp.edit();
             spEditor.putString("email", response.getString("email"));

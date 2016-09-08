@@ -156,7 +156,7 @@ public class DashboardFragment extends Fragment{
 
     private Project getLastProject(){
         Project project = new Project();
-        JSONObject response = LeroyApplication.getInstance().makeRequest("project_get_combined",sp.getString("userid",""),"0","1");
+        JSONObject response = LeroyApplication.getInstance().makeRequest("project_get_combined",sp.getString("endpointCookie", ""),sp.getString("userid",""),"0","1");
         try {
             JSONArray resultArray = response.getJSONArray("result");
             project.fromJson(resultArray.getJSONObject(0));

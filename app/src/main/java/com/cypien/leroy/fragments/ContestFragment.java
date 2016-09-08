@@ -167,7 +167,7 @@ public class ContestFragment extends Fragment {
         if(Connections.isNetworkConnected(getActivity())){
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
-            new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/sfaturi.php");
+            new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/competitions.php");
         }else {
             noInternet.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
