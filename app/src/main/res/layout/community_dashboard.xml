@@ -25,11 +25,11 @@
             />
 
         <ImageView
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logo_circle"
+            android:src="@drawable/logo_ff"
             android:adjustViewBounds="true"/>
 
         <TextView
@@ -42,7 +42,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"/>
 
-        <ImageView
+     <!--   <ImageView
             android:id="@+id/logout"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
@@ -51,7 +51,34 @@
             android:layout_height="50dp"
             android:layout_gravity="right"
             android:src="@drawable/logout_icon"
-            android:onClick="logoutClicked"/>
+            android:onClick="logoutClicked"/>-->
+      <RelativeLayout
+          android:id="@+id/logout"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:onClick="logoutClicked"
+          android:layout_gravity="right"
+          android:paddingTop="5dp"
+          android:paddingRight="16dp"
+          android:paddingBottom="5dp"
+          android:clickable="true">
+          <ImageView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/logout"
+              android:layout_above="@+id/text"
+              />
+          <TextView
+              android:id="@+id/text"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:textColor="@color/white"
+              android:text="Logout"
+              android:lines="1"
+              android:gravity="center"
+              android:textSize="10sp"/>
+      </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

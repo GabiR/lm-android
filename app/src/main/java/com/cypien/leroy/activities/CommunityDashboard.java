@@ -12,7 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +50,7 @@ public class CommunityDashboard extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
+    private CookieManager cookieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class CommunityDashboard extends AppCompatActivity {
 
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
         if(sp.getBoolean("isConnected",false)){
+          //  injectCookies();
             getUserInformation();
         }
 
@@ -87,11 +92,32 @@ public class CommunityDashboard extends AppCompatActivity {
         prevLayout.callOnClick();
     }
 
+    private void injectCookies() {
+        Map<String, String> cookies = MapUtil.stringToMap(sp.getString("endpointCookie", ""));
+        Log.e("endpointCookie", sp.getString("endpointCookie", "NUUUUUUUUUU"));
+        CookieSyncManager.createInstance(this);
+
+        String cookieString = "";
+        cookieManager = CookieManager.getInstance();
+        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
+
+            cookieString += cookie.getKey() + "=" + cookie.getValue() + "; ";
+            Log.e("cookieString", cookieString);
+
+
+        }
+        cookieString = "auth="+ cookies.get("value")+"; path=/; domain=www.facem-facem.ro";
+        Log.e("bla",  cookieString);
+    cookieManager.setCookie("www.facem-facem.ro", cookieString);
+    CookieSyncManager.getInstance().sync();
+    }
+
     void setOnClickAction(final LinearLayout linearLayout) {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(! linearLayout.getTag().toString().equals("community")) resolvePrevBtn(linearLayout);
+                if(! linearLayout.getTag().toString().equals("shop"))
+                    resolvePrevBtn(linearLayout);
                 switch(linearLayout.getTag().toString()) {
                     case "home":
                         goToFragment(new CommunityHome());
@@ -116,7 +142,7 @@ public class CommunityDashboard extends AppCompatActivity {
                     case "shop":
                         Intent intent = new Intent(CommunityDashboard.this, ShopDashboard.class);
                         startActivity(intent);
-                        finish();
+
                         break;
                 }
             }
@@ -184,8 +210,11 @@ public class CommunityDashboard extends AppCompatActivity {
     //ia de pe server informatiile despre utilizator
     private void getUserInformation(){
         try {
-            JSONObject response = ((LeroyApplication)getApplication()). makeRequest("user_get",sp.getString("userid", ""));
+
+            JSONObject response = ((LeroyApplication)getApplication()). makeRequest("user_get",sp.getString("endpointCookie", ""), sp.getString("userid", ""));
+            //Log.e("response", response.toString());
             response = response.getJSONObject("result");
+
             spEditor = sp.edit();
             spEditor.putString("email", response.getString("email"));
             spEditor.putString("birthday", response.getString("birthday"));
@@ -247,8 +276,9 @@ public class CommunityDashboard extends AppCompatActivity {
     //controleaza apasarea butoanelor de back
     private boolean goBack(){
         if(currentWebview!=null) {
-            if (currentWebview.canGoBack()&&htmlStack.size()>0) {
+           /* if (currentWebview.canGoBack()&&htmlStack.size()>0) {
                 if(currentWebview.copyBackForwardList().getCurrentIndex()==1){
+
                     currentWebview.loadDataWithBaseURL(null, htmlStack.pop(), "text/html", "UTF-8", null);
                     currentWebview.clearHistory();
                 }else {
@@ -260,10 +290,13 @@ public class CommunityDashboard extends AppCompatActivity {
                 htmlStack.pop();
                 currentWebview.loadDataWithBaseURL(null, htmlStack.lastElement(), "text/html", "UTF-8", null);
                 return true;
+            }*/
+            if(currentWebview.canGoBack()) {
+                currentWebview.goBack();
+                return true;
             }
         }
         return false;
     }
-
 
 }

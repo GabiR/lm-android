@@ -1,5 +1,6 @@
 package com.cypien.leroy.adapters;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
  */
 public class ImagesAdapter extends PagerAdapter {
 
+    private final SharedPreferences sp;
     private ArrayList<Bitmap> images;
     private Context context;
     private String  type;
@@ -29,6 +31,7 @@ public class ImagesAdapter extends PagerAdapter {
         this.type=type;
         this.context=context;
         images = new ArrayList<>();
+        sp = context.getSharedPreferences("com.cypien.leroy_preferences", context.MODE_PRIVATE);
         Type myObjectType = new TypeToken<Integer>(){}.getType();
         Integer nrImages = (Integer)LeroyApplication.getCacheManager().get("images_nr"+projectId, Integer.class, myObjectType);
         myObjectType = new TypeToken<String>(){}.getType();
@@ -67,7 +70,7 @@ public class ImagesAdapter extends PagerAdapter {
 
     private void getImages(String projectId){
         try {
-            JSONObject response = LeroyApplication.getInstance().makeRequest(type+"_get_images",projectId);
+            JSONObject response = LeroyApplication.getInstance().makeRequest(type+"_get_images",sp.getString("endpointCookie", ""), sp.getString("userid", ""), projectId);
             JSONArray resultArray = response.getJSONArray("result");
             for(int i=0;i<resultArray.length();i++){
                 String imageBase=resultArray.getString(i);

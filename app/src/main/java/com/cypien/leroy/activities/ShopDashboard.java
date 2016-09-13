@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -18,23 +19,17 @@ import android.widget.TextView;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.CatalogFragment;
 import com.cypien.leroy.fragments.ServicesFragment;
+import com.cypien.leroy.fragments.ShopHomeFragment;
 import com.cypien.leroy.fragments.StoresFragment;
 import com.cypien.leroy.models.Service;
-import com.cypien.leroy.utils.WebServiceConnector;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by GabiRotaru on 31/07/16.
  */
-public class ShopDashboard extends AppCompatActivity {
+public class ShopDashboard extends AppCompatActivity  {
 
     LinearLayout home_button, catalog_button, shop_button, services_button, community_button;
     LinearLayout prevLayout;
@@ -88,20 +83,20 @@ public class ShopDashboard extends AppCompatActivity {
                         //TODO
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        //goToFragment(new ShopHomeFragment());
+                        goToFragment(new ShopHomeFragment(), "home");
                         break;
                     case "catalog":
-                        goToFragment(new CatalogFragment());
+                        goToFragment(new CatalogFragment(), "catalog");
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
-                    case "shop":
-                        goToFragment(new StoresFragment());
+                    case "shops":
+                        goToFragment(new StoresFragment(), "shops");
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "services":
-                        goToFragment(new ServicesFragment());
+                        goToFragment(new ServicesFragment(), "services");
                         ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.services_green));
                         ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
@@ -114,7 +109,6 @@ public class ShopDashboard extends AppCompatActivity {
                             intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
                         }
                         startActivity(intent);
-                        finish();
                         break;
                 }
             }
@@ -131,7 +125,7 @@ public class ShopDashboard extends AppCompatActivity {
                 case "catalog":
                     ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_gray));
                     break;
-                case "shop":
+                case "shops":
                     ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_gray));
                     break;
                 case "services":
@@ -145,10 +139,11 @@ public class ShopDashboard extends AppCompatActivity {
         prevLayout = linearLayout;
     }
 
-    public void goToFragment (Fragment fragment) {
+    public void goToFragment (Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
+
+            ft.replace(R.id.content_frame, fragment).addToBackStack(tag);
             ft.commit();
         }
     }
@@ -165,7 +160,7 @@ public class ShopDashboard extends AppCompatActivity {
         services.add(new Service("Lumea micilor bricoleuri",R.drawable.bricoleuri, R.drawable.bricoleuri_icon,"Locul de joaca pentru copii este valabil doar pentru magazinele &nbsp;LEROY MERLIN Colosseum si Alexandriei. Sub supravegherea colegilor nostri, copiii tai se pot juca si bricola in voie intr-un spatiu vesel dedicat lor.<strong> Locul de joaca pentru copii este un serviciu gratuit.</strong><br /><br /><strong>Locul de joaca este disponibil in magazinele LEROY MERLIN Colosseum si LEROY MERLIN Alexandriei. Programul locului de joaca este disponibil in magazine.</strong>"));
         services.add(new Service("Închiriere unelte",R.drawable.inchiriere, R.drawable.inchirieri_unelte_icon, "Atunci cand ai nevoie de unelte pentru realizarea lucrarilor tale, noi te ajutam cu cea mai buna oferta pentru inchiriat unelte: nu solicitam garantie si iti oferim preturi mici la inchiriere.<br/><br/>Pentru mai multe detalii despre inchirierea uneltelor te rugam sa ne suni la:"));
         services.add(new Service("Debitare lemn",R.drawable.debitare, R.drawable.debitare_lemn_icon, "Daca ai de taiat la dimensiune anumite produse din magazinele noastre te ajutam cu serviciul debitare lemn."));
-        services.add(new Service("Confecționare chei",R.drawable.chei, R.drawable.chei_icon, "Daca ai de realizat chei te asteptam cu serviciul nostru dedicat de Confectionare chei. Serviciul este disponibil doar la magazinul LEROY MERLIN Colosseum la chioscul din fata magazinului."));
+        services.add(new Service("Confecționare chei",R.drawable.chei, R.drawable.chei_icon, "Daca ai de realizat chei te asteptam cu serviciul nostru dedicat de Confectionare chei. Serviciul este disponibil doar la magazinul LEROY MERLIN Colosseum, Alexandriei si Ploiesti la chioscul de inchirieri unelte."));
         services.add(new Service("Mixare vopsea",R.drawable.vopsea, R.drawable.vopsea_icon, "Pentru ca tu sa te bucuri de culorile pe care ti le doresti, te ajutam cu mixarea vopselelor."));
         services.add(new Service("Retur marfă", R.drawable.retur, R.drawable.retur_icon, "Rapiditatea si conditiile flexibile de executie cu care se realizeaza returul fac din acesta un serviciu unic.<br /><br /> Puteti cumpara linistiti mai multe produse sau va puteti razgandi, noi acceptam produsele la retur in 90 de zile de la cumparare, insotite de bonul de casa. Cand veniti sa returnati produsele va rugam ca acestea sa fie in stare perfecta (nefolosite) si in ambalajul original. Mai multe detalii si in magazinele noastre."));
         services.add(new Service("Serviciul post-vânzare", R.drawable.post, R.drawable.post_vanzare_icon));
@@ -175,26 +170,56 @@ public class ShopDashboard extends AppCompatActivity {
 
     //metoda apelata din fragmentele ce contin webview pentru a sti care dintre webview-uri este afisat pe activitatea curenta
     public void setCurrentWebview(WebView webview){
-        currentWebview=webview;
-        htmlStack=new Stack<>();
+        currentWebview = webview;
+        htmlStack = new Stack<>();
     }
 
-    public JSONObject makeRequest(String... params){
-        JSONArray array = new JSONArray();
-        try {
-            JSONObject request = new JSONObject();
-            request.put("method", params[0]);
-            request.put("params",array);
-            return new JSONObject(new WebServiceConnector().execute("http://www.leroymerlin.ro/api/privateEndpoint/v1", "q=" + URLEncoder.encode(request.toString())).get());
 
-        } catch (JSONException | InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+    @Override
+    public void onBackPressed() {
+
+        if (getSupportFragmentManager().getBackStackEntryCount()>1) {
+            getSupportFragmentManager().popBackStack();
+            if(getSupportFragmentManager().getBackStackEntryCount()-2>=0) {
+                String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
+                LinearLayout button;
+                if(name!=null) {
+                    switch (name) {
+
+                        case "catalog":
+                            button = catalog_button;
+                            break;
+                        case "shops":
+                            button = shop_button;
+                            break;
+                        case "services":
+                            button = services_button;
+                            break;
+                        default:
+                            button = home_button;
+
+                    }
+                    resolvePrevBtn(button);
+                    ((ImageView) button.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, getResources().getIdentifier(name + "_green", "drawable", getPackageName())));
+                    ((TextView) button.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+                    Log.e("bla", name);
+                }
+            }
+        }
+        else {
+            if(getSupportFragmentManager().getBackStackEntryCount() == 1)
+                getSupportFragmentManager().popBackStack();
+            super.onBackPressed();
         }
 
-        return null;
     }
 
+    public void outClicked(View view) {
 
-
-
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("fromShop", true);
+        startActivity(intent);
+        finish();
+    }
 }

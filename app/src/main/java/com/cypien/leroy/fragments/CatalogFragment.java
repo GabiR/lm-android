@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -37,6 +36,7 @@ import com.cypien.leroy.utils.RecyclerItemClickListener;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.gson.reflect.TypeToken;
+import com.rey.material.widget.ProgressView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,9 +65,11 @@ public class CatalogFragment extends Fragment {
 
     AtomicInteger pendingRequests;
     View noInternet;
-    private LinearLayout retry;
+    private com.rey.material.widget.LinearLayout retry;
     private FragmentActivity mActivity;
+    ProgressView progressView;
 
+    private ProgressView progressLayout;
 
     @Nullable
     @Override
@@ -94,9 +96,12 @@ public class CatalogFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(mActivity);
      /*   String url = "https://api.publitas.com/v1/groups/leroymerlin/publications.json";*/
 
-
+        progressView = (ProgressView) view.findViewById(R.id.progress);
+        progressLayout = (ProgressView) view.findViewById(R.id.progress_layout);
         cataloage = new ArrayList<>();
-        retry = (LinearLayout) view.findViewById(R.id.retry);
+
+
+        retry = (com.rey.material.widget.LinearLayout) view.findViewById(R.id.retry);
 
         loadPage();
         retry.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +193,8 @@ public class CatalogFragment extends Fragment {
     }
 
     private void loadPage() {
+
+
         if(Connections.isNetworkConnected(mActivity)){
             noInternet.setVisibility(View.GONE);
             String url = "https://api.publitas.com/v1/groups/leroymerlin/publications.json";
@@ -258,8 +265,10 @@ public class CatalogFragment extends Fragment {
             if (nrCatalog != null) {
                 for (int i = 0; i < nrCatalog; i++) {
                     Catalog catalog = (Catalog) LeroyApplication.getCacheManager().get("catalog_" + i, Catalog.class, myObjectType);
-                    catalog.buildImage();
-                    cataloage.add(catalog);
+                    if(catalog!=null) {
+                        catalog.buildImage();
+                        cataloage.add(catalog);
+                    }
 
                 }
                 setUIelements();
@@ -354,7 +363,7 @@ public class CatalogFragment extends Fragment {
         }
         else {
             coperta_catalog.setImageBitmap(cataloage.get(0).getCover());
-
+            progressView.setVisibility(View.GONE);
 
         }
 
@@ -365,6 +374,8 @@ public class CatalogFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        progressLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(mActivity, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -374,6 +385,8 @@ public class CatalogFragment extends Fragment {
                     }
                 })
         );
+
+
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -401,8 +414,11 @@ public class CatalogFragment extends Fragment {
             LeroyApplication.getCacheManager().put("catalog_0", cataloage.get(0));
     //        LeroyApplication.getCacheManager().put("catalog_nr", 1);
             bmImage.setImageBitmap(result);
+            progressView.setVisibility(View.GONE);
         }
     }
+
+
 
     @Override
     public void onAttach(Context context) {

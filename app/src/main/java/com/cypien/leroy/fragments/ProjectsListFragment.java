@@ -19,6 +19,7 @@ import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.adapters.ProjectsAdapter;
 import com.cypien.leroy.models.Project;
+import com.cypien.leroy.utils.Connections;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.gson.reflect.TypeToken;
@@ -56,7 +57,8 @@ public class ProjectsListFragment extends Fragment {
         adapter = new ProjectsAdapter(getActivity());
         list.setAdapter(adapter);
 
-        Type myObjectType = new TypeToken<Integer>() {}.getType();
+        loadPage();
+       /* Type myObjectType = new TypeToken<Integer>() {}.getType();
         Integer nrProjects = (Integer) LeroyApplication.getCacheManager().get("projects_nr", Integer.class, myObjectType);
         myObjectType = new TypeToken<Project>() {
         }.getType();
@@ -67,7 +69,7 @@ public class ProjectsListFragment extends Fragment {
             }
         } else {
             getProjects(adapter.getCount());
-        }
+        }*/
 
         setListViewHeightBasedOnChildren(list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,9 +107,29 @@ public class ProjectsListFragment extends Fragment {
         return view;
     }
 
+    private void loadPage() {
+        if(Connections.isNetworkConnected(getActivity())){
+            getProjects(adapter.getCount());
+        }
+        else
+        {
+            Type myObjectType = new TypeToken<Integer>() {}.getType();
+            Integer nrProjects = (Integer) LeroyApplication.getCacheManager().get("projects_nr", Integer.class, myObjectType);
+            myObjectType = new TypeToken<Project>() {
+            }.getType();
+            if (nrProjects != null) {
+                for (int i = 0; i < nrProjects; i++) {
+                    Project project = (Project) LeroyApplication.getCacheManager().get("project_" + i, Project.class, myObjectType);
+                    adapter.add(project);
+                }
+            }
+        }
+    }
+
     private void getProjects(int a) {
         try {
-            JSONObject response = LeroyApplication.getInstance().makeRequest("project_get_combined", sp.getString("userid", ""), "" + a, "10");
+
+            JSONObject response = LeroyApplication.getInstance().makeRequest("project_get_combined", sp.getString("endpointCookie", ""), sp.getString("userid", ""), "" + a, "10");
             JSONArray resultArray = response.getJSONArray("result");
             if (resultArray.length() > 0) {
                 for (int i = 0; i < resultArray.length(); i++) {

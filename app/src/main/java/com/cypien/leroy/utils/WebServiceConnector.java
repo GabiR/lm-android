@@ -1,6 +1,8 @@
 package com.cypien.leroy.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -24,14 +26,23 @@ public class WebServiceConnector extends AsyncTask<String, Void, String> {
         try {
             url = new URL(info[0]);
             connection = (HttpURLConnection) url.openConnection();
+
             connection.setInstanceFollowRedirects(false);
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
+            if(info[0].contains("privateEndpoint")){
+                connection.setRequestProperty("Cookie",  "auth="+ info[1]+"; path=/; domain=www.facem-facem.ro");
+            }
             connection.setRequestMethod("POST");
             request = new OutputStreamWriter(connection.getOutputStream());
-            request.write(info[1]);
+            if(info[0].contains("privateEndpoint")) {
+                request.write(info[2]);
+            }
+            else
+                request.write(info[1]);
             request.flush();
             request.close();
+
             String line = "";
             isr = new InputStreamReader(connection.getInputStream());
             reader = new BufferedReader(isr);
@@ -45,6 +56,7 @@ public class WebServiceConnector extends AsyncTask<String, Void, String> {
                 }
             }
         } catch (Exception e) {
+            Log.e("eroare",e.toString());
             e.printStackTrace();
         }
         if(sb!= null && !sb.equals(""))

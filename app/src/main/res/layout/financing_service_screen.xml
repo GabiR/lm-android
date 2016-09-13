@@ -28,6 +28,25 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/simulator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green"
+                android:textSize="16sp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:text="Simuleaza un credit"
+                android:clickable="true"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:id="@+id/financing_details2"
+                android:textSize="16sp"
+                android:layout_marginTop="5dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -304,6 +323,26 @@
                     android:textColor="@color/green"
                     android:textSize="16sp"
                     android:text="0749131052"
+                    android:clickable="true"
+                    android:background="?android:selectableItemBackground"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="LEROY MERLIN Timisoara - "/>
+                <TextView
+                    android:id="@+id/phone15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/green"
+                    android:textSize="16sp"
+                    android:text="0751114647"
                     android:clickable="true"
                     android:background="?android:selectableItemBackground"/>
             </LinearLayout>

@@ -4,12 +4,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -29,8 +27,10 @@ import android.widget.Toast;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.CommunityDashboard;
 import com.cypien.leroy.utils.Connections;
-import com.cypien.leroy.utils.PageLoaderCommunity;
+import com.cypien.leroy.utils.MyWebViewClient;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -40,12 +40,14 @@ public class ContestFragment extends Fragment {
 
     private View view;
     private WebView mWebView;
-    private LinearLayout mWebViewContainer;
+    private RelativeLayout mWebViewContainer;
     private RelativeLayout noInternet;
     private ProgressBar progressBar;
     private ImageView share, clipboard;
     private TextView urlLabel;
     private LinearLayout retry;
+    private InputStream input;
+    private String encoded;
 
     @Nullable
     @Override
@@ -74,10 +76,24 @@ public class ContestFragment extends Fragment {
             }
         });
 
+
+        byte[] buffer = new byte[0];
+        try {
+            input = getActivity().getAssets().open("hideSections.js");
+            buffer = new byte[input.available()];
+            input.read(buffer);
+            input.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // String-ify the script byte-array using BASE64 encoding !!!
+        encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
         injectCookies();
 
         mWebView = (WebView) view.findViewById(R.id.web_view);
-        mWebViewContainer = (LinearLayout) view.findViewById(R.id.webViewContainer);
+        mWebViewContainer = (RelativeLayout) view.findViewById(R.id.webViewContainer);
 
         ((CommunityDashboard)getActivity()).setCurrentWebview(mWebView);
 
@@ -85,7 +101,7 @@ public class ContestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("url", "http://www.facem-facem.ro/competitions.php?active=45");
+                ClipData clip = ClipData.newPlainText("url", urlLabel.getText().toString());
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(getActivity(), "Link copiat in clipboard", Toast.LENGTH_LONG).show();
             }
@@ -96,7 +112,7 @@ public class ContestFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, "http://www.facem-facem.ro/competitions.php?active=45");
+                intent.putExtra(Intent.EXTRA_TEXT, urlLabel.getText().toString());
                 startActivity(Intent.createChooser(intent, "Distribuiţi cu"));
             }
         });
@@ -111,14 +127,14 @@ public class ContestFragment extends Fragment {
 
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.setWebViewClient(new MyWebViewClient(encoded, getActivity(), progressBar, noInternet, urlLabel));
 
         loadPage();
 
         return view;
     }
 
-    // controleaza comportamentul webview-ului la incarcarea paginilor
+  /*  // controleaza comportamentul webview-ului la incarcarea paginilor
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -152,6 +168,8 @@ public class ContestFragment extends Fragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            progressBar.setProgress(0);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -159,7 +177,7 @@ public class ContestFragment extends Fragment {
             super.onPageFinished(view, url);
             progressBar.setVisibility(View.GONE);
         }
-    }
+    }*/
 
 
     // verfica daca exista internet si incarca pagina
@@ -167,8 +185,10 @@ public class ContestFragment extends Fragment {
         if(Connections.isNetworkConnected(getActivity())){
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
-            new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/sfaturi.php");
-        }else {
+            mWebView.loadUrl("http://www.facem-facem.ro/competitions.php");
+
+           }
+        else {
             noInternet.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
         }

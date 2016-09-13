@@ -98,12 +98,14 @@ public class AddContestProjectActivity extends AppCompatActivity{
        adapter = new ArrayAdapter<>(AddContestProjectActivity.this, R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         getContests();
+        if(adapter.getCount()>0)
         contests.setAdapter(adapter);
    
         // controleaza disparitia erorilor
 
         placeImages();
-
+        setFocus(findViewById(R.id.title_focus), title);
+        setFocus(findViewById(R.id.details_focus), details);
         title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -113,6 +115,8 @@ public class AddContestProjectActivity extends AppCompatActivity{
                 }
             }
         });
+
+
         details.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -169,7 +173,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
                             if (path3 != null)
                                 images.put("image3.jpg", encodeImageTobase64(path3));
                             jsn.put("images", images);
-                            jsn = makeRequest("CMS_create", sp.getString("userid", ""), jsn.toString());
+                            jsn = makeRequest("CMS_create",sp.getString("endpointCookie", ""), sp.getString("userid", ""), jsn.toString());
                             if (jsn != null && jsn.getJSONObject("result").getString("userid").equals(sp.getString("userid", ""))) {
                                 //   new NotificationDialog(getActivity(), "Proiectul dumneavoastră a fost adăugat cu succes !").show();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddContestProjectActivity.this, R.style.AppCompatAlertDialogStyle);
@@ -197,6 +201,16 @@ public class AddContestProjectActivity extends AppCompatActivity{
         });
 
     }
+
+    private void setFocus(View viewById, final View view) {
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.requestFocus();
+            }
+        });
+    }
+
 
     // porneste activitate de preluare a imaginii
     private void getImage(ImageView image) {
@@ -280,12 +294,12 @@ public class AddContestProjectActivity extends AppCompatActivity{
     public JSONObject makeRequest(String... params){
         JSONArray array = new JSONArray();
         try {
-            array.put(params[1]);
+            array.put(params[2]);
             array.put(new JSONObject(params[2]));
             JSONObject request = new JSONObject();
             request.put("method", params[0]);
             request.put("params",array);
-            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+LeroyApplication.getInstance().APIVersion, "q=" + URLEncoder.encode(request.toString())).get());
+            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+LeroyApplication.getInstance().APIVersion, params[1], "q=" + URLEncoder.encode(request.toString())).get());
 
         } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -295,7 +309,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
     }
 
     private void getContests(){
-        JSONObject response = LeroyApplication.getInstance().makeRequest("CMS_get_contests");
+        JSONObject response = LeroyApplication.getInstance().makeRequest("CMS_get_contests", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
         try {
             JSONArray resultArray = response.getJSONArray("result");
             for(int i=0;i<resultArray.length();i++){
@@ -308,7 +322,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
             e.printStackTrace();
         }
         if (adapter.getCount()==0){
-            new NotificationDialog(AddContestProjectActivity.this, "Ne pare rău, dar momentan nu există niciun concurs în desfășurare!");
+            new NotificationDialog(AddContestProjectActivity.this, "Ne pare rău, dar momentan nu există niciun concurs în desfășurare!").show();
         }
 
     }

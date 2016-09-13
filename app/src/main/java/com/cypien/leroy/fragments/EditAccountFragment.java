@@ -324,7 +324,7 @@ public class EditAccountFragment extends Fragment{
     //ia de pe server informatiile despre utilizator
     private void getUserInformation(){
         try {
-            JSONObject response = LeroyApplication.getInstance().makeRequest("user_get", sp.getString("userid", ""));
+            JSONObject response = LeroyApplication.getInstance().makeRequest("user_get", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
             response = response.getJSONObject("result");
             spEditor = sp.edit();
             spEditor.putString("email", response.getString("email"));

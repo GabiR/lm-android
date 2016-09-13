@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.ProjectFragment;
 import com.cypien.leroy.models.Comment;
+import com.cypien.leroy.utils.Connections;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -38,6 +40,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
     private SharedPreferences sp;
     private boolean ok;
     private String blogId;
+    private Activity activity;
     private String type ;
     private FragmentManager fragmentManager;
 
@@ -45,18 +48,22 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         super(context, R.layout.comment_item);
         this.blogId=blogId;
         this.type=type;
+        this.activity = context;
         this.fragmentManager=fm;
         sp = context.getSharedPreferences("com.cypien.leroy_preferences", context.MODE_PRIVATE);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        Type myObjectType = new TypeToken<Integer>(){}.getType();
-        Integer nrComments = (Integer) LeroyApplication.getCacheManager().get("comments_nr"+blogId,Integer.class,myObjectType);
-        myObjectType = new TypeToken<Comment>(){}.getType();
-        if (nrComments != null){
-            for (int i=0;i<nrComments;i++){
-                Comment comment = (Comment) LeroyApplication.getCacheManager().get("comment"+blogId+i, Comment.class, myObjectType);
-                add(comment);
+        if(!Connections.isNetworkConnected(context)) {
+            Type myObjectType = new TypeToken<Integer>() {}.getType();
+            Integer nrComments = (Integer) LeroyApplication.getCacheManager().get("comments_nr" + blogId, Integer.class, myObjectType);
+            myObjectType = new TypeToken<Comment>() {
+            }.getType();
+            if (nrComments != null) {
+                for (int i = 0; i < nrComments; i++) {
+                    Comment comment = (Comment) LeroyApplication.getCacheManager().get("comment" + blogId + i, Comment.class, myObjectType);
+                    add(comment);
+                }
             }
-        } else {
+        }else {
             getComments();
         }
     }
@@ -115,7 +122,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeroyApplication.getInstance().makeRequest(type+"_like_comment", sp.getString("userid", ""), comment.getBlogtextid());
+                LeroyApplication.getInstance().makeRequest(type+"_like_comment",sp.getString("endpointCookie", ""), sp.getString("userid", ""), comment.getBlogtextid());
                 v.setVisibility(View.GONE);
                 comment.setLiked(true);
                 comment.setRating("" + (Integer.parseInt(comment.getRating()) + 1));
@@ -126,7 +133,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeroyApplication.getInstance().makeRequest(type + "_delete_comment", sp.getString("userid", ""), comment.getBlogtextid());
+                LeroyApplication.getInstance().makeRequest(type + "_delete_comment",sp.getString("endpointCookie", ""), sp.getString("userid", ""), comment.getBlogtextid());
                 LeroyApplication.getCacheManager().unset("comment" + blogId + position);
                 remove(getItem(position));
                 LeroyApplication.getCacheManager().put("comments_nr" + blogId, getCount());
@@ -145,6 +152,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
             holder.rating.setVisibility(View.GONE);
             holder.like.setVisibility(View.GONE);
         }
+        comment.getUser().buildImage();
         if(comment.getUser().getAvatar()==null){
             holder.avatar.setImageResource(R.drawable.unknown);
         }else
@@ -180,13 +188,20 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!Connections.isNetworkConnected(activity)){
+                    Toast.makeText(getContext(), "Vă rugăm să vă conectați la Internet pentru a putea comenta!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (comment.getText().toString().equals("")) {
 
                     Toast.makeText(getContext(), "Vă rugăm să completați cu comentariul dumneavoastră!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                    LeroyApplication.getInstance().makeRequest(type+"_add_comment",sp.getString("userid",""),blogId,comment.getText().toString());
+                    JSONObject jsn = LeroyApplication.getInstance().makeRequest(type+"_add_comment",sp.getString("endpointCookie", ""),sp.getString("userid",""),blogId,comment.getText().toString());
+
+                Log.e("jsn", jsn.toString());
                     getComments();
                     notifyDataSetChanged();
                     ((ProjectFragment)fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();
@@ -203,12 +218,12 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
     private void getComments(){
         try {
             clear();
-            JSONObject response = LeroyApplication.getInstance().makeRequest(type+"_get_comments",sp.getString("userid",""), blogId);
+            JSONObject response = LeroyApplication.getInstance().makeRequest(type+"_get_comments",sp.getString("endpointCookie", ""), sp.getString("userid",""), blogId);
             JSONArray resultArray = response.getJSONArray("result");
             for(int i=0;i<resultArray.length();i++){
                 Comment comment = new Comment();
                 comment.setType(type);
-                comment=comment.fromJson(resultArray.getJSONObject(i));
+                comment=comment.fromJson(resultArray.getJSONObject(i), sp.getString("endpointCookie", ""));
                 LeroyApplication.getCacheManager().put("comment" + blogId + i, comment);
                 add(comment);
                 LeroyApplication.getCacheManager().put("comments_nr"+blogId, getCount());

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -20,15 +21,31 @@
             android:paddingTop="22dp"
             android:paddingLeft="16dp"
             android:paddingBottom="8dp"
-            android:text="CATALOG IUNIE"
+            android:text="CATALOG ACTUAL"
             android:textSize="18sp"
             android:textColor="@color/unpressedblack"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <com.rey.material.widget.ProgressView
+            android:id="@+id/progress"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+          android:layout_gravity="center"
+            app:pv_autostart="true"
+            app:pv_circular="true"
+            app:pv_progressMode="indeterminate"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:pv_progressStyle="@style/MyCircularProgress"
+            />
         <ImageView
             android:id="@+id/coperta_catalog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"/>
+        </FrameLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,11 +55,26 @@
             android:text="CATALOAGE TEMATICE"
             android:textSize="18sp"
             android:textColor="@color/unpressedblack"/>
+
+            <com.rey.material.widget.ProgressView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:id="@+id/progress_layout"
+                app:pv_autostart="true"
+                app:pv_circular="true"
+                android:layout_gravity="center_horizontal"
+                app:pv_progressMode="indeterminate"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:pv_progressStyle="@style/MyCircularProgress"
+                />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:paddingLeft="16dp"/>
+            android:paddingLeft="16dp"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/seeAllOffers"
             android:layout_width="match_parent"

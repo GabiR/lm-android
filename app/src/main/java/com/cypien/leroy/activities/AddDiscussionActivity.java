@@ -66,6 +66,8 @@ public class AddDiscussionActivity extends AppCompatActivity{
                 }
             }
         });
+        setFocus(findViewById(R.id.title_focus), subject);
+
         findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +138,18 @@ public class AddDiscussionActivity extends AppCompatActivity{
                 }
             }
         });
+
+
     }
+    private void setFocus(View viewById, final View view) {
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.requestFocus();
+            }
+        });
+    }
+
 
     /* @Nullable
     @Override

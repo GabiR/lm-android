@@ -3,6 +3,7 @@ package com.cypien.leroy.fragments.services;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.PdfViewerFragment;
+import com.cypien.leroy.fragments.ViewPageFragment;
 import com.cypien.leroy.models.Service;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -53,12 +55,30 @@ public class DeliveryFragment extends Fragment {
 
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
 
+        TextView half_of_half = (TextView) view.findViewById(R.id.half_of_half);
+        half_of_half.setText(Html.fromHtml("Iti oferim avantajul unui tarif perceput in functie de zonele de livrare, precum si serviciul util de livrare expres, prin care iti livram marfa in aceeasi zi, in limita masinilor disponibile.<br/>"));
         first_half = (TextView) view.findViewById(R.id.first_half);
         second_half = (TextView) view.findViewById(R.id.second_half);
 
-        first_half.setText(Html.fromHtml("<font color=\"#000000\">Iti oferim avantajul unui tarif perceput in functie de zonele de livrare, precum si serviciul util de livrare expres, prin care iti livram marfa imediat.<br/><br/> Daca ai nevoie de transport rapid iti oferim serviciile de </font> <font color=\"#339966\"><b>Livrare expres* - livrare in aceeasi zi.</b></font> <font color=\"#000000\">Livrarile expres sunt realizate in intervale orare, contactandu-va telefonic in prealabil. In cazul in care nu sunt masini disponibile, livrarea va avea loc in ziua urmatoare, la acelasi pret.<br/><b>Programul livrarilor:</b><br/>Luni-Sambata: 08.00-20.00<br/>Duminica: 10.00-17.00 <br/><br/></font>"));
-        second_half.setText(Html.fromHtml("<br/><br/><font color=\"#339966\"><b>Livrare cu macara* </b></font> <font color=\"#000000\"><br/><b>Livram in 48 de ore**<br/> Livrarea se face cu un camion de 8 tone dotat cu macara. Daca se depaseste tonajul se mai plateste o livrare.<br />Programul livrarilor:<br /><br />Luni-Sambata: 08.00-20.00<br />Duminca: 10.00-17.00<br /><br /> <br/>* Livrarea inseamna transportul marfurilor de la magazin si descarcarea acestora din masina. Serviciul nu este disponibil la magazinul din Brasov.<br />** In limita masinilor disponibile<br />&nbsp;</strong></strong></p><strong><strong>Daca nu te grabesti poti alege serviciul <b>&quot;Livrare cu program prestabilit&quot;</b> ceea ce inseamna ca produsele de bricolaj cumparate vor ajunge la tine in functie de programul stabilit de comun acord cu magazinul.<br /><br /><br />Preturile difera in functie de zona unde doresti livrarea si de tipul serviciului de livrare ales. Pentru detalii complete despre livrare intreaba consultantii de vanzare din magazin sau citeste materialele informative din magazin dedicate serviciului <b>LEROY MERLIN </b>de livrare la domiciliu.</font>"));
+        TextView calculator = (TextView) view.findViewById(R.id.calculator);
+        first_half.setText(Html.fromHtml("<br/>Daca ai nevoie de transport rapid iti oferim serviciile de </font> <font color=\"#339966\"><b>Livrare expres* - livrare in aceeasi zi.</b></font> <font color=\"#000000\">Livrarile expres sunt realizate in intervale orare, contactandu-va telefonic in prealabil. In cazul in care nu sunt masini disponibile, livrarea va avea loc in ziua urmatoare, la acelasi pret.<br/><b>Programul livrarilor:</b><br/>Luni-Sambata: 08.00-20.00<br/>Duminica: 10.00-17.00 <br/><br/></font>"));
+        second_half.setText(Html.fromHtml("<br/><br/><font color=\"#339966\"><b>Livrare cu macara* </b></font> <font color=\"#000000\"><br/><b>Livram in 48 de ore**<br/> Livrarea se face cu un camion de 8 tone dotat cu macara. Daca se depaseste tonajul se mai plateste o livrare.<br />Programul livrarilor:<br /><br />Luni-Sambata: 08.00-20.00<br />Duminca: 10.00-17.00<br /><br /> <br/>* Livrarea inseamna transportul marfurilor de la magazin si descarcarea acestora din masina. Serviciul nu este disponibil la magazinele din Suceava, Iasi, Bacau, Targu Mures.<br />** In limita masinilor disponibile<br />&nbsp;</strong></strong></p><br/><strong><strong>Daca nu te grabesti poti alege serviciul <b>&quot;Livrare cu program prestabilit&quot;</b> ceea ce inseamna ca produsele de bricolaj cumparate vor ajunge la tine in functie de programul stabilit de comun acord cu magazinul.<br /><br /><br />Preturile difera in functie de zona unde doresti livrarea si de tipul serviciului de livrare ales. Pentru detalii complete despre livrare intreaba consultantii de vanzare din magazin sau citeste materialele informative din magazin dedicate serviciului <b>LEROY MERLIN </b>de livrare la domiciliu.</font>"));
 
+
+        calculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewPageFragment f = new ViewPageFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "Transport");
+                bundle.putString("url", "http://www.leroymerlin.ro/transport");
+                f.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
+            }
+        });
         bucharest_cost = (TextView) view.findViewById(R.id.bucharest_cost);
         cluj_cost = (TextView) view.findViewById(R.id.cluj_cost);
         craiova_cost = (TextView) view.findViewById(R.id.craiova_cost);

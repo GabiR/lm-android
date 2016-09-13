@@ -16,15 +16,18 @@
         android:gravity="center_horizontal"
         android:padding="16dp"
         android:textSize="18sp"/>
-    <LinearLayout
+    <com.rey.material.widget.LinearLayout
+        style="@style/MyRipple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
         android:padding="16dp"
         android:layout_below="@+id/txtMesaj"
         android:id="@+id/retry"
+
         >
         <ImageView
             android:layout_width="80dp"
@@ -34,15 +37,13 @@
             android:padding="5dp"/>
 
         <TextView
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            android:background="?android:attr/selectableItemBackground"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reincercare"
             android:textSize="18sp"
-            android:textColor="@color/lightGreen"/>
-    </LinearLayout>
+            android:textColor="@color/colorPrimary"/>
+    </com.rey.material.widget.LinearLayout>
+
 
 </RelativeLayout>

@@ -26,7 +26,7 @@
         android:id="@+id/shopInfoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/lightGreen"
+        android:textColor="@color/colorPrimary"
         android:text="Vezi informaţii\nmagazine"
         android:layout_marginBottom="30dp"
         android:layout_alignBottom="@+id/shopInfoBtn"
@@ -52,12 +52,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Salut! Intră în comunitatea noastră și găsește soluții la problemele întâlnite atunci când încerci sa-ți amenajezi sau înfrumusețezi locuința."
-        android:textColor="@color/lightGreen"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="60dp"
         android:paddingBottom="16dp"
         android:paddingLeft="60dp"
-        android:layout_alignParentBottom="true" />
+android:paddingTop="26dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/btnContact" />
 
     <TextView
         android:id="@+id/btnContact"
@@ -78,6 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
+        android:visibility="visible"
         android:layout_below="@id/skyImage"
         android:orientation="vertical">
 

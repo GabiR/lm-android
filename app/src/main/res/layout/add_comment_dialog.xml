@@ -40,6 +40,7 @@
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
+            android:inputType="textCapSentences|textMultiLine"
             android:lines="5"
             android:gravity="top"
             android:textColor="@color/unpressedblack"
@@ -47,6 +48,7 @@
             android:textColorHint="@color/light_grey"/>
 
         <TextView
+
             android:id="@+id/add_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

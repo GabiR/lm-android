@@ -55,15 +55,21 @@
             android:configChanges="orientation|screenSize">
         </activity>
 
+        <activity android:name=".activities.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".activities.VoiceActivity"/>
         <activity android:name=".activities.ViewAccountActivity"/>

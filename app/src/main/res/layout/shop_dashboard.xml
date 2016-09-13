@@ -37,6 +37,33 @@
             android:text="Leroy Merlin Romania"
             android:textColor="@color/white"
             android:textSize="18sp"/>
+        <RelativeLayout
+            android:id="@+id/out"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="outClicked"
+            android:layout_gravity="right"
+            android:paddingTop="5dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logout"
+                android:layout_above="@+id/text"
+                />
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"
+                android:text="Ieși"
+                android:lines="1"
+                android:gravity="center"
+                android:textSize="12sp"/>
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
 
@@ -81,6 +108,7 @@
                 android:layout_marginTop="@dimen/menu_button_text_padding"
                 android:textColor="@color/colorPrimary"
                 android:text="Home"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -110,7 +138,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:tag="shop"
+            android:tag="shops"
             android:id="@+id/shop_button"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"

@@ -30,8 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
-            <LinearLayout
+                android:textSize="16sp"
+                android:autoLink="phone|email"
+                android:textIsSelectable="true"/>
+            <!--<LinearLayout
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -312,7 +314,7 @@
                     android:clickable="true"
                     android:background="?android:selectableItemBackground"/>
             </LinearLayout>
-
+-->
 
         </LinearLayout>
     </ScrollView>

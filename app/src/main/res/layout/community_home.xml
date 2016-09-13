@@ -187,7 +187,7 @@
         android:orientation="horizontal">
         <RelativeLayout
             android:id="@+id/btnAddProject"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
             <ImageView
@@ -201,17 +201,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Proiect"
-                android:layout_alignParentTop="true"
-                android:layout_alignBottom="@id/back1"
-                android:layout_marginBottom="4dp"
+
+
                 android:textSize="16sp"
-                android:gravity="center"
-                android:layout_centerInParent="true"
+              android:layout_centerInParent="true"
+                android:paddingBottom="4dp"
                 android:textColor="@color/white"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/btnAddDiscussion"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="14dp">
@@ -227,16 +226,15 @@
                 android:layout_height="wrap_content"
                 android:text="Discuţie"
                 android:textSize="16sp"
-                android:layout_alignParentTop="true"
-                android:layout_alignBottom="@id/back2"
-                android:layout_marginBottom="4dp"
+
+                android:paddingBottom="4dp"
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/btnAddContest"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="14dp">
@@ -252,9 +250,8 @@
                 android:layout_height="wrap_content"
                 android:text="Proiect în\nconcurs"
                 android:gravity="center"
-                android:layout_alignParentTop="true"
-                android:layout_alignBottom="@id/back3"
-                android:layout_marginBottom="4dp"
+
+                android:paddingBottom="4dp"
                 android:lineSpacingMultiplier="0.8"
                 android:textSize="16sp"
                 android:layout_centerInParent="true"
