@@ -200,7 +200,7 @@
                         android:background="@null"
                         android:gravity="top"
                         android:imeOptions="actionNext"
-                        android:inputType="textMultiLine"
+                        android:inputType="textMultiLine|textCapSentences"
                         android:paddingEnd="8dp"
                         android:paddingLeft="16dp"
                         android:paddingTop="4dp"

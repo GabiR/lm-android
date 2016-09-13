@@ -37,7 +37,7 @@ public class ViewCatalogFragment  extends Fragment {
 
     private View view;
     private WebView mWebView;
-    private LinearLayout mWebViewContainer;
+    private RelativeLayout mWebViewContainer;
     private RelativeLayout noInternet;
     private ProgressBar progressBar;
     private ImageView share, clipboard;
@@ -93,7 +93,7 @@ public class ViewCatalogFragment  extends Fragment {
        // injectCookies();
 
         mWebView = (WebView) view.findViewById(R.id.web_view);
-        mWebViewContainer = (LinearLayout) view.findViewById(R.id.webViewContainer);
+        mWebViewContainer = (RelativeLayout) view.findViewById(R.id.webViewContainer);
 
 
         clipboard.setOnClickListener(new View.OnClickListener() {

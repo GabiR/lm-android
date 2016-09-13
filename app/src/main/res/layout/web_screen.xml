@@ -4,64 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
- <!--   <RelativeLayout
-        android:id="@+id/no_internet"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:gravity="center">
 
-        <TextView
-            android:id="@+id/txtMesaj"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Va rugam sa activati internetul pentru a putea vedea catalogul de oferte!"
-            android:textColor="@color/unpressedblack"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:textSize="18sp"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:padding="16dp"
-            android:layout_below="@+id/txtMesaj"
-            android:id="@+id/retry"
-            >
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/retry_icon"
-
-                android:padding="5dp"/>
-
-            <TextView
-                android:clickable="true"
-                android:focusableInTouchMode="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reincercare"
-                android:textSize="18sp"
-                android:textColor="@color/lightGreen"/>
-        </LinearLayout>
-
-    </RelativeLayout>-->
     <include layout="@layout/no_internet_layout"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/webViewContainer">
 
         <LinearLayout
+            android:id="@+id/urlBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_alignParentTop="true"
             android:background="@color/ligh_grey"
             android:weightSum="1">
             <TextView
@@ -104,13 +60,20 @@
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="5dp"
+            android:layout_below="@+id/urlBar"
+
             android:progressDrawable="@drawable/customprogressbar"/>
 
         <WebView
+            android:layout_below="@+id/progressBar"
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </LinearLayout>
+        <View android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@drawable/bottom_shadow"
+            android:layout_below="@+id/progressBar" />
+    </RelativeLayout>
 
 
 </LinearLayout>

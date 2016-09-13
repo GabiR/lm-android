@@ -482,7 +482,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary"
             android:text="Salvează"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
         </RelativeLayout>
     </ScrollView>

@@ -22,9 +22,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/first_half"
+                android:id="@+id/half_of_half"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/calculator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/delivery_service_green"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:text="Calculeaza rapid costul transportului pana la tine acasa"
+                android:paddingTop="4dp"
+                />
+            <TextView
+                android:id="@+id/first_half"
+                android:paddingTop="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_marginTop="7dp"
@@ -39,7 +56,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinele din Brasov, Sibiu, Cluj-Napoca, Constanta."
+                android:text="Afla aici costurile pentru magazinele din Brasov, Sibiu, Cluj-Napoca, Constanta, Suceava si Bacau"
                 android:textColor="@color/delivery_service_green"
                 android:textStyle="bold"/>
             <TextView
@@ -47,7 +64,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinul din Craiova."
+                android:text="Afla aici costurile pentru magazinul din Craiova, Timisoara"
                 android:textColor="@color/delivery_service_green"
                 android:textStyle="bold"/>
             <TextView

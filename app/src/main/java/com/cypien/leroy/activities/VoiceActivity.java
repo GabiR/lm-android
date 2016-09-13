@@ -1,6 +1,4 @@
-package com.cypien.leroy.activities;/*
- * Created by Alex on 02.09.2016.
- */
+package com.cypien.leroy.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +35,10 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/*
+ * Created by Alex on 02.09.2016.
+ */
 public class VoiceActivity extends AppCompatActivity {
     private final String subjectError = "<font color=\"#D50000\">Completați subiectul</font>";
     private final String messageError = "<font color=\"#D50000\">Completați mesajul</font>";

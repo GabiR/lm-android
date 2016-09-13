@@ -111,6 +111,8 @@
                     android:gravity="center_vertical"
                     android:text="/LeroyMerlinChitila"
                     android:textSize="16sp"
+                    android:ellipsize="end"
+                    android:lines="1"
                     android:textColor="#333333"/>
             </LinearLayout>
             <View

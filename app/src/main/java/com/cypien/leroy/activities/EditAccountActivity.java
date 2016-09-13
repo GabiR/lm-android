@@ -105,6 +105,7 @@ public class EditAccountActivity extends AppCompatActivity {
 
         county.setAdapter(adapter);
 
+
         setFocus(findViewById(R.id.first_name_focus), firstName);
         setFocus(findViewById(R.id.last_name_focus), lastName);
         setFocus(findViewById(R.id.phone_focus),phone);
@@ -115,10 +116,12 @@ public class EditAccountActivity extends AppCompatActivity {
         firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (errors[0]) {
+                if (errors[0] && hasFocus) {
                     errors[0] = false;
                     firstName.setText("");
                 }
+                if(hasFocus)
+                   firstName.setSelection(firstName.length());
             }
         });
         editImage.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +149,10 @@ public class EditAccountActivity extends AppCompatActivity {
                 if (errors[1] && hasFocus) {
                     errors[1] = false;
                     lastName.setText("");
+
                 }
+                if(hasFocus)
+                lastName.setSelection(lastName.length());
             }
         });
 
@@ -160,6 +166,8 @@ public class EditAccountActivity extends AppCompatActivity {
                     else
                         phone.setText("");
                 }
+                if(hasFocus)
+                    phone.setSelection(phone.length());
             }
         });
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -173,6 +181,8 @@ public class EditAccountActivity extends AppCompatActivity {
                         email.setText("");
 
                 }
+                if(hasFocus)
+                    email.setSelection(email.length());
             }
         });
         password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -187,6 +197,8 @@ public class EditAccountActivity extends AppCompatActivity {
                         password.setText("");
 
                 }
+                if(hasFocus)
+                    password.setSelection(password.length());
             }
         });
         confirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -201,6 +213,8 @@ public class EditAccountActivity extends AppCompatActivity {
                         confirmPassword.setText("");
 
                 }
+                if(hasFocus)
+                    confirmPassword.setSelection(confirmPassword.length());
             }
         });
 
@@ -211,6 +225,8 @@ public class EditAccountActivity extends AppCompatActivity {
                     errors[6] = false;
                     city.setText("");
                 }
+                if(hasFocus)
+                    city.setSelection(city.length());
             }
         });
 
@@ -313,6 +329,8 @@ public class EditAccountActivity extends AppCompatActivity {
         initData();
     }
 
+
+
     private void setFocus(View viewById, final View view) {
         viewById.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,7 +360,7 @@ public class EditAccountActivity extends AppCompatActivity {
     //preia adresa imaginii
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode==EditAccountActivity.this.RESULT_OK){
+        if(resultCode== RESULT_OK){
 
             if (requestCode==IMAGE){
                 imagePath = data.getStringExtra("path");
@@ -421,8 +439,7 @@ public class EditAccountActivity extends AppCompatActivity {
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(time);
-        String date = DateFormat.format("dd.MM.yyyy", cal).toString();
-        return date;
+        return DateFormat.format("dd.MM.yyyy", cal).toString();
     }
     //modifica pe server datele utilizatorului
     private void editProfileInformation(){

@@ -1,5 +1,6 @@
 package com.cypien.leroy.activities;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -170,18 +171,37 @@ public class LoginActivity extends AppCompatActivity {
                 if(action == MyGestureListener.Action.BT || action == MyGestureListener.Action.None){
                     Log.e("footer", "open"+action.toString());
                     visibleBottomView = true;
-                    bottom_dialog.animate().translationY(0).withLayer().start();
+                    bottom_dialog.animate().translationY(0).withLayer().setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            if(visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())){
+                                Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    }).start();
                 }
 
             }
         });
 
-//        footer.setOnTouchListener(new OnSwipeTouchListener(context) {
-//            public void onSwipeTop() {
-//                bottom_dialog.animate().translationY(0).withLayer().start();
-//
-//            }
-//        });
+
 
         bottom_dialog.setOnTouchListener(bottomViewGestureListener);
         bottom_dialog.setOnClickListener(new View.OnClickListener() {
@@ -194,12 +214,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        bottom_dialog.setOnTouchListener(new OnSwipeTouchListener(context) {
-//            public void onSwipeBottom() {
-//                bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
-//
-//            }
-//        });
+
 
         txtBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,7 +339,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        if ( sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
+        if ( !getIntent().getBooleanExtra("fromShop", false) && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
             login(sp.getString("username", ""), sp.getString("password", ""));
         }
 
@@ -393,10 +408,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId,fbName,Encrypt.getMD5UTFEncryptedPass(fbId),fbAccessToken);
                 injectCookies();
-                //JSONObject response = LeroyApplication.getInstance().makeRequest("user_get",answer);
 
-             //   response = response.getJSONObject("result");
-              //  Log.e("response", response.toString());
                 login(fbName,fbId);
             }
         } catch (Exception e) {
@@ -512,11 +524,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                   /* Map<String, String> endpointCookie = new HashMap<>();
-                    endpointCookie.put("name", "auth");
-                    endpointCookie.put("domain", "www.facem-facem.ro");
-                    endpointCookie.put("path", "/");
-                    endpointCookie.put("value",response.getJSONObject("session").getString("dbsessionhash"));*/
+
                     spEditor.putString("endpointCookie",response.getJSONObject("session").getString("dbsessionhash"));
 
 

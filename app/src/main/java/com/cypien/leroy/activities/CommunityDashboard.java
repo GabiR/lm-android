@@ -116,7 +116,8 @@ public class CommunityDashboard extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(! linearLayout.getTag().toString().equals("community")) resolvePrevBtn(linearLayout);
+                if(! linearLayout.getTag().toString().equals("shop"))
+                    resolvePrevBtn(linearLayout);
                 switch(linearLayout.getTag().toString()) {
                     case "home":
                         goToFragment(new CommunityHome());
@@ -275,8 +276,9 @@ public class CommunityDashboard extends AppCompatActivity {
     //controleaza apasarea butoanelor de back
     private boolean goBack(){
         if(currentWebview!=null) {
-            if (currentWebview.canGoBack()&&htmlStack.size()>0) {
+           /* if (currentWebview.canGoBack()&&htmlStack.size()>0) {
                 if(currentWebview.copyBackForwardList().getCurrentIndex()==1){
+
                     currentWebview.loadDataWithBaseURL(null, htmlStack.pop(), "text/html", "UTF-8", null);
                     currentWebview.clearHistory();
                 }else {
@@ -287,6 +289,10 @@ public class CommunityDashboard extends AppCompatActivity {
             if (htmlStack.size() > 1) {
                 htmlStack.pop();
                 currentWebview.loadDataWithBaseURL(null, htmlStack.lastElement(), "text/html", "UTF-8", null);
+                return true;
+            }*/
+            if(currentWebview.canGoBack()) {
+                currentWebview.goBack();
                 return true;
             }
         }

@@ -60,8 +60,8 @@
         app:civ_shadow="false"/>
         <ImageView
             android:id="@+id/edit_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/edit_account"
             android:layout_alignEnd="@+id/user_image"
             android:layout_alignRight="@+id/user_image"
