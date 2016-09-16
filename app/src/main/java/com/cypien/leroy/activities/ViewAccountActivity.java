@@ -12,8 +12,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.utils.StaticMethods;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class ViewAccountActivity extends AppCompatActivity {
@@ -27,6 +32,12 @@ public class ViewAccountActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_account_activity);
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: View Account"));
+        LeroyApplication application = (LeroyApplication) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: View Account");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         sp = getSharedPreferences("com.cypien.leroy_preferences", Context.MODE_PRIVATE);
         userImage = (CircularImageView) findViewById(R.id.user_image);
         name = (TextView) findViewById(R.id.name);
@@ -59,19 +70,19 @@ public class ViewAccountActivity extends AppCompatActivity {
 
     private void initData() {
 
-        if(!sp.getString("avatar","").equals(""))
-            userImage.setImageBitmap(StaticMethods.decodeBase64(sp.getString("avatar","")));
-        username.setText(sp.getString("username",""));
+        if (!sp.getString("avatar", "").equals(""))
+            userImage.setImageBitmap(StaticMethods.decodeBase64(sp.getString("avatar", "")));
+        username.setText(sp.getString("username", ""));
         posts.setText(sp.getString("posts", ""));
-        views.setText(sp.getString("profilevisits",""));
-        projects.setText(sp.getString("blognum",""));
-        email.setText(sp.getString("email",""));
-       phone.setText(sp.getString("phone", ""));
-        name.setText(sp.getString("firstname", "")+" "+sp.getString("lastname", ""));
+        views.setText(sp.getString("profilevisits", ""));
+        projects.setText(sp.getString("blognum", ""));
+        email.setText(sp.getString("email", ""));
+        phone.setText(sp.getString("phone", ""));
+        name.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
         signUpDate.setText(sp.getString("joindate", ""));
         birthDate.setText(sp.getString("birthdate", ""));
 
-       friends.setText(sp.getString("friendcount",""));
+        friends.setText(sp.getString("friendcount", ""));
 
     }
 

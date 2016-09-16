@@ -19,18 +19,6 @@ public class CatalogListAdapter extends RecyclerView.Adapter<CatalogListAdapter.
     private List<Catalog> catalogs;
     private Context context;
 
-    public class CatalogListViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView catalog_title;
-
-        public CatalogListViewHolder(View view) {
-            super(view);
-
-            catalog_title = (TextView) view.findViewById(R.id.catalog_title);
-        }
-    }
-
-
     public CatalogListAdapter(List<Catalog> catalogs, Context context) {
         this.catalogs = catalogs;
         this.context = context;
@@ -52,5 +40,16 @@ public class CatalogListAdapter extends RecyclerView.Adapter<CatalogListAdapter.
     @Override
     public int getItemCount() {
         return catalogs.size();
+    }
+
+    public class CatalogListViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView catalog_title;
+
+        public CatalogListViewHolder(View view) {
+            super(view);
+
+            catalog_title = (TextView) view.findViewById(R.id.catalog_title);
+        }
     }
 }

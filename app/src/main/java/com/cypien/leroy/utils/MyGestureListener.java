@@ -10,7 +10,6 @@ public class MyGestureListener implements View.OnTouchListener {
     private Action mSwipeDetected = Action.None;
 
 
-
     public boolean swipeDetected() {
         return mSwipeDetected != Action.None;
     }

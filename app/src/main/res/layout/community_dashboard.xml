@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:weightSum="1">
 
 
-    <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
         android:background="@color/colorPrimary"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:minHeight="?attr/actionBarSize">
 
         <ImageView
             android:id="@+id/back_arrow"
@@ -21,215 +22,247 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:src="@drawable/back_arrow"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <ImageView
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logo_ff"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/logo_ff" />
 
         <TextView
-            android:paddingLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Facem-FacemFacem-FacemFacem-FacemFacem-FacemFacem-Facem"
-            android:singleLine="true"
             android:layout_marginRight="70dp"
+            android:paddingLeft="8dp"
+            android:singleLine="true"
+            android:text="Facem-FacemFacem-FacemFacem-FacemFacem-FacemFacem-Facem"
             android:textColor="@color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
-     <!--   <ImageView
+        <!--   <ImageView
+               android:id="@+id/logout"
+               android:paddingBottom="5dp"
+               android:paddingTop="5dp"
+               android:paddingRight="16dp"
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:layout_gravity="right"
+               android:src="@drawable/logout_icon"
+               android:onClick="logoutClicked"/>-->
+        <RelativeLayout
             android:id="@+id/logout"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:paddingRight="16dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
-            android:src="@drawable/logout_icon"
-            android:onClick="logoutClicked"/>-->
-      <RelativeLayout
-          android:id="@+id/logout"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          android:onClick="logoutClicked"
-          android:layout_gravity="right"
-          android:paddingTop="5dp"
-          android:paddingRight="16dp"
-          android:paddingBottom="5dp"
-          android:clickable="true">
-          <ImageView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:src="@drawable/logout"
-              android:layout_above="@+id/text"
-              />
-          <TextView
-              android:id="@+id/text"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_alignParentBottom="true"
-              android:textColor="@color/white"
-              android:text="Logout"
-              android:lines="1"
-              android:gravity="center"
-              android:textSize="10sp"/>
-      </RelativeLayout>
+            android:clickable="true"
+            android:onClick="logoutClicked"
+            android:paddingBottom="5dp"
+            android:paddingRight="16dp"
+            android:paddingTop="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/text"
+                android:src="@drawable/logout" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:lines="1"
+                android:text="Logout"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/content_frame_community"
-        android:layout_weight="0.999"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
         android:layout_below="@+id/toolbar"
-        >
+        android:layout_weight="0.999">
 
-        </FrameLayout>
+    </FrameLayout>
 
     <!--<View
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:background="@drawable/bottom_shadow"
         android:layout_below="@+id/toolbar"/>-->
-    <include layout="@layout/toolbar_shadow"/>
+    <include layout="@layout/toolbar_shadow" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@drawable/top_shadow"
-       android:layout_above="@+id/bottom_bar" />
+        android:layout_above="@+id/bottom_bar"
+        android:background="@drawable/top_shadow" />
+
     <LinearLayout
-        android:layout_weight="0.001"
-        android:weightSum="1"
         android:id="@+id/bottom_bar"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/menu_bg_gray">
+        android:layout_alignParentBottom="true"
+        android:layout_weight="0.001"
+        android:background="@color/menu_bg_gray"
+        android:weightSum="1">
 
         <LinearLayout
-            android:tag="home"
-            android:paddingLeft="10dp"
             android:id="@+id/home_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:tag="home">
+
             <ImageView
-                android:src="@drawable/home_green"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@drawable/home_green" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/menu_button_text_padding"
-                android:textColor="@color/colorPrimary"
                 android:text="Home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:tag="projects"
             android:id="@+id/projects_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:tag="projects">
+
             <ImageView
-                android:src="@drawable/projects_gray"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@drawable/projects_gray" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/menu_button_text_padding"
-                android:textColor="@color/unpressedblack"
                 android:text="Proiecte"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/unpressedblack" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:tag="discussions"
             android:id="@+id/discussions_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:tag="discussions">
+
             <ImageView
-                android:src="@drawable/discussions_gray"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@drawable/discussions_gray" />
+
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/menu_button_text_padding"
-                android:textColor="@color/unpressedblack"
                 android:text="Discuții"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/unpressedblack" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:tag="contests"
             android:id="@+id/contests_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:tag="contests">
+
             <ImageView
-                android:src="@drawable/contests_gray"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:src="@drawable/contests_gray" />
+
             <TextView
-                android:layout_marginTop="@dimen/menu_button_text_padding"
-                android:textColor="@color/unpressedblack"
-                android:text="Concursuri"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:text="Concursuri"
+                android:textColor="@color/unpressedblack" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:tag="shop"
-            android:paddingRight="10dp"
             android:id="@+id/shop_button"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
             android:layout_weight="0.20"
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:tag="shop">
 
             <View
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:background="@color/gray"
                 android:layout_width="1dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginBottom="11dp"
+                android:layout_marginTop="11dp"
+                android:background="@color/gray" />
 
-            <ImageView
+            <!--<ImageView
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/shop_icon"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:adjustViewBounds="true"/>
+                android:adjustViewBounds="true"/>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="3dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/shop_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/menu_button_text_padding"
+
+                    android:text="Magazin"
+                    android:textColor="@color/unpressedblack" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

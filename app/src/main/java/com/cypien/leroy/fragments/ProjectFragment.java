@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.adapters.CommentsAdapter;
@@ -33,7 +35,7 @@ import com.viewpagerindicator.PageIndicator;
 /**
  * Created by Alex on 22/10/15.
  */
-public class ProjectFragment extends Fragment{
+public class ProjectFragment extends Fragment {
     private View view;
     private CircularImageView avatar;
     private TextView userName;
@@ -56,23 +58,25 @@ public class ProjectFragment extends Fragment{
     private ListView commentsList;
     private String type;
     private int position;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = getActivity().getLayoutInflater().inflate(R.layout.project_screen,container,false);
-        project=(Project)getArguments().getSerializable("project");
-        position=getArguments().getInt("position");
+        view = getActivity().getLayoutInflater().inflate(R.layout.project_screen, container, false);
+        project = (Project) getArguments().getSerializable("project");
+        position = getArguments().getInt("position");
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
-        if(project.isBlog())
-            type="project";
+        if (project.isBlog())
+            type = "project";
         else
-            type="CMS";
+            type = "CMS";
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "ProjectFragment");
+        mTracker.setScreenName("Screen: View Project");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: View Project"));
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(project.getTitle());
 
         ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
@@ -97,11 +101,11 @@ public class ProjectFragment extends Fragment{
         time = (TextView) view.findViewById(R.id.project_time);
         cost = (TextView) view.findViewById(R.id.project_cost);
         details = (TextView) view.findViewById(R.id.project_details);
-        if(project.getAvatar()==null){
+        if (project.getAvatar() == null) {
             avatar.setImageResource(R.drawable.unknown);
-        }else
+        } else
             avatar.setImageBitmap(project.getAvatar());
-        if(type.equals("CMS")){
+        if (type.equals("CMS")) {
             time.setVisibility(View.GONE);
             cost.setVisibility(View.GONE);
         }
@@ -115,8 +119,8 @@ public class ProjectFragment extends Fragment{
         cost.setText("Costuri: " + project.getCosts());
         details.setText(Html.fromHtml(project.getDescription()));
 
-        adapter = new ImagesAdapter(getActivity(),project.getBlogid(),type);
-        pager=(ViewPager)view.findViewById(R.id.pager);
+        adapter = new ImagesAdapter(getActivity(), project.getBlogid(), type);
+        pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
         indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
@@ -125,24 +129,24 @@ public class ProjectFragment extends Fragment{
         ((CirclePageIndicator) indicator).setStrokeColor(0xFF499840);
         ((CirclePageIndicator) indicator).setFillColor(0xFF56bd4f);
 */
-        likeButton = (Button)view.findViewById(R.id.like_project);
-        if(project.isLiked())
+        likeButton = (Button) view.findViewById(R.id.like_project);
+        if (project.isLiked())
             likeButton.setVisibility(View.GONE);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeroyApplication.getInstance().makeRequest(type+"_like",sp.getString("endpointCookie", ""), sp.getString("userid", ""), project.getBlogid());
+                LeroyApplication.getInstance().makeRequest(type + "_like", sp.getString("endpointCookie", ""), sp.getString("userid", ""), project.getBlogid());
                 v.setVisibility(View.GONE);
                 rating.setText("" + (Integer.parseInt(rating.getText().toString()) + 1));
                 project.setLiked(true);
 
-                project.setRating(""+(Integer.parseInt(project.getRating())+1));
+                project.setRating("" + (Integer.parseInt(project.getRating()) + 1));
                 LeroyApplication.getCacheManager().put("project_" + position, project);
             }
         });
 
-        commentsList = (ListView)view.findViewById(R.id.comments);
-        commAdapter = new CommentsAdapter(getFragmentManager(),getActivity(),project.getBlogid(),type);
+        commentsList = (ListView) view.findViewById(R.id.comments);
+        commAdapter = new CommentsAdapter(getFragmentManager(), getActivity(), project.getBlogid(), type);
         commentsList.setAdapter(commAdapter);
         setListViewHeightBasedOnChildren();
 
@@ -154,7 +158,7 @@ public class ProjectFragment extends Fragment{
             }
         });
 
-        if(!sp.getBoolean("isConnected",false)){
+        if (!sp.getBoolean("isConnected", false)) {
             view.findViewById(R.id.not_connected).setVisibility(View.VISIBLE);
             likeButton.setVisibility(View.GONE);
             addCommentButton.setVisibility(View.GONE);
@@ -179,12 +183,12 @@ public class ProjectFragment extends Fragment{
             totalHeight += view.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = commentsList.getLayoutParams();
-        params.height = totalHeight + (commentsList.getDividerHeight() * (commAdapter.getCount()))+dipToPixels(200);
+        params.height = totalHeight + (commentsList.getDividerHeight() * (commAdapter.getCount())) + dipToPixels(200);
         commentsList.setLayoutParams(params);
         commentsList.requestLayout();
     }
 
-    public int dipToPixels( float dipValue) {
+    public int dipToPixels(float dipValue) {
         DisplayMetrics metrics = getActivity().getResources().getDisplayMetrics();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }

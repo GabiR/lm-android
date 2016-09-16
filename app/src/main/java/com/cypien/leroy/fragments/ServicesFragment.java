@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.adapters.ServiceListAdapter;
@@ -29,6 +32,8 @@ import com.cypien.leroy.fragments.services.RentalFragment;
 import com.cypien.leroy.fragments.services.ReturnFragment;
 import com.cypien.leroy.models.Service;
 import com.cypien.leroy.utils.RecyclerItemClickListener;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +54,13 @@ public class ServicesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.services_fragment,container,false);
-
+        View view = getActivity().getLayoutInflater().inflate(R.layout.services_fragment, container, false);
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Services"));
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: Services");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Servicii");
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
@@ -65,7 +75,7 @@ public class ServicesFragment extends Fragment {
         });
 
         services = ShopDashboard.getServices();
-        if(services == null)
+        if (services == null)
             services = new ArrayList<>();
 
         ServiceListAdapter adapter = new ServiceListAdapter(services, getActivity());
@@ -129,9 +139,8 @@ public class ServicesFragment extends Fragment {
     }
 
 
-
-    private void changeFragment(Fragment fragment,int position){
-        bundle=new Bundle();
+    private void changeFragment(Fragment fragment, int position) {
+        bundle = new Bundle();
         bundle.putSerializable("service", services.get(position));
         fragment.setArguments(bundle);
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -142,7 +151,7 @@ public class ServicesFragment extends Fragment {
     private void openPDF() {
         Fragment fragment = new PdfViewerFragment();
         bundle = new Bundle();
-        bundle.putString("filename","adrese_service.pdf");
+        bundle.putString("filename", "adrese_service.pdf");
         fragment.setArguments(bundle);
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null);

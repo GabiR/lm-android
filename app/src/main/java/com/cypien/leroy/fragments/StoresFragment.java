@@ -1,7 +1,9 @@
 package com.cypien.leroy.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,17 +15,22 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.adapters.StoresAdapter;
 import com.cypien.leroy.models.Store;
 import com.cypien.leroy.utils.Connections;
+import com.cypien.leroy.utils.DatabaseConnector;
 import com.cypien.leroy.utils.NotificationDialog;
 import com.cypien.leroy.utils.RecyclerItemClickListener;
 import com.google.android.gms.analytics.HitBuilders;
@@ -37,6 +44,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,26 +70,56 @@ public class StoresFragment extends Fragment {
     LinearLayout info;
     TextView name;
     TextView address;
+    TextView textNoInternet;
+    RelativeLayout noInternet;
     FloatingActionButton fab;
+    private com.rey.material.widget.LinearLayout retry;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = getActivity().getLayoutInflater().inflate(R.layout.stores_screen, container, false);
-        getStores();
+
+        /*if(Connections.isNetworkConnected(getActivity()))
+            try {
+                uploadStores();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("eroare", e.toString());
+            }
+        else*/
+
+        // getStores();
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Stores"));
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: Stores");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         listBtn = (TextView) view.findViewById(R.id.listBtn);
         mapBtn = (TextView) view.findViewById(R.id.mapBtn);
         recyclerView = (RecyclerView) view.findViewById(R.id.stores_list);
         mapView = (MapView) view.findViewById(R.id.map);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
-
-        StoresAdapter adapter = new StoresAdapter(stores);
+        noInternet = (RelativeLayout) view.findViewById(R.id.no_internet);
+        retry = (com.rey.material.widget.LinearLayout) view.findViewById(R.id.retry);
+        textNoInternet = (TextView) view.findViewById(R.id.txtMesaj);
+        textNoInternet.setText("Vă rugăm să activați internetul pentru a putea vedea magazinele Leroy Merlin!");
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noInternet.setVisibility(View.GONE);
+                loadPage();
+            }
+        });
+        loadPage();
+      /*  StoresAdapter adapter = new StoresAdapter(stores);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -93,14 +139,10 @@ public class StoresFragment extends Fragment {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
 
-        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
-        Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "StoresFragment");
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
-        info = (LinearLayout)view.findViewById(R.id.info);
-        name=(TextView)info.findViewById(R.id.name);
-        address=(TextView)info.findViewById(R.id.address);
+        info = (LinearLayout) view.findViewById(R.id.info);
+        name = (TextView) info.findViewById(R.id.name);
+        address = (TextView) info.findViewById(R.id.address);
 
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +173,6 @@ public class StoresFragment extends Fragment {
         });
 
 
-
         //map handling
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
@@ -139,9 +180,9 @@ public class StoresFragment extends Fragment {
         MapsInitializer.initialize(this.getActivity());
 
 
-        if (map!=null){
-            for (Store s:stores){
-                Marker marker= map.addMarker(new MarkerOptions().position(s.getPosition())
+        if (map != null) {
+            for (Store s : stores) {
+                Marker marker = map.addMarker(new MarkerOptions().position(s.getPosition())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
             }
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -162,12 +203,12 @@ public class StoresFragment extends Fragment {
                             info.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if(Connections.isGPSEnabled(getActivity())){
+                                    if (Connections.isGPSEnabled(getActivity())) {
                                         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + marker.getPosition().latitude + "," + marker.getPosition().longitude);
                                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                         mapIntent.setPackage("com.google.android.apps.maps");
                                         startActivity(mapIntent);
-                                    }else{
+                                    } else {
                                         new NotificationDialog(getActivity(), "Vă rugăm să vă activați GPS-ul pentru a putea continua!").show();
                                     }
 
@@ -184,7 +225,7 @@ public class StoresFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(map.getMapType() == GoogleMap.MAP_TYPE_HYBRID) {
+                if (map.getMapType() == GoogleMap.MAP_TYPE_HYBRID) {
                     map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                     fab.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.satellite_icon));
                 } else {
@@ -195,6 +236,25 @@ public class StoresFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void loadPage() {
+
+        stores = DatabaseConnector.getHelper(getActivity()).loadStores();
+        if (stores.size() == 0 && !Connections.isNetworkConnected(getActivity())) {
+            noInternet.setVisibility(View.VISIBLE);
+            return;
+        } else if (stores.size() == 0 && Connections.isNetworkConnected(getActivity())) {
+            new GetStore().execute(null, null, null);
+            return;
+        }
+
+        StoresAdapter adapter = new StoresAdapter(stores);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -217,7 +277,165 @@ public class StoresFragment extends Fragment {
         mapView.onLowMemory();
     }
 
-    void getStores(){
+    public class GetStore extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog pg;
+
+        private void uploadStores() throws JSONException {
+            DatabaseConnector.getHelper(getActivity()).deleteAllStores();
+            JSONObject jsonObject = makePublicRequest();
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            int size = jsonArray != null ? jsonArray.length() : 0;
+            for (int i = 0; i < size; i++) {
+                JSONObject jsn = jsonArray.getJSONObject(i);
+                Store store = new Store();
+                store.setId(jsn.getString("contact_id"));
+                store.setAddress(jsn.getString("contact_adresa"));
+                store.setFacebookAddress(jsn.getString("contact_facebook"));
+                store.setLatitude(jsn.getDouble("contact_lat"));
+                store.setLongitude(jsn.getDouble("contact_lng"));
+                store.setPhone(jsn.getString("contact_tel"));
+                store.setOpen("Luni - Sambata: " + jsn.getString("contact_orar_rest_deschidere") + ":00 - " +
+                        jsn.getString("contact_orar_rest_inchidere") + ":00\nDuminica: " + jsn.getString("contact_orar_duminica_deschidere") + ":00 - " +
+                        jsn.getString("contact_orar_duminica_inchidere") + ":00");
+                store.setName(jsn.getString("contact_magazin_title"));
+
+                DatabaseConnector.getHelper(getActivity()).insertStore(store);
+                stores.add(store);
+            }
+        }
+
+        public JSONObject makePublicRequest() {
+            ArrayList<Integer> parameters = new ArrayList<>();
+            parameters.add(0);
+            parameters.add(100);
+            JSONObject request = new JSONObject();
+            try {
+                request.put("method", "contact_get_all");
+                request.put("params", new JSONArray(parameters));
+                Log.e("request", request.toString());
+                return new JSONObject(getRequest("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + request.toString()));
+            } catch (JSONException e) {
+                Log.e("eroare", e.toString());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                uploadStores();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected String getRequest(String... info) {
+            HttpURLConnection connection;
+            OutputStreamWriter request = null;
+            URL url = null;
+            StringBuilder sb = new StringBuilder();
+            InputStreamReader isr = null;
+            BufferedReader reader = null;
+
+            try {
+                url = new URL(info[0]);
+                connection = (HttpURLConnection) url.openConnection();
+
+                connection.setInstanceFollowRedirects(false);
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                connection.setRequestMethod("POST");
+                request = new OutputStreamWriter(connection.getOutputStream());
+
+                request.write(info[1]);
+                request.flush();
+                request.close();
+
+                String line = "";
+                isr = new InputStreamReader(connection.getInputStream());
+                reader = new BufferedReader(isr);
+                line = reader.readLine();
+                while (line != null) {
+                    sb.append(line);
+                    try {
+                        line = reader.readLine();
+                    } catch (Exception e) {
+                        line = null;
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("eroare", e.toString());
+                e.printStackTrace();
+            }
+            if (sb != null && !sb.equals(""))
+                return sb.toString();
+            else return "";
+        }
+
+        @Override
+        protected void onPreExecute() {
+            pg = new ProgressDialog(getActivity());
+            pg.setCancelable(false);
+            pg.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            noInternet.setVisibility(View.GONE);
+            StoresAdapter adapter = new StoresAdapter(stores);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
+            pg.dismiss();
+        }
+    }
+   /* private void uploadStores() throws JSONException {
+
+        JSONObject jsonObject = makePublicRequest();
+        JSONArray jsonArray = jsonObject.getJSONArray("result");
+        int size = jsonArray != null ? jsonArray.length() : 0;
+        DatabaseConnector.getHelper(getActivity()).deleteAllStores();
+        for (int i = 0; i < size; i++) {
+            JSONObject jsn = jsonArray.getJSONObject(i);
+            Store store = new Store();
+            store.setId(jsn.getString("contact_id"));
+            store.setAddress(jsn.getString("contact_adresa"));
+            store.setFacebookAddress(jsn.getString("contact_facebook"));
+            store.setLatitude(jsn.getDouble("contact_lat"));
+            store.setLongitude(jsn.getDouble("contact_lng"));
+            store.setPhone(jsn.getString("contact_tel"));
+            store.setOpen("Luni - Sambata: "+jsn.getString("contact_orar_rest_deschidere")+":00 - "+
+                    jsn.getString("contact_orar_rest_inchidere")+"\nDuminica: "+jsn.getString("contact_orar_duminica_deschidere"+":00 - "+
+            jsn.getString("contact_orar_duminica_inchidere")+":00"));
+            store.setName(jsn.getString("contact_magazin_title"));
+            stores.add(store);
+            DatabaseConnector.getHelper(getActivity()).insertStore(store);
+        }
+    }*/
+
+    /*public JSONObject makePublicRequest(){
+        ArrayList<Integer> parameters = new ArrayList<>();
+        parameters.add(0);
+        parameters.add(100);
+        JSONObject request = new JSONObject();
+        try {
+            request.put("method", "contact_get_all");
+            request.put("params",new JSONArray(parameters));
+            Log.e("request", request.toString());
+            return new JSONObject(new WebServiceConnector().execute("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + request.toString()).get());
+        } catch (JSONException | InterruptedException | ExecutionException e) {
+            Log.e("eroare", e.toString());
+            e.printStackTrace();
+        }
+        return null;
+    }*/
+
+  /*  void getStores(){
         stores = new ArrayList<>();
         Store store;
 
@@ -359,5 +577,5 @@ public class StoresFragment extends Fragment {
         store.setDirections("");
         store.setFacebookAddress("LeroyMerlinTimisoara");
         stores.add(store);
-    }
+    }*/
 }

@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.adapters.CatalogListAdapter;
@@ -31,9 +33,8 @@ import java.util.List;
 public class CatalogListFragment extends Fragment {
 
 
-    private RecyclerView recyclerView;
-
     List<Catalog> cataloage;
+    private RecyclerView recyclerView;
     private FragmentActivity mActivity;
 
 
@@ -41,7 +42,8 @@ public class CatalogListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.catalog_list_fragment, container, false);
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Catalog List"));
         ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText("Cataloage");
         ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
         ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
@@ -56,10 +58,9 @@ public class CatalogListFragment extends Fragment {
         });
 
 
-
         LeroyApplication application = (LeroyApplication) mActivity.getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "CatalogFragment");
+        mTracker.setScreenName("Screen: Catalog List");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
 
@@ -86,9 +87,10 @@ public class CatalogListFragment extends Fragment {
         return view;
 
     }
-    private void changeFragment(int position){
+
+    private void changeFragment(int position) {
         ViewCatalogFragment f = new ViewCatalogFragment();
-        Bundle bundle=new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("title", cataloage.get(position).getTitle());
         bundle.putString("url", cataloage.get(position).getSlug());
         bundle.putBoolean("fromList", true);
@@ -101,7 +103,7 @@ public class CatalogListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentActivity)
+        if (context instanceof FragmentActivity)
             mActivity = (FragmentActivity) context;
     }
 }

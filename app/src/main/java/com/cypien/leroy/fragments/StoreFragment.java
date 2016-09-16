@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Store;
@@ -46,16 +48,19 @@ public class StoreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = getActivity().getLayoutInflater().inflate(R.layout.store_screen, container, false);
-
-        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
-        Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "StoreFragment");
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
         Bundle bundle = this.getArguments();
         store = (Store) bundle.getSerializable("store");
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: Store");
+        mTracker.set("Store", store.getName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
-        if(store!=null)
+
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Store")
+                .putCustomAttribute("Store", store.getName()));
+        if (store != null)
             ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(store.getName());
         else
             ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Magazin");
@@ -92,12 +97,12 @@ public class StoreFragment extends Fragment {
         seeStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Connections.isGPSEnabled(getActivity())){
+                if (Connections.isGPSEnabled(getActivity())) {
                     Uri gmmIntentUri = Uri.parse("google.navigation:q=" + store.getPosition().latitude + "," + store.getPosition().longitude);
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
-                }else{
+                } else {
                     new NotificationDialog(getActivity(), "Vă rugăm să vă activați GPS-ul pentru a putea continua!").show();
                 }
             }
@@ -113,7 +118,7 @@ public class StoreFragment extends Fragment {
                 if (Connections.isTelephonyEnabled(getActivity()))
                     makePhoneCall(store.getPhone());
                 else
-                    new NotificationDialog(getActivity(),"Ne pare rau dar nu puteți efectua apeluri de pe acest dispozitiv!").show();
+                    new NotificationDialog(getActivity(), "Ne pare rau dar nu puteți efectua apeluri de pe acest dispozitiv!").show();
             }
         });
 
@@ -124,13 +129,13 @@ public class StoreFragment extends Fragment {
         seeFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Connections.isNetworkConnected(getActivity())){
-                    FacebookFragment f= new FacebookFragment("https://www.facebook.com/" + store.getFacebookAddress());
+                if (Connections.isNetworkConnected(getActivity())) {
+                    FacebookFragment f = new FacebookFragment("https://www.facebook.com/" + store.getFacebookAddress());
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, f).addToBackStack(null);
                     fragmentTransaction.commit();
-                }else{
-                    new NotificationDialog(getActivity(),"Pentru a putea vizita pagina noastră de Facebook, vă rugăm să vă conectați la internet!").show();
+                } else {
+                    new NotificationDialog(getActivity(), "Pentru a putea vizita pagina noastră de Facebook, vă rugăm să vă conectați la internet!").show();
                 }
             }
         });
@@ -140,7 +145,7 @@ public class StoreFragment extends Fragment {
         Calendar today = Calendar.getInstance();
         int dayOfWeek = today.get(Calendar.DAY_OF_WEEK); //incepe de la 1; ex: Luni = 1
         String program = store.getOpen(), programParsat = "";
-        if(dayOfWeek < 7)
+        if (dayOfWeek < 7)
             programParsat = program.substring(program.indexOf("Luni - Sambata: ") + 16, program.indexOf("\n"));
         else
             programParsat = program.substring(program.indexOf("Duminica: ") + 10);
@@ -177,7 +182,7 @@ public class StoreFragment extends Fragment {
         mapView.onLowMemory();
     }
 
-    private void makePhoneCall(String phone){
+    private void makePhoneCall(String phone) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phone));
         startActivity(intent);

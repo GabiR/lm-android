@@ -1,9 +1,9 @@
 package com.cypien.leroy.fragments.services;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.PdfViewerFragment;
@@ -21,21 +23,22 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * Created by alexa on 10/1/2015.
  */
-public class PostSaleFragment extends Fragment{
+public class PostSaleFragment extends Fragment {
     private View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.post_sale_service_screen,container,false);
+        view = inflater.inflate(R.layout.post_sale_service_screen, container, false);
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "PostSaleFragment");
+        mTracker.setScreenName("Screen: Post Sale Service");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Post Sale Service"));
         Bundle bundle = getArguments();
-        Service service = (Service)bundle.getSerializable("service");
+        Service service = (Service) bundle.getSerializable("service");
 
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(service.getName());
 
@@ -55,7 +58,7 @@ public class PostSaleFragment extends Fragment{
             public void onClick(View v) {
                 Fragment fragment = new PdfViewerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("filename","post.pdf");
+                bundle.putString("filename", "post.pdf");
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null);

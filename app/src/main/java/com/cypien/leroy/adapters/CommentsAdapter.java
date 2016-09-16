@@ -34,26 +34,27 @@ import java.lang.reflect.Type;
 /**
  * Created by Alex on 29/10/15.
  */
-public class CommentsAdapter extends ArrayAdapter<Comment>{
+public class CommentsAdapter extends ArrayAdapter<Comment> {
 
     private LayoutInflater inflater;
     private SharedPreferences sp;
     private boolean ok;
     private String blogId;
     private Activity activity;
-    private String type ;
+    private String type;
     private FragmentManager fragmentManager;
 
-    public CommentsAdapter(FragmentManager fm, Activity context,String blogId,String type) {
+    public CommentsAdapter(FragmentManager fm, Activity context, String blogId, String type) {
         super(context, R.layout.comment_item);
-        this.blogId=blogId;
-        this.type=type;
+        this.blogId = blogId;
+        this.type = type;
         this.activity = context;
-        this.fragmentManager=fm;
+        this.fragmentManager = fm;
         sp = context.getSharedPreferences("com.cypien.leroy_preferences", context.MODE_PRIVATE);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(!Connections.isNetworkConnected(context)) {
-            Type myObjectType = new TypeToken<Integer>() {}.getType();
+        if (!Connections.isNetworkConnected(context)) {
+            Type myObjectType = new TypeToken<Integer>() {
+            }.getType();
             Integer nrComments = (Integer) LeroyApplication.getCacheManager().get("comments_nr" + blogId, Integer.class, myObjectType);
             myObjectType = new TypeToken<Comment>() {
             }.getType();
@@ -63,20 +64,9 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
                     add(comment);
                 }
             }
-        }else {
+        } else {
             getComments();
         }
-    }
-
-    static class ViewHolder {
-        ImageView avatar;
-        TextView userName;
-        TextView date;
-        TextView rating;
-        TextView comment;
-        Button answer;
-        Button like;
-        Button delete;
     }
 
     @Override
@@ -86,16 +76,16 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         final Comment comment = getItem(position);
 
         if (convertView == null) {
-            view = inflater.inflate(R.layout.comment_item, parent,false);
+            view = inflater.inflate(R.layout.comment_item, parent, false);
             holder = new ViewHolder();
-            holder.avatar=(ImageView) view.findViewById(R.id.avatar);
+            holder.avatar = (ImageView) view.findViewById(R.id.avatar);
             holder.comment = (TextView) view.findViewById(R.id.comment);
             holder.userName = (TextView) view.findViewById(R.id.user_name);
             holder.rating = (TextView) view.findViewById(R.id.comm_like);
             holder.date = (TextView) view.findViewById(R.id.publish_date);
-            holder.answer = (Button)view.findViewById(R.id.answer);
-            holder.like = (Button)view.findViewById(R.id.like_comment);
-            holder.delete = (Button)view.findViewById(R.id.delete);
+            holder.answer = (Button) view.findViewById(R.id.answer);
+            holder.like = (Button) view.findViewById(R.id.like_comment);
+            holder.delete = (Button) view.findViewById(R.id.delete);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -103,15 +93,15 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         holder.answer.setFocusable(false);
         holder.like.setFocusable(false);
         holder.delete.setFocusable(false);
-        if (!sp.getBoolean("isConnected",false)){
+        if (!sp.getBoolean("isConnected", false)) {
             holder.like.setVisibility(View.GONE);
             holder.delete.setVisibility(View.GONE);
             holder.answer.setVisibility(View.GONE);
             view.findViewById(R.id.hands).setVisibility(View.GONE);
         }
-        if(!comment.getUserid().equals(sp.getString("userid","")))
+        if (!comment.getUserid().equals(sp.getString("userid", "")))
             holder.delete.setVisibility(View.GONE);
-        if(comment.isLiked())
+        if (comment.isLiked())
             holder.like.setVisibility(View.GONE);
         holder.answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +112,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeroyApplication.getInstance().makeRequest(type+"_like_comment",sp.getString("endpointCookie", ""), sp.getString("userid", ""), comment.getBlogtextid());
+                LeroyApplication.getInstance().makeRequest(type + "_like_comment", sp.getString("endpointCookie", ""), sp.getString("userid", ""), comment.getBlogtextid());
                 v.setVisibility(View.GONE);
                 comment.setLiked(true);
                 comment.setRating("" + (Integer.parseInt(comment.getRating()) + 1));
@@ -133,29 +123,29 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeroyApplication.getInstance().makeRequest(type + "_delete_comment",sp.getString("endpointCookie", ""), sp.getString("userid", ""), comment.getBlogtextid());
+                LeroyApplication.getInstance().makeRequest(type + "_delete_comment", sp.getString("endpointCookie", ""), sp.getString("userid", ""), comment.getBlogtextid());
                 LeroyApplication.getCacheManager().unset("comment" + blogId + position);
                 remove(getItem(position));
                 LeroyApplication.getCacheManager().put("comments_nr" + blogId, getCount());
                 notifyDataSetChanged();
-                ((ProjectFragment)fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();
+                ((ProjectFragment) fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();
 
             }
         });
 
         holder.userName.setText(comment.getUser().getUserName());
-        if(comment.getRating()== null || comment.getRating().equals(""))
+        if (comment.getRating() == null || comment.getRating().equals(""))
             holder.rating.setText("0");
         else
             holder.rating.setText(comment.getRating());
-        if(type.equals("CMS")){
+        if (type.equals("CMS")) {
             holder.rating.setVisibility(View.GONE);
             holder.like.setVisibility(View.GONE);
         }
         comment.getUser().buildImage();
-        if(comment.getUser().getAvatar()==null){
+        if (comment.getUser().getAvatar() == null) {
             holder.avatar.setImageResource(R.drawable.unknown);
-        }else
+        } else
             holder.avatar.setImageBitmap(comment.getUser().getAvatar());
         holder.comment.setText(comment.getPagetext());
         holder.date.setText(comment.getDate());
@@ -182,13 +172,13 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
 
         TextView postButton = (TextView) dialog.findViewById(R.id.add_comment);
 
-        final EditText comment = (EditText)dialog.findViewById(R.id.comment);
+        final EditText comment = (EditText) dialog.findViewById(R.id.comment);
 
 
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!Connections.isNetworkConnected(activity)){
+                if (!Connections.isNetworkConnected(activity)) {
                     Toast.makeText(getContext(), "Vă rugăm să vă conectați la Internet pentru a putea comenta!", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -199,38 +189,48 @@ public class CommentsAdapter extends ArrayAdapter<Comment>{
                     return;
                 }
 
-                    JSONObject jsn = LeroyApplication.getInstance().makeRequest(type+"_add_comment",sp.getString("endpointCookie", ""),sp.getString("userid",""),blogId,comment.getText().toString());
+                JSONObject jsn = LeroyApplication.getInstance().makeRequest(type + "_add_comment", sp.getString("endpointCookie", ""), sp.getString("userid", ""), blogId, comment.getText().toString());
 
                 Log.e("jsn", jsn.toString());
-                    getComments();
-                    notifyDataSetChanged();
-                    ((ProjectFragment)fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();
-                    dialog.dismiss();
+                getComments();
+                notifyDataSetChanged();
+                ((ProjectFragment) fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();
+                dialog.dismiss();
 
             }
         });
 
 
-
         dialog.show();
     }
 
-    private void getComments(){
+    private void getComments() {
         try {
             clear();
-            JSONObject response = LeroyApplication.getInstance().makeRequest(type+"_get_comments",sp.getString("endpointCookie", ""), sp.getString("userid",""), blogId);
+            JSONObject response = LeroyApplication.getInstance().makeRequest(type + "_get_comments", sp.getString("endpointCookie", ""), sp.getString("userid", ""), blogId);
             JSONArray resultArray = response.getJSONArray("result");
-            for(int i=0;i<resultArray.length();i++){
+            for (int i = 0; i < resultArray.length(); i++) {
                 Comment comment = new Comment();
                 comment.setType(type);
-                comment=comment.fromJson(resultArray.getJSONObject(i), sp.getString("endpointCookie", ""));
+                comment = comment.fromJson(resultArray.getJSONObject(i), sp.getString("endpointCookie", ""));
                 LeroyApplication.getCacheManager().put("comment" + blogId + i, comment);
                 add(comment);
-                LeroyApplication.getCacheManager().put("comments_nr"+blogId, getCount());
+                LeroyApplication.getCacheManager().put("comments_nr" + blogId, getCount());
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    static class ViewHolder {
+        ImageView avatar;
+        TextView userName;
+        TextView date;
+        TextView rating;
+        TextView comment;
+        Button answer;
+        Button like;
+        Button delete;
     }
 
 }

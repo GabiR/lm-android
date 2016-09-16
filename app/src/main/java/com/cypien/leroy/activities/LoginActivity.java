@@ -1,6 +1,7 @@
 package com.cypien.leroy.activities;
 
 import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.LoginEvent;
+import com.crashlytics.android.answers.SignUpEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.utils.Connections;
@@ -34,6 +39,7 @@ import com.cypien.leroy.utils.Encrypt;
 import com.cypien.leroy.utils.MapUtil;
 import com.cypien.leroy.utils.MyGestureListener;
 import com.cypien.leroy.utils.NotificationDialog;
+import com.cypien.leroy.utils.StaticMethods;
 import com.cypien.leroy.utils.TimeUtils;
 import com.cypien.leroy.utils.WebServiceConnector;
 import com.google.android.gms.analytics.HitBuilders;
@@ -60,6 +66,8 @@ import java.util.concurrent.TimeUnit;
  * Created by GabiRotaru on 23/08/16.
  */
 public class LoginActivity extends AppCompatActivity {
+    private final int SUCCESS_REGISTRATION = 60;
+    boolean ok;
     private ImageView skyImage, shopInfoBtn, footer;
     private TextView shopInfoText, btnContact, txtBack, btnLogin, btnLoginFb, forgot, createAccount;
     private EditText edtUser, edtPass;
@@ -67,13 +75,9 @@ public class LoginActivity extends AppCompatActivity {
     private Context context;
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
-
+    private ImageView btnFacem;
     private int screenWidth, screenHeight, skyImageSize;
-
-    private String fbFirstName,fbLastName,fbEmail,fbName,fbId,fbAccessToken;
-    private final int SUCCESS_REGISTRATION=60;
-
-    boolean ok;
+    private String fbFirstName, fbLastName, fbEmail, fbName, fbId, fbAccessToken;
     private boolean visibleBottomView = false;
 
 
@@ -101,9 +105,10 @@ public class LoginActivity extends AppCompatActivity {
 
         LeroyApplication application = (LeroyApplication) getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "OldLoginActivity");
+        mTracker.setScreenName("Screen: Login");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Login"));
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
 
@@ -115,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         btnContact = (TextView) findViewById(R.id.btnContact);
         bottom_dialog = (RelativeLayout) findViewById(R.id.bottom_dialog);
 
+        btnFacem = (ImageView) findViewById(R.id.btnFacem);
         txtBack = (TextView) findViewById(R.id.txtBack);
         btnLogin = (TextView) findViewById(R.id.btnLogin);
         edtUser = (EditText) findViewById(R.id.edtUser);
@@ -131,9 +137,36 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         Intent i = getIntent();
-        if(i==null || i.getStringExtra("source") == null) {
-            bottom_dialog.animate().translationY(screenHeight - skyImageSize);
+        if (i == null || i.getStringExtra("source") == null) {
+            ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", 0, screenHeight - skyImageSize);
+            move.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    bottom_dialog.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            move.start();
+
+            //   bottom_dialog.animate().translationY(screenHeight - skyImageSize);
+
         } else {
+            bottom_dialog.setVisibility(View.VISIBLE);
+            visibleBottomView = true;
             Toast.makeText(context, "Aveti nevoie de un cont pentru comunitate", Toast.LENGTH_LONG).show();
         }
 
@@ -163,27 +196,43 @@ public class LoginActivity extends AppCompatActivity {
         final MyGestureListener footerGestureListener = new MyGestureListener();
         final MyGestureListener bottomViewGestureListener = new MyGestureListener();
         footer.setOnTouchListener(footerGestureListener);
+        btnFacem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                footer.callOnClick();
+            }
+        });
         footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 MyGestureListener.Action action = footerGestureListener.getAction();
-                if(action == MyGestureListener.Action.BT || action == MyGestureListener.Action.None){
-                    Log.e("footer", "open"+action.toString());
+                if (action == MyGestureListener.Action.BT || action == MyGestureListener.Action.None) {
+                    Log.e("footer", "open" + action.toString());
                     visibleBottomView = true;
-                    bottom_dialog.animate().translationY(0).withLayer().setListener(new Animator.AnimatorListener() {
+
+                    if (visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
+                        Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
+                        startActivity(intent);
+                        finish();
+                        return;
+                    }
+                    ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", screenHeight - skyImageSize, 0);
+                    move.setDuration(600);
+                    move.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            if(visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())){
-                                Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
-                                startActivity(intent);
-                                finish();
-                            }
+                            bottom_dialog.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-
+                            bottom_dialog.setLayerType(View.LAYER_TYPE_NONE, null);
+                           /* if(visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())){
+                                Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
+                                startActivity(intent);
+                                finish();
+                            }*/
                         }
 
                         @Override
@@ -195,31 +244,86 @@ public class LoginActivity extends AppCompatActivity {
                         public void onAnimationRepeat(Animator animation) {
 
                         }
-                    }).start();
+                    });
+                    move.start();
                 }
 
             }
         });
-
 
 
         bottom_dialog.setOnTouchListener(bottomViewGestureListener);
         bottom_dialog.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-                if(bottomViewGestureListener.getAction() == MyGestureListener.Action.TB){
+                if (bottomViewGestureListener.getAction() == MyGestureListener.Action.TB) {
                     visibleBottomView = false;
-                    bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+
+                    ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", 0, screenHeight - skyImageSize);
+                    move.setDuration(600);
+                    move.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            bottom_dialog.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                            StaticMethods.hideKeyboard(LoginActivity.this);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            bottom_dialog.setLayerType(View.LAYER_TYPE_NONE, null);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                    move.start();
+
+                    //   bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
                 }
             }
         });
-
 
 
         txtBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+                visibleBottomView = false;
+
+                ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", 0, screenHeight - skyImageSize);
+                move.setDuration(600);
+                move.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        bottom_dialog.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                        StaticMethods.hideKeyboard(LoginActivity.this);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        bottom_dialog.setLayerType(View.LAYER_TYPE_NONE, null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+                move.start();
+                //  bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
 
             }
         });
@@ -227,7 +331,7 @@ public class LoginActivity extends AppCompatActivity {
         edtUser.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
+                if (hasFocus) {
                     edtUser.setHintTextColor(ContextCompat.getColor(context, R.color.light_grey));
                     edtUser.setHint("Nume utilizator");
                 }
@@ -237,7 +341,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPass.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
+                if (hasFocus) {
                     edtPass.setHintTextColor(ContextCompat.getColor(context, R.color.light_grey));
                     edtPass.setHint("Parola");
                 }
@@ -264,9 +368,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (ok) {
                     if (Connections.isNetworkConnected(getApplicationContext())) {
-                        login(edtUser.getText().toString(), edtPass.getText().toString());
+                        login(edtUser.getText().toString(), edtPass.getText().toString(), "Custom login");
                     } else {
-                        new NotificationDialog(LoginActivity.this,"Vă rugăm să vă conectați la internet pentru a putea intra în cont!").show();
+                        new NotificationDialog(LoginActivity.this, "Vă rugăm să vă conectați la internet pentru a putea intra în cont!").show();
                     }
                 }
             }
@@ -299,7 +403,7 @@ public class LoginActivity extends AppCompatActivity {
                                         fbId = profile.getId();
                                         facebookConnect();
                                     } else {
-                                        new NotificationDialog(LoginActivity.this,"Nu vă puteți conecta prin Facebook întrucât nu ați fost de accord cu preluarea informațiilor dumneavoastră").show();
+                                        new NotificationDialog(LoginActivity.this, "Nu vă puteți conecta prin Facebook întrucât nu ați fost de accord cu preluarea informațiilor dumneavoastră").show();
                                     }
                                 }
                             });
@@ -307,22 +411,22 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancel() {
-                            Log.v("","");
+                            Log.v("", "");
                         }
 
                         @Override
                         public void onException(Throwable throwable) {
-                            Log.v("","");
+                            Log.v("", "");
                         }
 
                         @Override
                         public void onFail(String s) {
-                            Log.v("","");
+                            Log.v("", "");
                         }
                     });
 
                 } else {
-                    new NotificationDialog(LoginActivity.this,"Vă rugăm să vă conectați la internet pentru a putea intra în cont!").show();
+                    new NotificationDialog(LoginActivity.this, "Vă rugăm să vă conectați la internet pentru a putea intra în cont!").show();
                 }
             }
 
@@ -339,8 +443,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        if ( !getIntent().getBooleanExtra("fromShop", false) && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
-            login(sp.getString("username", ""), sp.getString("password", ""));
+        if (!getIntent().getBooleanExtra("fromShop", false) && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
+            login(sp.getString("username", ""), sp.getString("password", ""), "unknown");
         }
 
 
@@ -349,7 +453,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if(hasFocus) {
+        if (hasFocus) {
             float shopBtnWidth = screenWidth / 1.29f;
             shopInfoBtn.getLayoutParams().width = (int) shopBtnWidth;
             shopInfoBtn.requestLayout();
@@ -365,27 +469,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void facebookConnect(){
+    private void facebookConnect() {
         try {
-            String answer= LeroyApplication.getInstance().makePublicRequest("user_get_id_by_fbid",fbId).getString("result");
-            if(answer.equals("false")){
+            String answer = LeroyApplication.getInstance().makePublicRequest("user_get_id_by_fbid", fbId).getString("result");
+            if (answer.equals("false")) {
                 if (init()) {
                     // adaugam utilizator nou
                     String link = "http://facem-facem.ro/api.php";
                     String parameters = "api_m=" + "register_addmember" +
                             "&agree=" + 1 +
-                            "&username=" + fbName+
-                            "&email=" +fbEmail +
+                            "&username=" + fbName +
+                            "&email=" + fbEmail +
                             "&emailconfirm=" + fbEmail +
                             "&password_md5=" + Encrypt.getMD5UTFEncryptedPass(fbId) +
                             "&passwordconfirm_md5=" + Encrypt.getMD5UTFEncryptedPass(fbId) +
-                            "&userfield[field5]=" + fbFirstName+
+                            "&userfield[field5]=" + fbFirstName +
                             "&userfield[field6]=" + fbLastName +
                             "&userfield[field9]=" + "l" +
                             "&userfield[field10]=" + "0700000000" +
                             "&userfield[field11]=" + "" +
                             "&userfield[field12]=" + "1" +
-                            "&userfield[field13]=" + "Bucuresti"+
+                            "&userfield[field13]=" + "Bucuresti" +
                             "&dst=" + "1" +
                             "&timezoneoffset=" + "2" +
                             "&api_c=" + sp.getString("apiclientid", "") +
@@ -394,22 +498,24 @@ public class LoginActivity extends AppCompatActivity {
                             "&api_sig=" + sp.getString("signature", "");
                     try {
                         new WebServiceConnector().execute(link, parameters).get(5, TimeUnit.SECONDS);
-                        login(fbName,fbId);
+
+                        login(fbName, fbId, "Facebook sign-up");
+
                         LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", sp.getString("userid", ""), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
                     } catch (Exception e) {
                         Log.e("eroare", e.toString());
                         e.printStackTrace();
                     }
                 }
-            }else{
+            } else {
 
                 JSONObject jsonObject = new JSONObject(answer);
                 Log.e("json", jsonObject.getString("userid"));
 
-                LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId,fbName,Encrypt.getMD5UTFEncryptedPass(fbId),fbAccessToken);
+                LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
                 injectCookies();
 
-                login(fbName,fbId);
+                login(fbName, fbId, "Facebook login");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -440,50 +546,30 @@ public class LoginActivity extends AppCompatActivity {
             spEditor.putString("signature", signature);
             spEditor.commit();
         } catch (JSONException e) {
-            new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
+            new NotificationDialog(LoginActivity.this, "Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
             e.printStackTrace();
         }
         return true;
     }
 
-    //AsyncTask pentru logarea userului pe site si extragerea cookie-urilor aferente userului logat
-    private class GetCookies extends AsyncTask<String, Void, Map<String, String>> {
-        @Override
-        protected Map<String, String> doInBackground(String... params) {
-            try {
-                return Jsoup.connect("http://www.facem-facem.ro/login.php?do=login")
-                        .data("vb_login_username", params[0])
-                        .data("cookieuser", "true")
-                        .data("vb_login_md5password", Encrypt.getMD5UTFEncryptedPass(params[1]))
-                        .data("vb_login_md5password_utf", Encrypt.getMD5UTFEncryptedPass(params[1]))
-                        .data("securitytoken", "guest")
-                        .data("s", "")
-                        .data("do", "login")
-                        .data("hiddenlogin", "do")
-                        .method(Connection.Method.POST).execute().cookies();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-//    preluarea informatiilor de autentificare de la pagina de register.
+    //    preluarea informatiilor de autentificare de la pagina de register.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         SimpleFacebook.getInstance(LoginActivity.this).onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == SUCCESS_REGISTRATION) {
-//                userName.setText(data.getStringExtra("username"));
-//                password.setText(data.getStringExtra("password"));
+
+                edtUser.setText(data.getStringExtra("username"));
+                edtPass.setText(data.getStringExtra("password"));
+                footer.callOnClick();
             }
         }
     }
 
     //initializare facebook
-    private void initFacebook(){
-        Permission[] permissions = new Permission[] {
+    private void initFacebook() {
+        Permission[] permissions = new Permission[]{
                 Permission.EMAIL
         };
         SimpleFacebookConfiguration configuration = new SimpleFacebookConfiguration.Builder()
@@ -495,8 +581,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //Conectarea utilizatorului la platforma si obtinerea cookie-urilor din site.
-    private void login(String username, String password){
-        if(init()) {
+    private void login(String username, String password, String method) {
+        if (init()) {
             String result = "";
             String link = "http://facem-facem.ro/api.php";
             String parameters = "api_m=" + "login_login" +
@@ -515,42 +601,80 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject response = new JSONObject(result);
                 String acces = response.getJSONObject("response").getString("errormessage");
                 if (acces.contains("redirect_login")) {
-                    spEditor=sp.edit();
-                    spEditor.putString("username",username);
+                    spEditor = sp.edit();
+                    spEditor.putString("username", username);
                     spEditor.putString("password", password);
                     spEditor.putString("userid", response.getJSONObject("session").getString("userid"));
-                    spEditor.putString("sessionhash",response.getJSONObject("session").getString("dbsessionhash"));
+                    spEditor.putString("sessionhash", response.getJSONObject("session").getString("dbsessionhash"));
                     spEditor.putBoolean("isConnected", true);
 
 
-
-
-                    spEditor.putString("endpointCookie",response.getJSONObject("session").getString("dbsessionhash"));
-
-
-
+                    spEditor.putString("endpointCookie", response.getJSONObject("session").getString("dbsessionhash"));
 
 
                     try {
-                        Map<String,String> cookeis = new GetCookies().execute(username, password).get();
-                        if(cookeis!=null){
+                        Map<String, String> cookeis = new GetCookies().execute(username, password).get();
+                        if (cookeis != null) {
                             spEditor.putString("cookies", MapUtil.mapToString(cookeis));
                         }
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
                     }
                     spEditor.commit();
+                    if (!method.contains("sign")) {
+                        Answers.getInstance().logLogin(new LoginEvent()
+                                .putMethod(method)
+                                .putSuccess(true));
+                    } else {
+                        Answers.getInstance().logSignUp(new SignUpEvent()
+                                .putMethod(method)
+                                .putSuccess(true));
+                    }
                     Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
                     startActivity(intent);
                     finish();
-                } else
-                    new NotificationDialog(LoginActivity.this,"Numele de utilizator sau parola sunt incorecte").show();
-            } catch (JSONException e){
-                new NotificationDialog(LoginActivity.this,"Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
+                } else {
+                    if (!method.contains("sign")) {
+                        Answers.getInstance().logLogin(new LoginEvent()
+                                .putMethod(method)
+                                .putSuccess(false)
+                                .putCustomAttribute("Cause", "Incorrect password/username"));
+                    } else {
+                        Answers.getInstance().logSignUp(new SignUpEvent()
+                                .putMethod(method)
+                                .putSuccess(false)
+                                .putCustomAttribute("Cause", "Incorrect password/username"));
+                    }
+                    new NotificationDialog(LoginActivity.this, "Numele de utilizator sau parola sunt incorecte").show();
+                }
+            } catch (JSONException e) {
+                if (!method.contains("sign")) {
+                    Answers.getInstance().logLogin(new LoginEvent()
+                            .putMethod(method)
+                            .putSuccess(false)
+                            .putCustomAttribute("Cause", "Platform not working"));
+                } else {
+                    Answers.getInstance().logSignUp(new SignUpEvent()
+                            .putMethod(method)
+                            .putSuccess(false)
+                            .putCustomAttribute("Cause", "Platform not working"));
+                }
+                new NotificationDialog(LoginActivity.this, "Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
                 e.printStackTrace();
             }
-        }else{
-            Toast.makeText(this,"Ne cerem scuze, dar platforma nu funcționează. Vă redirecţionăm spre secţiunea informaţii magazine.", Toast.LENGTH_LONG).show();
+        } else {
+            if (!method.contains("sign")) {
+                Answers.getInstance().logLogin(new LoginEvent()
+                        .putMethod(method)
+                        .putSuccess(false)
+                        .putCustomAttribute("Cause", "Platform not working"));
+            } else {
+                Answers.getInstance().logSignUp(new SignUpEvent()
+                        .putMethod(method)
+                        .putSuccess(false)
+                        .putCustomAttribute("Cause", "Platform not working"));
+            }
+            Toast.makeText(this, "Ne cerem scuze, dar platforma nu funcționează. Vă redirecţionăm spre secţiunea informaţii magazine.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(LoginActivity.this, ShopDashboard.class);
             startActivity(intent);
             finish();
@@ -572,8 +696,8 @@ public class LoginActivity extends AppCompatActivity {
         final TextView resetButton = (TextView) dialog.findViewById(R.id.reset);
         final TextView inchideButton = (TextView) dialog.findViewById(R.id.inchide_popup);
 
-        final EditText email = (EditText)dialog.findViewById(R.id.email);
-        RelativeLayout root_view_forgot = (RelativeLayout)dialog.findViewById(R.id.root_view_forgot);
+        final EditText email = (EditText) dialog.findViewById(R.id.email);
+        RelativeLayout root_view_forgot = (RelativeLayout) dialog.findViewById(R.id.root_view_forgot);
 
         //views that need to catch Touch event
 
@@ -592,7 +716,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ok = true;
-                if (email.getText().toString().equals("")||!email.getText().toString().contains("@")||!email.getText().toString().contains(".")) {
+                if (email.getText().toString().equals("") || !email.getText().toString().contains("@") || !email.getText().toString().contains(".")) {
                     email.setText("");
                     email.setHintTextColor(ContextCompat.getColor(context, R.color.light_red));
                     email.setHint("Adresa de e-mail incorectă");
@@ -600,16 +724,16 @@ public class LoginActivity extends AppCompatActivity {
 
                     ok = false;
                 }
-                if(ok){
-                    if(init()){
+                if (ok) {
+                    if (init()) {
                         String link = "http://facem-facem.ro/api.php";
-                        String parameters = "api_m=" + "login_emailpassword"+
-                                "&email=" + email.getText().toString()+
+                        String parameters = "api_m=" + "login_emailpassword" +
+                                "&email=" + email.getText().toString() +
                                 "&api_c=" + sp.getString("apiclientid", "") +
                                 "&api_s=" + sp.getString("apiaccesstoken", "") +
                                 "&api_v=" + sp.getString("apiversion", "") +
                                 "&api_sig=" + sp.getString("signature", "");
-                        new WebServiceConnector().execute(link,parameters);
+                        new WebServiceConnector().execute(link, parameters);
 
                         titluPopup.setText("Vă mulțumim!");
                         titluPopup.setTypeface(null, Typeface.BOLD);
@@ -643,11 +767,35 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if(visibleBottomView){
+        if (visibleBottomView) {
             visibleBottomView = false;
-            bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
-        }
-        else
+            //  bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+
+            ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", 0, screenHeight - skyImageSize);
+            move.setDuration(600);
+            move.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    bottom_dialog.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    bottom_dialog.setLayerType(View.LAYER_TYPE_NONE, null);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            move.start();
+        } else
             super.onBackPressed();
     }
 
@@ -662,6 +810,28 @@ public class LoginActivity extends AppCompatActivity {
             Log.e("cookieString", cookieString);
             cookieManager.setCookie("www.facem-facem.ro", cookieString);
             CookieSyncManager.getInstance().sync();
+        }
+    }
+
+    //AsyncTask pentru logarea userului pe site si extragerea cookie-urilor aferente userului logat
+    private class GetCookies extends AsyncTask<String, Void, Map<String, String>> {
+        @Override
+        protected Map<String, String> doInBackground(String... params) {
+            try {
+                return Jsoup.connect("http://www.facem-facem.ro/login.php?do=login")
+                        .data("vb_login_username", params[0])
+                        .data("cookieuser", "true")
+                        .data("vb_login_md5password", Encrypt.getMD5UTFEncryptedPass(params[1]))
+                        .data("vb_login_md5password_utf", Encrypt.getMD5UTFEncryptedPass(params[1]))
+                        .data("securitytoken", "guest")
+                        .data("s", "")
+                        .data("do", "login")
+                        .data("hiddenlogin", "do")
+                        .method(Connection.Method.POST).execute().cookies();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
