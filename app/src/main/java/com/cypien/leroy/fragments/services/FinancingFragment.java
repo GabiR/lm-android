@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.ViewPageFragment;
@@ -38,27 +40,28 @@ import java.io.OutputStream;
 /**
  * Created by alexa on 10/1/2015.
  */
-public class FinancingFragment extends Fragment{
+public class FinancingFragment extends Fragment {
     private View view;
     private TextView financingDetails;
-    private int phoneNumbers[]={R.id.phone1,R.id.phone2,R.id.phone3,R.id.phone4,R.id.phone5,R.id.phone6,
-                            R.id.phone7,R.id.phone8,R.id.phone9,R.id.phone10,R.id.phone11, R.id.phone12,
-                            R.id.phone13, R.id.phone14, R.id.phone15};
+    private int phoneNumbers[] = {R.id.phone1, R.id.phone2, R.id.phone3, R.id.phone4, R.id.phone5, R.id.phone6,
+            R.id.phone7, R.id.phone8, R.id.phone9, R.id.phone10, R.id.phone11, R.id.phone12,
+            R.id.phone13, R.id.phone14, R.id.phone15};
     private TextView financingDetails2, simulator;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.financing_service_screen,container,false);
+        view = inflater.inflate(R.layout.financing_service_screen, container, false);
 
         Bundle bundle = getArguments();
-        Service service = (Service)bundle.getSerializable("service");
+        Service service = (Service) bundle.getSerializable("service");
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "FinancingServiceFragment");
+        mTracker.setScreenName("Screen: Financing Service");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Financing Service"));
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(service.getName());
 
         ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
@@ -136,7 +139,7 @@ public class FinancingFragment extends Fragment{
         return view;
     }
 
-    private void makePhoneCall(String phone){
+    private void makePhoneCall(String phone) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phone));
         startActivity(intent);
@@ -146,7 +149,7 @@ public class FinancingFragment extends Fragment{
         AssetManager assetManager = getActivity().getAssets();
         InputStream in = null;
         long length = 0;
-        String path="";
+        String path = "";
         OutputStream out = null;
         try {
             in = assetManager.open("finance.pdf");
@@ -155,15 +158,14 @@ public class FinancingFragment extends Fragment{
             path = outFile.getAbsolutePath();
             byte[] buffer = new byte[1024];
             int read;
-            while((read = in.read(buffer)) != -1){
+            while ((read = in.read(buffer)) != -1) {
                 Log.e("bla", String.valueOf(read));
                 out.write(buffer, 0, read);
                 length += read;
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (in != null) {
                 try {
                     in.close();
@@ -182,8 +184,8 @@ public class FinancingFragment extends Fragment{
             Log.e("bla", String.valueOf(length));
             DownloadManager manager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
 
-            manager.addCompletedDownload("Formular de finantare.pdf", "LeroyMerlin", true, "application/pdf", path,length,true);
-            new NotificationDialog(getActivity(),"Formularul de finantare a fost descarcat. Va rugam sa verificati directorul de descarcari .").show();
+            manager.addCompletedDownload("Formular de finantare.pdf", "LeroyMerlin", true, "application/pdf", path, length, true);
+            new NotificationDialog(getActivity(), "Formularul de finantare a fost descarcat. Va rugam sa verificati directorul de descarcari .").show();
         }
     }
 }

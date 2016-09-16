@@ -3,12 +3,16 @@ package com.cypien.leroy.fragments;/*
  */
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -23,10 +27,25 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.VoiceActivity;
 import com.cypien.leroy.models.Store;
+import com.cypien.leroy.utils.Connections;
+import com.cypien.leroy.utils.DatabaseConnector;
+import com.cypien.leroy.utils.NotificationDialog;
+import com.cypien.leroy.utils.PermissionUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +61,8 @@ public class ShopHomeFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = getActivity().getLayoutInflater().inflate(R.layout.shop_home, container, false);
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Shop Home"));
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Leroy Merlin");
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
@@ -52,7 +72,6 @@ public class ShopHomeFragment extends Fragment {
         calculator = (RelativeLayout) view.findViewById(R.id.calculator);
         nearestStore = (RelativeLayout) view.findViewById(R.id.nearest_store);
         prices = (ImageView) view.findViewById(R.id.prices);
-
 
 
         prices.setOnClickListener(new View.OnClickListener() {
@@ -73,15 +92,15 @@ public class ShopHomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                    ViewPageFragment f = new ViewPageFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title", "Cariere");
-                    bundle.putString("url", "http://job.leroymerlin.ro/");
-                    f.setArguments(bundle);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.content_frame, f).addToBackStack(null);
-                    transaction.commit();
+                ViewPageFragment f = new ViewPageFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "Cariere");
+                bundle.putString("url", "http://job.leroymerlin.ro/");
+                f.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
             }
         });
         clientVoice.setOnClickListener(new View.OnClickListener() {
@@ -114,26 +133,82 @@ public class ShopHomeFragment extends Fragment {
         nearestStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (!checkPermission())
+                        return;
+                }
+                stores = DatabaseConnector.getHelper(getActivity()).loadStores();
+                // }
+                // getStores();
+                if (stores.size() == 0 && !Connections.isNetworkConnected(getActivity())) {
+                    new NotificationDialog(getActivity(), "Vă rugăm să vă conectați la Internet pentru a afla cel mai apropiat magazin!").show();
+                    return;
+                }
+                if (stores.size() == 0 && Connections.isNetworkConnected(getActivity())) {
+                    new GetStore().execute(null, null, null);
+                    return;
+                }
 
                 Location location = getLastKnownLocation();
-                Store store = getStore(location);
-                Log.e("store", store.getName());
-                StoreFragment f = new StoreFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("store", store);
-                f.setArguments(bundle);
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content_frame, f).addToBackStack(null);
-                transaction.commit();
+
+                if (location != null) {
+                    Store store = getStore(location);
+                    Log.e("store", store.getName());
+                    StoreFragment f = new StoreFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("store", store);
+                    f.setArguments(bundle);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                    transaction.commit();
+                }
+
             }
         });
 
         return view;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (PermissionUtils.isPermissionGranted(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                || PermissionUtils.isPermissionGranted(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            nearestStore.callOnClick();
+        }
+    }
+
+    private boolean checkPermission() {
+        String[] permissions = new String[2];
+        int i = 0;
+        if (PermissionUtils.shouldRequestPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION))
+            permissions[i++] = Manifest.permission.ACCESS_COARSE_LOCATION;
+        if (PermissionUtils.shouldRequestPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION))
+            permissions[i++] = Manifest.permission.ACCESS_FINE_LOCATION;
+
+        if (i > 0) {
+            PermissionUtils.requestPermission(getActivity(), permissions, 0);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isLocationEnabled(LocationManager locationManager) {
+        return
+                locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                        locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
     private Location getLastKnownLocation() {
+
+
         LocationManager mLocationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        if (!isLocationEnabled(mLocationManager)) {
+            getActivity().startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            return null;
+        }
         List<String> providers = mLocationManager.getProviders(true);
         Location bestLocation = null;
         for (String provider : providers) {
@@ -149,29 +224,162 @@ public class ShopHomeFragment extends Fragment {
                 bestLocation = l;
             }
         }
-        Log.e("location", bestLocation.getLatitude()+" "+bestLocation.getLongitude());
+        //      Log.e("location", bestLocation.getLatitude()+" "+bestLocation.getLongitude());
         return bestLocation;
     }
 
-    public Store getStore(Location location){
-        getStores();
+    public Store getStore(Location location) {
+
+        /*if(Connections.isNetworkConnected(getActivity())){
+            uploadStores();
+        }
+        else{*/
+
+
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         float[] distance = new float[1];
         Store store = stores.get(0);
-        Location.distanceBetween(latitude, longitude, store.getLatitude(), store.getLongitude(),distance);
+        Location.distanceBetween(latitude, longitude, store.getLatitude(), store.getLongitude(), distance);
         float minDistance = distance[0];
 
-        for(Store s:stores){
-            Location.distanceBetween(latitude,longitude,s.getLatitude(),s.getLongitude(),distance);
-            if(minDistance>distance[0]) {
+        for (Store s : stores) {
+            Location.distanceBetween(latitude, longitude, s.getLatitude(), s.getLongitude(), distance);
+            if (minDistance > distance[0]) {
                 minDistance = distance[0];
                 store = s;
             }
         }
         return store;
     }
-    void getStores(){
+
+    public class GetStore extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog pg;
+
+        private void uploadStores() throws JSONException {
+            DatabaseConnector.getHelper(getActivity()).deleteAllStores();
+            JSONObject jsonObject = makePublicRequest();
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            int size = jsonArray != null ? jsonArray.length() : 0;
+            for (int i = 0; i < size; i++) {
+                JSONObject jsn = jsonArray.getJSONObject(i);
+                Store store = new Store();
+                store.setId(jsn.getString("contact_id"));
+                store.setAddress(jsn.getString("contact_adresa"));
+                store.setFacebookAddress(jsn.getString("contact_facebook"));
+                store.setLatitude(jsn.getDouble("contact_lat"));
+                store.setLongitude(jsn.getDouble("contact_lng"));
+                store.setPhone(jsn.getString("contact_tel"));
+                store.setOpen("Luni - Sambata: " + jsn.getString("contact_orar_rest_deschidere") + ":00 - " +
+                        jsn.getString("contact_orar_rest_inchidere") + ":00\nDuminica: " + jsn.getString("contact_orar_duminica_deschidere") + ":00 - " +
+                        jsn.getString("contact_orar_duminica_inchidere") + ":00");
+                store.setName(jsn.getString("contact_magazin_title"));
+
+                DatabaseConnector.getHelper(getActivity()).insertStore(store);
+                stores.add(store);
+            }
+        }
+
+        public JSONObject makePublicRequest() {
+            ArrayList<Integer> parameters = new ArrayList<>();
+            parameters.add(0);
+            parameters.add(100);
+            JSONObject request = new JSONObject();
+            try {
+                request.put("method", "contact_get_all");
+                request.put("params", new JSONArray(parameters));
+                Log.e("request", request.toString());
+                return new JSONObject(getRequest("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + request.toString()));
+            } catch (JSONException e) {
+                Log.e("eroare", e.toString());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                uploadStores();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected String getRequest(String... info) {
+            HttpURLConnection connection;
+            OutputStreamWriter request = null;
+            URL url = null;
+            StringBuilder sb = new StringBuilder();
+            InputStreamReader isr = null;
+            BufferedReader reader = null;
+
+            try {
+                url = new URL(info[0]);
+                connection = (HttpURLConnection) url.openConnection();
+
+                connection.setInstanceFollowRedirects(false);
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                connection.setRequestMethod("POST");
+                request = new OutputStreamWriter(connection.getOutputStream());
+
+                request.write(info[1]);
+                request.flush();
+                request.close();
+
+                String line = "";
+                isr = new InputStreamReader(connection.getInputStream());
+                reader = new BufferedReader(isr);
+                line = reader.readLine();
+                while (line != null) {
+                    sb.append(line);
+                    try {
+                        line = reader.readLine();
+                    } catch (Exception e) {
+                        line = null;
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("eroare", e.toString());
+                e.printStackTrace();
+            }
+            if (sb != null && !sb.equals(""))
+                return sb.toString();
+            else return "";
+        }
+
+        @Override
+        protected void onPreExecute() {
+            pg = new ProgressDialog(getActivity());
+            pg.setCancelable(false);
+            pg.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Location location = getLastKnownLocation();
+            pg.dismiss();
+            if (location != null) {
+                Store store = getStore(location);
+                Log.e("store", store.getName());
+                StoreFragment f = new StoreFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("store", store);
+                f.setArguments(bundle);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
+            }
+        }
+    }
+
+
+  /*  void getStores(){
         stores = new ArrayList<>();
         Store store;
 
@@ -313,5 +521,5 @@ public class ShopHomeFragment extends Fragment {
         store.setDirections("");
         store.setFacebookAddress("LeroyMerlinTimisoara");
         stores.add(store);
-    }
+    }*/
 }

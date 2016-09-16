@@ -24,10 +24,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.MyWebViewClient;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +55,12 @@ public class ViewPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.web_screen, container, false);
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: View WebPage"));
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: View WebPage");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         Bundle bundle = this.getArguments();
         String title = bundle.getString("title", "");
         url = bundle.getString("url");
@@ -58,7 +68,7 @@ public class ViewPageFragment extends Fragment {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
 
-        ((Toolbar)  getActivity().findViewById(R.id.toolbar)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
@@ -80,13 +90,13 @@ public class ViewPageFragment extends Fragment {
                 loadPage();
             }
         });
-        if(!title.equals("Cariere")) {
+        if (!title.equals("Cariere")) {
 
             byte[] buffer = new byte[0];
             try {
-                if(!title.equals("Preț INEGALABIL"))
-                    if(title.equals("Sfaturi UTILE"))
-                    input = getActivity().getAssets().open("hideAdvicesSections.js");
+                if (!title.equals("Preț INEGALABIL"))
+                    if (title.equals("Sfaturi UTILE"))
+                        input = getActivity().getAssets().open("hideAdvicesSections.js");
                     else
                         input = getActivity().getAssets().open("hideCalculatorSections.js");
                 else
@@ -151,7 +161,6 @@ public class ViewPageFragment extends Fragment {
     }
 
 
-
     // verfica daca exista internet si incarca pagina
     private void loadPage() {
         if (Connections.isNetworkConnected(getActivity())) {
@@ -164,7 +173,6 @@ public class ViewPageFragment extends Fragment {
             mWebViewContainer.setVisibility(View.GONE);
         }
     }
-
 
 
 }

@@ -17,10 +17,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.NotificationDialog;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.rey.material.widget.Spinner;
 
@@ -40,22 +44,28 @@ import java.util.regex.Pattern;
  * Created by Alex on 02.09.2016.
  */
 public class VoiceActivity extends AppCompatActivity {
+    private static final int REQUEST_CHOOSER = 1234;
     private final String subjectError = "<font color=\"#D50000\">Completați subiectul</font>";
     private final String messageError = "<font color=\"#D50000\">Completați mesajul</font>";
     private final String emailError = "<font color=\"#D50000\">Adresa de email invalidă</font>";
     private final String firstNameError = "<font color=\"#D50000\">Completați prenumele</font>";
     private final String lastNameError = "<font color=\"#D50000\">Completați numele</font>";
-    private static final int REQUEST_CHOOSER = 1234;
     EditText email, firstName, lastName, phone, subject, message;
     Spinner store;
     boolean[] errors = new boolean[5];
     Button pickFile, sendMessage;
-    private String filePath ="";
+    private String filePath = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vocea_clientului);
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Vocea Clientului"));
+        LeroyApplication application = (LeroyApplication) getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: Vocea Clientului");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         email = (EditText) findViewById(R.id.email);
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
@@ -163,56 +173,56 @@ public class VoiceActivity extends AppCompatActivity {
                     errors[4] = true;
                 }
                 findViewById(R.id.focus_thief).requestFocus();
-                for(int i=0;i<5;i++)
-                    if(errors[i])
+                for (int i = 0; i < 5; i++)
+                    if (errors[i])
                         return;
                 if (ok) {
                     if (Connections.isNetworkConnected(VoiceActivity.this)) {
-                    String content = "";
+                        String content = "";
 
-                    content = content + "Nume: " + lastName.getText().toString()+" " + firstName.getText().toString() + "\n";
-                    Pattern pattern = Pattern.compile("\\d{10}");
-                    Matcher matcher = pattern.matcher(phone.getText().toString());
-                    if (!phone.getText().toString().equals("") && matcher.matches())
-                        content = content + "Telefon: " + phone + "\n";
+                        content = content + "Nume: " + lastName.getText().toString() + " " + firstName.getText().toString() + "\n";
+                        Pattern pattern = Pattern.compile("\\d{10}");
+                        Matcher matcher = pattern.matcher(phone.getText().toString());
+                        if (!phone.getText().toString().equals("") && matcher.matches())
+                            content = content + "Telefon: " + phone + "\n";
 
-                    content = content + "Adresa e-mail: " + lastEmail + "\n";
-                    content = content + "Magazin: " + store.getSelectedItem().toString() + "\n\n";
-                    content = content + "\n" + message.getText().toString();
-                    JSONObject jsn = new JSONObject();
-                    try {
-                        jsn.put("email_body", content);
-                        jsn.put("email_subject", subject.getText().toString());
-                        jsn.put("email_from", email);
-                        jsn.put("email_from_name", firstName.getText().toString()+ " " + lastName.getText().toString());
-                        jsn.put("email_attachment", fileToBase64(filePath));
-                        jsn.put("email_attachment_name", new File(filePath).getName());
-                        jsn = LeroyApplication.getInstance().makePublicRequest("email_send", jsn.toString());
-                        if (jsn != null && jsn.getString("result").equals("null")) {
+                        content = content + "Adresa e-mail: " + lastEmail + "\n";
+                        content = content + "Magazin: " + store.getSelectedItem().toString() + "\n\n";
+                        content = content + "\n" + message.getText().toString();
+                        JSONObject jsn = new JSONObject();
+                        try {
+                            jsn.put("email_body", content);
+                            jsn.put("email_subject", subject.getText().toString());
+                            jsn.put("email_from", email);
+                            jsn.put("email_from_name", firstName.getText().toString() + " " + lastName.getText().toString());
+                            jsn.put("email_attachment", fileToBase64(filePath));
+                            jsn.put("email_attachment_name", new File(filePath).getName());
+                            jsn = LeroyApplication.getInstance().makePublicRequest("email_send", jsn.toString());
+                            if (jsn != null && jsn.getString("result").equals("null")) {
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(VoiceActivity.this, R.style.AppCompatAlertDialogStyle);
-                            builder.setMessage(Html.fromHtml("Mesajul dumneavoastră a fost expediat cu succes!"));
+                                AlertDialog.Builder builder = new AlertDialog.Builder(VoiceActivity.this, R.style.AppCompatAlertDialogStyle);
+                                builder.setMessage(Html.fromHtml("Mesajul dumneavoastră a fost expediat cu succes!"));
 
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    VoiceActivity.this.finish();
-                                }
-                            });
-                            builder.show();
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        VoiceActivity.this.finish();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
+                        new NotificationDialog(VoiceActivity.this, "Pentru a putea trimite mesaje prin vocea clientului, vă rugăm să vă autentificați!").show();
+
                     }
                 }
-                    else {
-                        new NotificationDialog(VoiceActivity.this,"Pentru a putea trimite mesaje prin vocea clientului, vă rugăm să vă autentificați!").show();
-
-                    }
             }
-        }});
-        }
+        });
+    }
 
 
     @Override
@@ -234,23 +244,8 @@ public class VoiceActivity extends AppCompatActivity {
                 break;
         }
     }
-    /*public JSONObject makeRequest(String... params){
-        ArrayList<JSONObject> parameters = new ArrayList<>();
-        try {
-            for(int i = 1;i<params.length;i++){
-                parameters.add(new JSONObject(params[i]) );
-            }
-            JSONObject request = new JSONObject();
-            request.put("method", params[0]);
-            request.put("params",new JSONArray(parameters));
-            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+ LeroyApplication.getInstance().APIVersion, "q=" + URLEncoder.encode(request.toString())).get());
-        } catch (JSONException | InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 
-    private String fileToBase64(String filePath){
+    private String fileToBase64(String filePath) {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(filePath);

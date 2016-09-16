@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.CommunityHome;
@@ -37,6 +39,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
+
 /**
  * Created by GabiRotaru on 24/08/16.
  */
@@ -57,15 +60,16 @@ public class CommunityDashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = CommunityDashboard.this;
         setContentView(R.layout.community_dashboard);
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Community Screen"));
         LeroyApplication application = (LeroyApplication) getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "MainActivity");
+        mTracker.setScreenName("Screen: Community Screen");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
-        if(sp.getBoolean("isConnected",false)){
-          //  injectCookies();
+        if (sp.getBoolean("isConnected", false)) {
+            //  injectCookies();
             getUserInformation();
         }
 
@@ -106,38 +110,38 @@ public class CommunityDashboard extends AppCompatActivity {
 
 
         }
-        cookieString = "auth="+ cookies.get("value")+"; path=/; domain=www.facem-facem.ro";
-        Log.e("bla",  cookieString);
-    cookieManager.setCookie("www.facem-facem.ro", cookieString);
-    CookieSyncManager.getInstance().sync();
+        cookieString = "auth=" + cookies.get("value") + "; path=/; domain=www.facem-facem.ro";
+        Log.e("bla", cookieString);
+        cookieManager.setCookie("www.facem-facem.ro", cookieString);
+        CookieSyncManager.getInstance().sync();
     }
 
     void setOnClickAction(final LinearLayout linearLayout) {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(! linearLayout.getTag().toString().equals("shop"))
+                if (!linearLayout.getTag().toString().equals("shop"))
                     resolvePrevBtn(linearLayout);
-                switch(linearLayout.getTag().toString()) {
+                switch (linearLayout.getTag().toString()) {
                     case "home":
                         goToFragment(new CommunityHome());
-                        ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
-                        ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
+                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "projects":
                         goToFragment(new ProjectsListFragment());
-                        ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_green));
-                        ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_green));
+                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "discussions":
                         goToFragment(new DiscussionsFragment());
-                        ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_green));
-                        ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_green));
+                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "contests":
                         goToFragment(new ContestFragment());
-                        ((ImageView)linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_green));
-                        ((TextView)linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_green));
+                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                         break;
                     case "shop":
                         Intent intent = new Intent(CommunityDashboard.this, ShopDashboard.class);
@@ -151,23 +155,23 @@ public class CommunityDashboard extends AppCompatActivity {
     }
 
     void resolvePrevBtn(LinearLayout linearLayout) {
-        if(prevLayout!= null) {
+        if (prevLayout != null) {
             switch (prevLayout.getTag().toString()) {
                 case "home":
-                    ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_gray));
+                    ((ImageView) prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_gray));
                     break;
                 case "projects":
-                    ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_gray));
+                    ((ImageView) prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_gray));
                     break;
                 case "discussions":
-                    ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_gray));
+                    ((ImageView) prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_gray));
                     break;
                 case "contests":
-                    ((ImageView)prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_gray));
+                    ((ImageView) prevLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_gray));
                     break;
             }
 
-            ((TextView)prevLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.black));
+            ((TextView) prevLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.black));
         }
 
         prevLayout = linearLayout;
@@ -185,7 +189,7 @@ public class CommunityDashboard extends AppCompatActivity {
         builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                spEditor=sp.edit();
+                spEditor = sp.edit();
                 spEditor.clear();
                 spEditor.commit();
 
@@ -199,7 +203,7 @@ public class CommunityDashboard extends AppCompatActivity {
         builder.show();
     }
 
-    public void goToFragment (Fragment fragment) {
+    public void goToFragment(Fragment fragment) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame_community, fragment);
@@ -208,10 +212,10 @@ public class CommunityDashboard extends AppCompatActivity {
     }
 
     //ia de pe server informatiile despre utilizator
-    private void getUserInformation(){
+    private void getUserInformation() {
         try {
 
-            JSONObject response = ((LeroyApplication)getApplication()). makeRequest("user_get",sp.getString("endpointCookie", ""), sp.getString("userid", ""));
+            JSONObject response = ((LeroyApplication) getApplication()).makeRequest("user_get", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
             //Log.e("response", response.toString());
             response = response.getJSONObject("result");
 
@@ -231,7 +235,7 @@ public class CommunityDashboard extends AppCompatActivity {
             spEditor.putString("profilevisits", response.getString("profilevisits"));
             spEditor.putString("blognum", response.getString("blognum"));
             spEditor.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -245,26 +249,26 @@ public class CommunityDashboard extends AppCompatActivity {
     }
 
     //metoda apelata din fragmentele ce contin webview pentru a sti care dintre webview-uri este afisat pe activitatea curenta
-    public void setCurrentWebview(WebView webview){
-        currentWebview=webview;
-        htmlStack=new Stack<>();
+    public void setCurrentWebview(WebView webview) {
+        currentWebview = webview;
+        htmlStack = new Stack<>();
     }
 
     // intoarce stiva ce contine paginile html pe care le-a parcurs userul
-    public Stack<String> getHtmlStack(){
+    public Stack<String> getHtmlStack() {
         return htmlStack;
     }
 
     //intoarce cookieurile site-ului
-    public Map<String,String > getCookies(){
-        Map<String,String> cookies;
-        cookies= MapUtil.stringToMap(sp.getString("cookies", ""));
+    public Map<String, String> getCookies() {
+        Map<String, String> cookies;
+        cookies = MapUtil.stringToMap(sp.getString("cookies", ""));
         return cookies;
     }
 
     @Override
     public void onBackPressed() {
-        if(!goBack()) {
+        if (!goBack()) {
             super.onBackPressed();
             if (getFragmentManager().getBackStackEntryCount() != 0) {
                 getFragmentManager().popBackStack();
@@ -274,8 +278,8 @@ public class CommunityDashboard extends AppCompatActivity {
     }
 
     //controleaza apasarea butoanelor de back
-    private boolean goBack(){
-        if(currentWebview!=null) {
+    private boolean goBack() {
+        if (currentWebview != null) {
            /* if (currentWebview.canGoBack()&&htmlStack.size()>0) {
                 if(currentWebview.copyBackForwardList().getCurrentIndex()==1){
 
@@ -291,7 +295,7 @@ public class CommunityDashboard extends AppCompatActivity {
                 currentWebview.loadDataWithBaseURL(null, htmlStack.lastElement(), "text/html", "UTF-8", null);
                 return true;
             }*/
-            if(currentWebview.canGoBack()) {
+            if (currentWebview.canGoBack()) {
                 currentWebview.goBack();
                 return true;
             }

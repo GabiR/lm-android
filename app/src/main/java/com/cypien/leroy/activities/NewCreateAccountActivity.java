@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.SignUpEvent;
 import com.cypien.leroy.R;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.Encrypt;
@@ -137,8 +139,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (errors[2] && hasFocus) {
                     errors[2] = false;
-                    if(!lastUsername.equals(Jsoup.parse(usernameError).text()) && !lastUsername.equals(Jsoup.parse(usernameTaken).text()))
-                    username.setText(lastUsername);
+                    if (!lastUsername.equals(Jsoup.parse(usernameError).text()) && !lastUsername.equals(Jsoup.parse(usernameTaken).text()))
+                        username.setText(lastUsername);
                     else
                         username.setText("");
 
@@ -150,8 +152,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (errors[3] && hasFocus) {
                     errors[3] = false;
-                    if(!lastPhone.equals(Jsoup.parse(phoneError).text()))
-                    phone.setText(lastPhone);
+                    if (!lastPhone.equals(Jsoup.parse(phoneError).text()))
+                        phone.setText(lastPhone);
                     else
                         phone.setText("");
                 }
@@ -162,8 +164,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (errors[4] && hasFocus) {
                     errors[4] = false;
-                    if(!lastEmail.equals(Jsoup.parse(emailError).text()) && !lastEmail.equals(Jsoup.parse(emailTaken).text()))
-                    email.setText(lastEmail);
+                    if (!lastEmail.equals(Jsoup.parse(emailError).text()) && !lastEmail.equals(Jsoup.parse(emailTaken).text()))
+                        email.setText(lastEmail);
                     else
                         email.setText("");
 
@@ -176,8 +178,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                 if (errors[5] && hasFocus) {
                     errors[5] = false;
                     password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    if(!lastPassword.equals(Jsoup.parse(passwordError).text()) && !lastPassword.equals(Jsoup.parse(inexistentPassword).text()))
-                    password.setText(lastPassword);
+                    if (!lastPassword.equals(Jsoup.parse(passwordError).text()) && !lastPassword.equals(Jsoup.parse(inexistentPassword).text()))
+                        password.setText(lastPassword);
                     else
                         password.setText("");
 
@@ -190,8 +192,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                 if (errors[6] && hasFocus) {
                     errors[6] = false;
                     confirmPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    if(!lastConfirmPassword.equals(Jsoup.parse(inexistentPassword).text()) && !lastConfirmPassword.equals(Jsoup.parse(passwordError).text()))
-                    confirmPassword.setText(lastConfirmPassword);
+                    if (!lastConfirmPassword.equals(Jsoup.parse(inexistentPassword).text()) && !lastConfirmPassword.equals(Jsoup.parse(passwordError).text()))
+                        confirmPassword.setText(lastConfirmPassword);
                     else
                         confirmPassword.setText("");
 
@@ -228,8 +230,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-             //   new NotificationDialog(NewCreateAccountActivity.this, "Vă rugăm să vă conectați la internet pentru a vă putea inregistra!").show();
-            //    showRulesPopup();
+                //   new NotificationDialog(NewCreateAccountActivity.this, "Vă rugăm să vă conectați la internet pentru a vă putea inregistra!").show();
+                //    showRulesPopup();
             }
         });
         create.setOnClickListener(new View.OnClickListener() {
@@ -310,8 +312,8 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                     Toast.makeText(NewCreateAccountActivity.this, "Nu ați fost de acord cu regulile comunității", Toast.LENGTH_LONG).show();
                     ok = false;
                 }
-                for(int i=0;i<9;i++)
-                    if(errors[i]) {
+                for (int i = 0; i < 9; i++)
+                    if (errors[i]) {
                         findViewById(R.id.parentLayout).requestFocus();
                         return;
                     }
@@ -353,6 +355,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                                     errors[4] = true;
                                     email.setText(Html.fromHtml(emailTaken));
                                     ok = false;
+
                                 }
                                 if (response.contains("usernametaken")) {
                                     errors[2] = true;
@@ -372,7 +375,14 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
                                 }
+                                Answers.getInstance().logSignUp(new SignUpEvent()
+                                        .putMethod("Create account")
+                                        .putSuccess(true));
                             } catch (JSONException e) {
+                                Answers.getInstance().logSignUp(new SignUpEvent()
+                                        .putMethod("Create account")
+                                        .putSuccess(false)
+                                        .putCustomAttribute("Cause", "Platform not working"));
                                 new NotificationDialog(NewCreateAccountActivity.this, "Ne cerem scuze, dar platforma nu funcționează. Vă rugăm reveniți.").show();
                                 e.printStackTrace();
                             }
@@ -394,7 +404,6 @@ public class NewCreateAccountActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     private boolean init() {

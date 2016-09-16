@@ -27,6 +27,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.adapters.CatalogAdapter;
@@ -54,21 +56,18 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class CatalogFragment extends Fragment {
 
+    String sb = "";
+    List<Catalog> cataloage;
+    AtomicInteger pendingRequests;
+    View noInternet;
+    ProgressView progressView;
     private View view;
     private TextView txtCatalogActual, seeAllOffers;
     private ImageView coperta_catalog;
     private RecyclerView recyclerView;
     private RequestQueue requestQueue;
-
-    String sb = "";
-    List<Catalog> cataloage;
-
-    AtomicInteger pendingRequests;
-    View noInternet;
     private com.rey.material.widget.LinearLayout retry;
     private FragmentActivity mActivity;
-    ProgressView progressView;
-
     private ProgressView progressLayout;
 
     @Nullable
@@ -76,16 +75,16 @@ public class CatalogFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.catalog_fragment, container, false);
 
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Catalog"));
         ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText("Cataloage");
         ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
 
 
-
-
         LeroyApplication application = (LeroyApplication) mActivity.getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "CatalogFragment");
+        mTracker.setScreenName("Screen: Catalog");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         txtCatalogActual = (TextView) view.findViewById(R.id.txtCatalogActual);
@@ -171,7 +170,7 @@ public class CatalogFragment extends Fragment {
         coperta_catalog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              changeFragment(0);
+                changeFragment(0);
             }
         });
 
@@ -179,11 +178,11 @@ public class CatalogFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CatalogListFragment f = new CatalogListFragment();
-                Bundle bundle=new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putSerializable("cataloage", (Serializable) cataloage);
 
                 f.setArguments(bundle);
-                FragmentTransaction ft =  mActivity.getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
                 ft.add(R.id.content_frame, f).addToBackStack(null);
                 ft.commit();
             }
@@ -195,11 +194,11 @@ public class CatalogFragment extends Fragment {
     private void loadPage() {
 
 
-        if(Connections.isNetworkConnected(mActivity)){
+        if (Connections.isNetworkConnected(mActivity)) {
             noInternet.setVisibility(View.GONE);
             String url = "https://api.publitas.com/v1/groups/leroymerlin/publications.json";
             JsonArrayRequest obreq = new JsonArrayRequest(Request.Method.GET, url,
-                    new Response.Listener<JSONArray>(){
+                    new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
                             pendingRequests = new AtomicInteger();
@@ -256,16 +255,16 @@ public class CatalogFragment extends Fragment {
             );
             requestQueue.add(obreq);
             //   new PageLoaderCommunity(mActivity, mWebView).execute(urlLink);
-        }else {
+        } else {
             Type myObjectType = new TypeToken<Integer>() {
             }.getType();
-            Integer nrCatalog= (Integer) LeroyApplication.getCacheManager().get("catalog_nr", Integer.class, myObjectType);
+            Integer nrCatalog = (Integer) LeroyApplication.getCacheManager().get("catalog_nr", Integer.class, myObjectType);
             myObjectType = new TypeToken<Catalog>() {
             }.getType();
             if (nrCatalog != null) {
                 for (int i = 0; i < nrCatalog; i++) {
                     Catalog catalog = (Catalog) LeroyApplication.getCacheManager().get("catalog_" + i, Catalog.class, myObjectType);
-                    if(catalog!=null) {
+                    if (catalog != null) {
                         catalog.buildImage();
                         cataloage.add(catalog);
                     }
@@ -280,40 +279,41 @@ public class CatalogFragment extends Fragment {
         }
     }
 
-    private void changeFragment(int position){
-       ViewCatalogFragment f = new ViewCatalogFragment();
-        Bundle bundle=new Bundle();
+    private void changeFragment(int position) {
+        ViewCatalogFragment f = new ViewCatalogFragment();
+        Bundle bundle = new Bundle();
         bundle.putString("title", cataloage.get(position).getTitle());
         bundle.putString("url", cataloage.get(position).getSlug());
         f.setArguments(bundle);
         FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-      ft.add(R.id.content_frame, f).addToBackStack(null);
+        ft.add(R.id.content_frame, f).addToBackStack(null);
         ft.commit();
     }
+
     boolean makeCatalogDetailRequest(final Catalog catalog) {
         requestQueue = Volley.newRequestQueue(mActivity);
         String url = "https://api.publitas.com/v1/groups/leroymerlin/publications/" + catalog.getSlug() + ".json";
 
         JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, url,
-                new Response.Listener<JSONObject>(){
+                new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject config = response.getJSONObject("config");
-                         //   String websiteURL = config.getString("websiteUrl");
+                            //   String websiteURL = config.getString("websiteUrl");
                             String downloadPdfUrl = "https://view.publitas.com" + config.getString("downloadPdfUrl");
                             String coverImageSlug = response.getJSONArray("spreads").getJSONObject(0).getJSONArray("pages").get(0).toString();
                             String coverImageURL = "https://view.publitas.com" + coverImageSlug + "-at600.jpg";
-                            String slug = "http://view.publitas.com/leroymerlin/"+config.getString("slug");
-                          //  catalog.setWebsiteURL(websiteURL);
+                            String slug = "http://view.publitas.com/leroymerlin/" + config.getString("slug");
+                            //  catalog.setWebsiteURL(websiteURL);
                             catalog.setPdfURL(downloadPdfUrl);
                             catalog.setCoverImageURL(coverImageURL);
                             catalog.setSlug(slug);
 
 
                             pendingRequests.decrementAndGet();
-                            Log.e("request", pendingRequests.get()+" "+slug);
-                            if(pendingRequests.get() <= 0) {
+                            Log.e("request", pendingRequests.get() + " " + slug);
+                            if (pendingRequests.get() <= 0) {
                                 setUIelements();
                             }
 
@@ -336,7 +336,6 @@ public class CatalogFragment extends Fragment {
                         }
 
 
-
                     }
 
                 },
@@ -357,11 +356,10 @@ public class CatalogFragment extends Fragment {
 
     void setUIelements() {
         //Picasso.with(mActivity).load(cataloage.get(0).getCoverImageURL()).fit().into(coperta_catalog);
-        if(Connections.isNetworkConnected(mActivity)) {
+        if (Connections.isNetworkConnected(mActivity)) {
             new DownloadImageTask(coperta_catalog)
                     .execute(cataloage.get(0).getCoverImageURL());
-        }
-        else {
+        } else {
             coperta_catalog.setImageBitmap(cataloage.get(0).getCover());
             progressView.setVisibility(View.GONE);
 
@@ -381,12 +379,19 @@ public class CatalogFragment extends Fragment {
                     @Override
                     public void onItemClick(View v, int position) {
 
-                        changeFragment(position+1);
+                        changeFragment(position + 1);
                     }
                 })
         );
 
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentActivity)
+            mActivity = (FragmentActivity) context;
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -412,18 +417,9 @@ public class CatalogFragment extends Fragment {
         protected void onPostExecute(Bitmap result) {
             cataloage.get(0).buildImageBase(result);
             LeroyApplication.getCacheManager().put("catalog_0", cataloage.get(0));
-    //        LeroyApplication.getCacheManager().put("catalog_nr", 1);
+            //        LeroyApplication.getCacheManager().put("catalog_nr", 1);
             bmImage.setImageBitmap(result);
             progressView.setVisibility(View.GONE);
         }
-    }
-
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof FragmentActivity)
-            mActivity = (FragmentActivity) context;
     }
 }

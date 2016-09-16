@@ -22,18 +22,6 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
     private List<Service> serviceList;
     private Context context;
 
-    public class ServicesListViewHolder extends RecyclerView.ViewHolder {
-        public ImageView service_icon;
-        public TextView service_title;
-
-        public ServicesListViewHolder(View view) {
-            super(view);
-            service_icon = (ImageView) view.findViewById(R.id.service_icon);
-            service_title = (TextView) view.findViewById(R.id.service_title);
-        }
-    }
-
-
     public ServiceListAdapter(List<Service> serviceList, Context context) {
         this.serviceList = serviceList;
         this.context = context;
@@ -57,5 +45,16 @@ public class ServiceListAdapter extends RecyclerView.Adapter<ServiceListAdapter.
     @Override
     public int getItemCount() {
         return serviceList.size();
+    }
+
+    public class ServicesListViewHolder extends RecyclerView.ViewHolder {
+        public ImageView service_icon;
+        public TextView service_title;
+
+        public ServicesListViewHolder(View view) {
+            super(view);
+            service_icon = (ImageView) view.findViewById(R.id.service_icon);
+            service_title = (TextView) view.findViewById(R.id.service_title);
+        }
     }
 }

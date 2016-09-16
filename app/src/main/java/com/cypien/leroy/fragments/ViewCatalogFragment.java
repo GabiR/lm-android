@@ -28,12 +28,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.CommunityDashboard;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.PageLoaderCommunity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
-public class ViewCatalogFragment  extends Fragment {
+public class ViewCatalogFragment extends Fragment {
 
     private View view;
     private WebView mWebView;
@@ -51,6 +56,12 @@ public class ViewCatalogFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.web_screen, container, false);
 
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: View Catalog"));
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: View Catalog");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         final Bundle bundle = getArguments();
         urlLink = bundle.getString("url", "");
         ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText(bundle.getString("title", "Catalog"));
@@ -62,11 +73,10 @@ public class ViewCatalogFragment  extends Fragment {
             @Override
             public void onClick(View v) {
                 ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText("Cataloage");
-                if(!bundle.getBoolean("fromList")) {
+                if (!bundle.getBoolean("fromList")) {
                     ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
                     ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
                     ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
                 }
@@ -90,7 +100,7 @@ public class ViewCatalogFragment  extends Fragment {
             }
         });
 
-       // injectCookies();
+        // injectCookies();
 
         mWebView = (WebView) view.findViewById(R.id.web_view);
         mWebViewContainer = (RelativeLayout) view.findViewById(R.id.webViewContainer);
@@ -100,7 +110,7 @@ public class ViewCatalogFragment  extends Fragment {
             @Override
             public void onClick(View v) {
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("url",urlLink );
+                ClipData clip = ClipData.newPlainText("url", urlLink);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(mActivity, "Link copiat in clipboard", Toast.LENGTH_LONG).show();
             }
@@ -111,7 +121,7 @@ public class ViewCatalogFragment  extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT,urlLink);
+                intent.putExtra(Intent.EXTRA_TEXT, urlLink);
                 startActivity(Intent.createChooser(intent, "Distribuiţi cu"));
             }
         });
@@ -133,32 +143,52 @@ public class ViewCatalogFragment  extends Fragment {
         return view;
     }
 
+    // verfica daca exista internet si incarca pagina
+    private void loadPage() {
+        if (Connections.isNetworkConnected(mActivity)) {
+            noInternet.setVisibility(View.GONE);
+            mWebViewContainer.setVisibility(View.VISIBLE);
+            mWebView.loadUrl(urlLink);
+            //   new PageLoaderCommunity(mActivity, mWebView).execute(urlLink);
+        } else {
+            noInternet.setVisibility(View.VISIBLE);
+            mWebViewContainer.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentActivity)
+            mActivity = (FragmentActivity) context;
+    }
+
     // controleaza comportamentul webview-ului la incarcarea paginilor
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if(Connections.isNetworkConnected(mActivity)){
+            if (Connections.isNetworkConnected(mActivity)) {
                 noInternet.setVisibility(View.GONE);
-                if(url.contains("http://"))
-                    urlLabel.setText(url.substring(url.indexOf("http://")+"http://".length()));
+                if (url.contains("http://"))
+                    urlLabel.setText(url.substring(url.indexOf("http://") + "http://".length()));
                 else
                     urlLabel.setText(url);
                 if (Uri.parse(url).getHost().equals("www.facem-facem.ro")) {
-                    if (url.contains("pdf")){
-                        view.loadUrl("http://docs.google.com/gview?embedded=true&url=" +url);
+                    if (url.contains("pdf")) {
+                        view.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url);
                         return false;
                     }
-                    if (url.contains("fbredirect")||url.contains("newattachment.php")){
+                    if (url.contains("fbredirect") || url.contains("newattachment.php")) {
                         view.loadUrl(url);
                         return false;
                     }
-                    new PageLoaderCommunity(((CommunityDashboard) mActivity),view).execute(url);
+                    new PageLoaderCommunity(((CommunityDashboard) mActivity), view).execute(url);
                     return true;
-                }else {
+                } else {
                     view.loadUrl(url);
                     return false;
                 }
-            }else {
+            } else {
                 noInternet.setVisibility(View.VISIBLE);
                 return true;
             }
@@ -174,27 +204,5 @@ public class ViewCatalogFragment  extends Fragment {
             super.onPageFinished(view, url);
             progressBar.setVisibility(View.GONE);
         }
-    }
-
-
-    // verfica daca exista internet si incarca pagina
-    private void loadPage(){
-        if(Connections.isNetworkConnected(mActivity)){
-            noInternet.setVisibility(View.GONE);
-            mWebViewContainer.setVisibility(View.VISIBLE);
-            mWebView.loadUrl(urlLink);
-         //   new PageLoaderCommunity(mActivity, mWebView).execute(urlLink);
-        }else {
-            noInternet.setVisibility(View.VISIBLE);
-            mWebViewContainer.setVisibility(View.GONE);
-        }
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof FragmentActivity)
-            mActivity = (FragmentActivity) context;
     }
 }

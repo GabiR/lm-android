@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.CommunityDashboard;
@@ -60,9 +62,10 @@ public class DiscussionsFragment extends Fragment {
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "DiscussionsFragment");
+        mTracker.setScreenName("Screen: Discussions");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Discussions"));
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Discuţii");
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
@@ -96,13 +99,13 @@ public class DiscussionsFragment extends Fragment {
         }
 
         // String-ify the script byte-array using BASE64 encoding !!!
-      encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
+        encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
         injectCookies();
 
         mWebView = (WebView) view.findViewById(R.id.web_view);
         mWebViewContainer = (RelativeLayout) view.findViewById(R.id.webViewContainer);
 
-        ((CommunityDashboard)getActivity()).setCurrentWebview(mWebView);
+        ((CommunityDashboard) getActivity()).setCurrentWebview(mWebView);
 
         clipboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,13 +206,13 @@ public class DiscussionsFragment extends Fragment {
 */
 
     // verfica daca exista internet si incarca pagina
-    private void loadPage(){
-        if(Connections.isNetworkConnected(getActivity())){
+    private void loadPage() {
+        if (Connections.isNetworkConnected(getActivity())) {
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
             mWebView.loadUrl("http://www.facem-facem.ro/forum.php");
-     //       new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/forum.php");
-        }else {
+            //       new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/forum.php");
+        } else {
             noInternet.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
         }

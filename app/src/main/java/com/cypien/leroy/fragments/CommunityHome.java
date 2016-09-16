@@ -16,11 +16,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.AddContestProjectActivity;
 import com.cypien.leroy.activities.AddDiscussionActivity;
 import com.cypien.leroy.activities.AddProjectActivity;
 import com.cypien.leroy.activities.ViewAccountActivity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 /**
@@ -36,11 +41,22 @@ public class CommunityHome extends Fragment {
     private RelativeLayout btnAddProject, btnAddDiscussion, btnAddContest;
     private android.widget.Button editAccount;
 
+    // transforma un string base64 in imagine
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = getActivity().getLayoutInflater().inflate(R.layout.community_home, container, false);
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Facem-Facem"));
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: Facem-Facem");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Facem-Facem");
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
@@ -97,7 +113,7 @@ public class CommunityHome extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddProjectActivity.class);
                 startActivity(intent);
-             //   goToFragment(new AddProjectActivity());
+                //   goToFragment(new AddProjectActivity());
             }
         });
 
@@ -119,7 +135,7 @@ public class CommunityHome extends Fragment {
         return view;
     }
 
-    public void goToFragment (Fragment fragment) {
+    public void goToFragment(Fragment fragment) {
         if (fragment != null) {
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame_community, fragment).addToBackStack(null);
@@ -128,14 +144,14 @@ public class CommunityHome extends Fragment {
     }
 
     // descarca informatiile despre utilizator, le adauga in shared preferences si le afiseaza
-    private void initProfileInformation(){
+    private void initProfileInformation() {
 
-        if(!sp.getString("avatar","").equals(""))
-            user_image.setImageBitmap(decodeBase64(sp.getString("avatar","")));
-        user_name.setText(sp.getString("username",""));
+        if (!sp.getString("avatar", "").equals(""))
+            user_image.setImageBitmap(decodeBase64(sp.getString("avatar", "")));
+        user_name.setText(sp.getString("username", ""));
         posts.setText(sp.getString("posts", ""));
-        views.setText(sp.getString("profilevisits",""));
-        projects.setText(sp.getString("blognum",""));
+        views.setText(sp.getString("profilevisits", ""));
+        projects.setText(sp.getString("blognum", ""));
 
 //        email.setText(sp.getString("email",""));
 //        phone.setText(sp.getString("phone", ""));
@@ -153,11 +169,5 @@ public class CommunityHome extends Fragment {
     public void onResume() {
         super.onResume();
         initProfileInformation();
-    }
-
-    // transforma un string base64 in imagine
-    public static Bitmap decodeBase64(String input){
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 }

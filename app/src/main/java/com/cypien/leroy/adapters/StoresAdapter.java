@@ -14,20 +14,8 @@ import java.util.List;
 /**
  * Created by GabiRotaru on 04/08/16.
  */
-public class StoresAdapter extends  RecyclerView.Adapter<StoresAdapter.StoresListViewHolder> {
+public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoresListViewHolder> {
     private List<Store> storesList;
-
-    public class StoresListViewHolder extends RecyclerView.ViewHolder {
-        public TextView store_name;
-        public TextView store_address;
-
-        public StoresListViewHolder(View view) {
-            super(view);
-            store_name = (TextView) view.findViewById(R.id.store_name);
-            store_address = (TextView) view.findViewById(R.id.store_address);
-        }
-    }
-
 
     public StoresAdapter(List<Store> storesList) {
         this.storesList = storesList;
@@ -56,6 +44,17 @@ public class StoresAdapter extends  RecyclerView.Adapter<StoresAdapter.StoresLis
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public class StoresListViewHolder extends RecyclerView.ViewHolder {
+        public TextView store_name;
+        public TextView store_address;
+
+        public StoresListViewHolder(View view) {
+            super(view);
+            store_name = (TextView) view.findViewById(R.id.store_name);
+            store_address = (TextView) view.findViewById(R.id.store_address);
+        }
     }
 
 

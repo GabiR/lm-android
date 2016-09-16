@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.CommunityDashboard;
@@ -60,9 +62,10 @@ public class EventsFragment extends Fragment {
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "EventsFragment");
+        mTracker.setScreenName("Screen: Events");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Events"));
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Evenimente");
 
         ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
@@ -111,7 +114,7 @@ public class EventsFragment extends Fragment {
         mWebView = (WebView) view.findViewById(R.id.web_view);
         mWebViewContainer = (RelativeLayout) view.findViewById(R.id.webViewContainer);
 
-        ((CommunityDashboard)getActivity()).setCurrentWebview(mWebView);
+        ((CommunityDashboard) getActivity()).setCurrentWebview(mWebView);
 
         clipboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,24 +196,24 @@ public class EventsFragment extends Fragment {
 
 
     // verfica daca exista internet si incarca pagina
-    private void loadPage(){
-        if(Connections.isNetworkConnected(getActivity())){
+    private void loadPage() {
+        if (Connections.isNetworkConnected(getActivity())) {
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
             mWebView.loadUrl("http://www.facem-facem.ro/events.php");
-         //   new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/events.php");
-        }else {
+            //   new PageLoaderCommunity(((CommunityDashboard) getActivity()), mWebView).execute("http://www.facem-facem.ro/events.php");
+        } else {
             noInternet.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
         }
     }
 
     // adauga cookieurile site-ului pentru a fi folosite de catre webview
-    private void injectCookies(){
-        Map<String,String> cookies = ((CommunityDashboard)getActivity()).getCookies();
+    private void injectCookies() {
+        Map<String, String> cookies = ((CommunityDashboard) getActivity()).getCookies();
         CookieSyncManager.createInstance(getActivity());
         CookieManager cookieManager = CookieManager.getInstance();
-        for (Map.Entry<String, String> cookie : cookies.entrySet()){
+        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
             String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
             cookieManager.setCookie("www.facem-facem.ro", cookieString);
             CookieSyncManager.getInstance().sync();

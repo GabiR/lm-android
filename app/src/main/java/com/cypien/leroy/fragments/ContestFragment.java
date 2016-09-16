@@ -24,10 +24,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.CommunityDashboard;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.MyWebViewClient;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,7 +63,12 @@ public class ContestFragment extends Fragment {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
 
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Contests"));
+        LeroyApplication application = (LeroyApplication) getActivity().getApplication();
+        Tracker mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Screen: Contests");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setMax(100);
 
@@ -95,7 +105,7 @@ public class ContestFragment extends Fragment {
         mWebView = (WebView) view.findViewById(R.id.web_view);
         mWebViewContainer = (RelativeLayout) view.findViewById(R.id.webViewContainer);
 
-        ((CommunityDashboard)getActivity()).setCurrentWebview(mWebView);
+        ((CommunityDashboard) getActivity()).setCurrentWebview(mWebView);
 
         clipboard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,14 +191,13 @@ public class ContestFragment extends Fragment {
 
 
     // verfica daca exista internet si incarca pagina
-    private void loadPage(){
-        if(Connections.isNetworkConnected(getActivity())){
+    private void loadPage() {
+        if (Connections.isNetworkConnected(getActivity())) {
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
             mWebView.loadUrl("http://www.facem-facem.ro/competitions.php");
 
-           }
-        else {
+        } else {
             noInternet.setVisibility(View.VISIBLE);
             mWebViewContainer.setVisibility(View.GONE);
         }

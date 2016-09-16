@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Service;
@@ -21,7 +23,7 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * Created by alexa on 9/30/2015.
  */
-public class OnlyTextFragment extends Fragment{
+public class OnlyTextFragment extends Fragment {
 
     private TextView details;
     private ImageView image;
@@ -34,11 +36,12 @@ public class OnlyTextFragment extends Fragment{
         details = (TextView) view.findViewById(R.id.service_content);
         image = (ImageView) view.findViewById(R.id.service_image);
         Bundle bundle = getArguments();
-        Service service = (Service)bundle.getSerializable("service");
-
+        Service service = (Service) bundle.getSerializable("service");
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: " + service.getName() + " Service"));
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "OnlyTextServiceFragment");
+        mTracker.setScreenName("Screen: " + service.getName() + " Service");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(service.getName());

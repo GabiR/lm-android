@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.PdfViewerFragment;
@@ -25,23 +27,24 @@ import com.google.android.gms.analytics.Tracker;
  * Created by GabiRotaru on 09/03/16.
  */
 public class DeliveryFragment extends Fragment {
-    private View view;
     TextView first_half, second_half;
     TextView bucharest_cost, cluj_cost, craiova_cost, ploiesti_cost, targu_mures_cost, iasi_cost;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.delivery_service_screen,container,false);
+        view = inflater.inflate(R.layout.delivery_service_screen, container, false);
 
         Bundle bundle = getArguments();
-        Service service = (Service)bundle.getSerializable("service");
+        Service service = (Service) bundle.getSerializable("service");
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "DeliveryServiceFragment");
+        mTracker.setScreenName("Screen: Delivery Service");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Delivery Service"));
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(service.getName());
 
         ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
@@ -88,10 +91,10 @@ public class DeliveryFragment extends Fragment {
 
         putListener(bucharest_cost, "bucharest_delivery.pdf");
         putListener(cluj_cost, "cluj_delivery.pdf");
-        putListener(craiova_cost,"craiova_delivery.pdf");
-        putListener(ploiesti_cost,"ploiesti_delivery.pdf");
-        putListener(targu_mures_cost,"targu_mures_delivery.pdf");
-        putListener(iasi_cost,"iasi_delivery.pdf");
+        putListener(craiova_cost, "craiova_delivery.pdf");
+        putListener(ploiesti_cost, "ploiesti_delivery.pdf");
+        putListener(targu_mures_cost, "targu_mures_delivery.pdf");
+        putListener(iasi_cost, "iasi_delivery.pdf");
 
 
         return view;
@@ -103,7 +106,7 @@ public class DeliveryFragment extends Fragment {
             public void onClick(View v) {
                 Fragment fragment = new PdfViewerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("filename",assetName);
+                bundle.putString("filename", assetName);
                 fragment.setArguments(bundle);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null);

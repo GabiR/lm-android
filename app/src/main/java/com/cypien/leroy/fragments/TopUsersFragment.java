@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.CommunityDashboard;
@@ -58,7 +60,8 @@ public class TopUsersFragment extends Fragment {
         view = getActivity().getLayoutInflater().inflate(R.layout.web_screen, container, false);
 
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Top utilizatori");
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Top Users"));
         ImageView back_arrow = (ImageView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0);
         back_arrow.setVisibility(View.VISIBLE);
         back_arrow.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +75,7 @@ public class TopUsersFragment extends Fragment {
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "TopUsersFragment");
+        mTracker.setScreenName("Screen: Top Users");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
 
@@ -92,7 +95,6 @@ public class TopUsersFragment extends Fragment {
                 loadPage();
             }
         });
-
 
 
         byte[] buffer = new byte[0];

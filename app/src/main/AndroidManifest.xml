@@ -64,12 +64,8 @@
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
-            android:hardwareAccelerated="true">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
+            android:screenOrientation="portrait">
+
         </activity>
         <activity android:name=".activities.VoiceActivity"/>
         <activity android:name=".activities.ViewAccountActivity"/>
@@ -112,6 +108,10 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBK3mUl6vQS8ituBmitbAHu7eZgZ8GkYW0" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3d277a7a36f5d0ae107433df352fb069386ef8f2"
+            />
 
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParsePushBroadcastReceiver"

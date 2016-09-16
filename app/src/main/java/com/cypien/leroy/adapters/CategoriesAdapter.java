@@ -8,8 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Category;
+
 import java.util.ArrayList;
 
 /**
@@ -32,7 +34,7 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
         TextView categoryName;
         Category cat = list.get(position);
         LayoutInflater inflator = context.getLayoutInflater();
-        View  view = inflator.inflate(R.layout.category, null);
+        View view = inflator.inflate(R.layout.category, null);
         checkbox = (CheckBox) view.findViewById(R.id.checkbox);
         categoryName = (TextView) view.findViewById(R.id.category_name);
         checkbox.setTag(cat);
@@ -58,28 +60,28 @@ public class CategoriesAdapter extends ArrayAdapter<Category> {
         return list.get(position);
     }
 
-    public String getSelectedCategoriesIndexes(){
-        String categories="";
-        for(Category cat: list){
-            if(cat.isSelected()){
-                categories+=(list.indexOf(cat)+1)+",";
+    public String getSelectedCategoriesIndexes() {
+        String categories = "";
+        for (Category cat : list) {
+            if (cat.isSelected()) {
+                categories += (list.indexOf(cat) + 1) + ",";
             }
         }
         if (categories.length() > 0) {
-            categories = categories.substring(0, categories.length()-1);
+            categories = categories.substring(0, categories.length() - 1);
         }
         return categories;
     }
 
-    public String getSelectedCategories(){
-        String categories="";
-        for(Category cat: list){
-            if(cat.isSelected()){
-                categories+=cat.getName()+", ";
+    public String getSelectedCategories() {
+        String categories = "";
+        for (Category cat : list) {
+            if (cat.isSelected()) {
+                categories += cat.getName() + ", ";
             }
         }
         if (categories.length() > 0) {
-            categories = categories.substring(0, categories.length()-2);
+            categories = categories.substring(0, categories.length() - 2);
         }
         return categories;
     }

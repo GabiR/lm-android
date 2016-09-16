@@ -1,103 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:weightSum="1">
-        <TextView
-            android:id="@+id/listBtn"
-            android:layout_weight="0.5"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="LISTA"
-            android:background="@drawable/store_btn_bg_pressed"
-            android:textColor="@color/text_gray"
-            android:gravity="center"/>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/mapBtn"
-            android:layout_weight="0.5"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="HARTA"
-            android:background="@drawable/store_btn_bg"
-            android:textColor="@color/text_gray"
-            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/listBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@drawable/store_btn_bg_pressed"
+                android:gravity="center"
+                android:text="LISTA"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/mapBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@drawable/store_btn_bg"
+                android:gravity="center"
+                android:text="HARTA"
+                android:textColor="@color/text_gray" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/stores_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/satellite_icon"
+                android:visibility="gone"
+                app:backgroundTint="#F5A623" />
+
+            <LinearLayout
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_corners"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LEROY MERLIN SUN PLAZA"
+                        android:textColor="@color/green"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Centrul Comercial Sun Plaza"
+                        android:textColor="@color/text_gray" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/list_arrow" />
+            </LinearLayout>
+        </RelativeLayout>
+
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/stores_list"
-            android:scrollbars="vertical"/>
-
-        <com.google.android.gms.maps.MapView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/map"
-            android:visibility="gone"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="16dp"
-            android:src="@drawable/satellite_icon"
-            app:backgroundTint="#F5A623"
-            android:visibility="gone"/>
-
-        <LinearLayout
-            android:id="@+id/info"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/round_corners"
-            android:visibility="gone"
-            android:layout_centerInParent="true"
-            android:padding="10dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/green"
-                    android:textStyle="bold"
-                    android:text="LEROY MERLIN SUN PLAZA"
-                    />
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_gray"
-                    android:text="Centrul Comercial Sun Plaza"
-                    />
-            </LinearLayout>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                android:src="@drawable/list_arrow"/>
-        </LinearLayout>
-    </RelativeLayout>
-
-
-
-
-</LinearLayout>
+    <include layout="@layout/no_internet_layout"></include>
+</RelativeLayout>

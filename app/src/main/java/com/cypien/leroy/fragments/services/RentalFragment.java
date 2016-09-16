@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Service;
@@ -23,24 +25,25 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * Created by alexa on 10/1/2015.
  */
-public class RentalFragment extends Fragment{
+public class RentalFragment extends Fragment {
     private View view;
-    private int phoneNumbers[]={R.id.phone1,R.id.phone2,R.id.phone3,R.id.phone4,R.id.phone5,R.id.phone6,
-                                R.id.phone7,R.id.phone8,R.id.phone9,R.id.phone10,R.id.phone11, R.id.phone12,
-                                R.id.phone13, R.id.phone14};
+    private int phoneNumbers[] = {R.id.phone1, R.id.phone2, R.id.phone3, R.id.phone4, R.id.phone5, R.id.phone6,
+            R.id.phone7, R.id.phone8, R.id.phone9, R.id.phone10, R.id.phone11, R.id.phone12,
+            R.id.phone13, R.id.phone14};
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.rental_service_screen,container,false);
+        view = inflater.inflate(R.layout.rental_service_screen, container, false);
 
         LeroyApplication application = (LeroyApplication) getActivity().getApplication();
         Tracker mTracker = application.getDefaultTracker();
-        mTracker.setScreenName("Screen:" + "ToolsRentalFragment");
+        mTracker.setScreenName("Screen: Tools Rental Service");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        Answers.getInstance().logContentView(new ContentViewEvent()
+                .putContentName("Screen: Tools Rental Service"));
         Bundle bundle = getArguments();
-        Service service = (Service)bundle.getSerializable("service");
+        Service service = (Service) bundle.getSerializable("service");
 
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(service.getName());
 
@@ -110,7 +113,7 @@ public class RentalFragment extends Fragment{
         return view;
     }
 
-    private void makePhoneCall(String phone){
+    private void makePhoneCall(String phone) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phone));
         startActivity(intent);
