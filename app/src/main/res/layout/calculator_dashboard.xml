@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TableRow>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/laminated_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/laminated_icon"
+                android:ellipsize="none"
+                android:lines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Parchet\nlaminat"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+
+                />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/parquet_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/parquet_icon"
+                android:ellipsize="none"
+                android:maxLines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+
+                android:text="Parchet din\nlemn masiv"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+
+                />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/pvc_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:background="@drawable/right_calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/pvc_icon"
+                android:ellipsize="none"
+                android:maxLines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Covor\nPVC"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp"
+
+                />
+        </TableRow>
+
+        <TableRow>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/varnish_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/varnish_icon"
+                android:ellipsize="none"
+                android:lines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Lacuire"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/white_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/white_paint_icon"
+                android:ellipsize="none"
+                android:maxLines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Vopsea\nalba"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/anti_mold_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/right_calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/anti_mold_icon"
+                android:ellipsize="none"
+                android:maxLines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Vopsea\nantimucegai"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/color_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/color_icon"
+                android:ellipsize="none"
+                android:maxLines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Vopsea\ncolorata"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <com.rey.material.widget.Button
+                android:id="@+id/magnetic_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_calculator_bg"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/magnetic_icon"
+                android:ellipsize="none"
+                android:maxLines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Vopsea\nmagnetica"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="false" />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

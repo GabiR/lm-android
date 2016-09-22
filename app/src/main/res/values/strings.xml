@@ -5,4 +5,9 @@
     <string name="category">Alege o categorie</string>
     <string name="facebookid">1002994899713823</string>
     <string name="lista_service">Vezi lista service-urilor partenere</string>
+    <string name="surface">m<sup>2</sup></string>
+    <string-array name="parquet_modes">
+        <item>Drept</item>
+        <item>Diagonal</item>
+    </string-array>
 </resources>

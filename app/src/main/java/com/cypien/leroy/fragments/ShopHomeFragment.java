@@ -127,7 +127,11 @@ public class ShopHomeFragment extends Fragment {
         calculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                CalculatorDashboardFragment f = new CalculatorDashboardFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
             }
         });
         nearestStore.setOnClickListener(new View.OnClickListener() {

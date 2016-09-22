@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     private int screenWidth, screenHeight, skyImageSize;
     private String fbFirstName, fbLastName, fbEmail, fbName, fbId, fbAccessToken;
     private boolean visibleBottomView = false;
+    private boolean facebook = false;
 
 
     @Override
@@ -133,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, NewCreateAccountActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, SUCCESS_REGISTRATION);
             }
         });
         Intent i = getIntent();
@@ -499,6 +500,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         new WebServiceConnector().execute(link, parameters).get(5, TimeUnit.SECONDS);
 
+                        facebook = true;
                         login(fbName, fbId, "Facebook sign-up");
 
                         LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", sp.getString("userid", ""), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
@@ -514,7 +516,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
                 injectCookies();
-
+                facebook = true;
                 login(fbName, fbId, "Facebook login");
             }
         } catch (Exception e) {
@@ -583,6 +585,7 @@ public class LoginActivity extends AppCompatActivity {
     //Conectarea utilizatorului la platforma si obtinerea cookie-urilor din site.
     private void login(String username, String password, String method) {
         if (init()) {
+
             String result = "";
             String link = "http://facem-facem.ro/api.php";
             String parameters = "api_m=" + "login_login" +
@@ -610,9 +613,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     spEditor.putString("endpointCookie", response.getJSONObject("session").getString("dbsessionhash"));
-
+                    spEditor.commit();
+                    Log.e("endpointCookie", sp.getString("endpointCookie", ""));
 
                     try {
+                       /* if(facebook){
+                            LeroyApplication.getInstance().makeRequest("user_restore_pw", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
+
+                        }*/
                         Map<String, String> cookeis = new GetCookies().execute(username, password).get();
                         if (cookeis != null) {
                             spEditor.putString("cookies", MapUtil.mapToString(cookeis));
@@ -629,6 +637,10 @@ public class LoginActivity extends AppCompatActivity {
                         Answers.getInstance().logSignUp(new SignUpEvent()
                                 .putMethod(method)
                                 .putSuccess(true));
+                    }
+                    if (facebook) {
+                        LeroyApplication.getInstance().makeRequest("user_restore_pw", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
+
                     }
                     Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
                     startActivity(intent);
