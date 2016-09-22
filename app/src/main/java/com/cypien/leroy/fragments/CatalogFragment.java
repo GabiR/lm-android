@@ -110,63 +110,7 @@ public class CatalogFragment extends Fragment {
                 loadPage();
             }
         });
-       /* JsonArrayRequest obreq = new JsonArrayRequest(Request.Method.GET, url,
-                new Response.Listener<JSONArray>(){
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        pendingRequests = new AtomicInteger();
 
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject jsonobject = null;
-                            try {
-                                Catalog catalog = new Catalog();
-
-                                jsonobject = response.getJSONObject(i);
-                                String title = jsonobject.getString("title");
-                                String slug = jsonobject.getString("slug");
-                                String url = jsonobject.getString("url");
-                                catalog.setTitle(title);
-                                catalog.setSlug(slug);
-                                catalog.setContextualURL(url);
-                                cataloage.add(catalog);
-
-                                pendingRequests.incrementAndGet();
-
-
-                                //websiteUrl
-                                //downloadPdfUrl
-
-                                //"spreads":
-                                //   [{"pages": ["/1613/130970/pages/f44eab2912eb90a5e127683240a2b6c8e9f6213b"],
-                                //    "hotspots": []}, ...]
-                                //https://view.publitas.com +  + -at600.jpg
-
-
-                                //1) avem cataloage si are net = > request si inlocuim toate cataloagele (POATE poze incarcare); le salvam local
-                                //2) nu avem cataloage si are net => la fel
-                                //3) avem cataloage si nu are net => le afisam pe alea si POATE bara sus cu activati internetul pt a cauta bla
-                                //4) nu avem cataloage si nu are net => ?POATE imagine all screen cu activeaza netul
-
-                                makeCatalogDetailRequest(catalog);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                    }
-
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Volley", "Error");
-                    }
-                }
-        );
-        requestQueue.add(obreq);*/
         coperta_catalog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +127,7 @@ public class CatalogFragment extends Fragment {
 
                 f.setArguments(bundle);
                 FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-                ft.add(R.id.content_frame, f).addToBackStack(null);
+                ft.replace(R.id.content_frame, f).addToBackStack(null);
                 ft.commit();
             }
         });
@@ -286,7 +230,7 @@ public class CatalogFragment extends Fragment {
         bundle.putString("url", cataloage.get(position).getSlug());
         f.setArguments(bundle);
         FragmentTransaction ft = mActivity.getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.content_frame, f).addToBackStack(null);
+        ft.replace(R.id.content_frame, f).addToBackStack(null);
         ft.commit();
     }
 

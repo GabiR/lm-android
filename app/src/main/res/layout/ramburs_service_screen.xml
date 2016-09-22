@@ -1,47 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="36dp"
-        android:layout_width="184dp"
-        android:layout_height="106dp"
-        android:src="@drawable/ramburs"
-        android:layout_gravity="center_horizontal"/>
-
-    <ScrollView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:clickable="true"
-                android:background="?android:selectableItemBackground"
-                android:text="Iti rambursam de doua ori diferenta pentru produse identice cumparate la un pret mai mic decat al nostru. Astfel ne asiguram ca produsele noastre de bricolaj sunt cele mai ieftine, in comparatie cu alte magazine de profil. "/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:id="@+id/view_rules"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:textSize="16sp"
-                android:text="Vezi aici regulamentul de ramburs"
-                android:clickable="true"
-                android:background="?android:selectableItemBackground"
-                />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="184dp"
+            android:layout_height="106dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ramburs" />
 
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:text="Iti rambursam de doua ori diferenta pentru produse identice cumparate la un pret mai mic decat al nostru. Astfel ne asiguram ca produsele noastre de bricolaj sunt cele mai ieftine, in comparatie cu alte magazine de profil. "
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/view_rules"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:text="Vezi aici regulamentul de ramburs"
+            android:textColor="@color/green"
+            android:textSize="16sp" />
+    </LinearLayout>
+</ScrollView>
+

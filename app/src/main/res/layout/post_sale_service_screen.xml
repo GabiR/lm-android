@@ -1,51 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="36dp"
-        android:layout_width="184dp"
-        android:layout_height="106dp"
-        android:src="@drawable/post"
-        android:layout_gravity="center_horizontal"/>
-
-    <ScrollView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="LEROY MERLIN iti pune la dispozitie Serviciul Post Vanzare. Ne angajam sa iti solutionam  problema in 15 zile de la aducerea produsului  in magazin. Avem nevoie doar de: produs*, bon de casa si garantie."/>
-            <TextView
-                android:layout_marginTop="10dp"
-                android:id="@+id/view_services"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:textSize="16sp"
-                android:text="Vezi aici lista de firme de service pentru produsele cumparate din magazinle LEROY MERLIN."
-                android:clickable="true"
-                android:background="?android:selectableItemBackground"
-                />
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="*In cazul boilerelor, centralelor termice si a instantelor pe gaz trebuie sa suni la firma de service agreata si un tehnician se va prezenta la tine acasa."/>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="184dp"
+            android:layout_height="106dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/post" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LEROY MERLIN iti pune la dispozitie Serviciul Post Vanzare. Ne angajam sa iti solutionam  problema in 15 zile de la aducerea produsului  in magazin. Avem nevoie doar de: produs*, bon de casa si garantie."
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/view_services"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:text="Vezi aici lista de firme de service pentru produsele cumparate din magazinle LEROY MERLIN."
+            android:textColor="@color/green"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="*In cazul boilerelor, centralelor termice si a instantelor pe gaz trebuie sa suni la firma de service agreata si un tehnician se va prezenta la tine acasa."
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
+</ScrollView>
+

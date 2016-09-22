@@ -107,7 +107,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
         setFocus(findViewById(R.id.username_focus), username);
         setFocus(findViewById(R.id.password_focus), password);
         setFocus(findViewById(R.id.confirm_password_focus), confirmPassword);
-        setFocus(findViewById(R.id.city), city);
+        setFocus(findViewById(R.id.city_focus), city);
 
         firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -305,14 +305,14 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                 if (city.getText().toString().equals("")) {
                     city.setText(Html.fromHtml(cityError));
                     ok = false;
-                    errors[8] = true;
+                    errors[7] = true;
 
                 }
                 if (!agreement.isChecked()) {
                     Toast.makeText(NewCreateAccountActivity.this, "Nu ați fost de acord cu regulile comunității", Toast.LENGTH_LONG).show();
                     ok = false;
                 }
-                for (int i = 0; i < 9; i++)
+                for (int i = 0; i < 8; i++)
                     if (errors[i]) {
                         findViewById(R.id.parentLayout).requestFocus();
                         return;
@@ -368,16 +368,18 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
                                 }
-                                if (response.contains("registeremail")) {
+                                if (response.contains("registration_complete")) {
+                                    Answers.getInstance().logSignUp(new SignUpEvent()
+                                            .putMethod("Create account")
+                                            .putSuccess(true));
                                     Intent resultIntent = new Intent();
                                     resultIntent.putExtra("username", username.getText().toString());
                                     resultIntent.putExtra("password", password.getText().toString());
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
+
                                 }
-                                Answers.getInstance().logSignUp(new SignUpEvent()
-                                        .putMethod("Create account")
-                                        .putSuccess(true));
+
                             } catch (JSONException e) {
                                 Answers.getInstance().logSignUp(new SignUpEvent()
                                         .putMethod("Create account")

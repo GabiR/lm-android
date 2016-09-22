@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
@@ -49,7 +48,7 @@ public class ServicesFragment extends Fragment {
     Fragment fragment;
     FragmentTransaction fragmentTransaction;
     Bundle bundle;
-    LinearLayout pdfView;
+    //LinearLayout pdfView;
 
     @Nullable
     @Override
@@ -66,13 +65,13 @@ public class ServicesFragment extends Fragment {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.services_list);
-        pdfView = (LinearLayout) view.findViewById(R.id.pdf);
-        pdfView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openPDF();
-            }
-        });
+//        pdfView = (LinearLayout) view.findViewById(R.id.pdf);
+//        pdfView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openPDF();
+//            }
+//        });
 
         services = ShopDashboard.getServices();
         if (services == null)
@@ -148,15 +147,15 @@ public class ServicesFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void openPDF() {
-        Fragment fragment = new PdfViewerFragment();
-        bundle = new Bundle();
-        bundle.putString("filename", "adrese_service.pdf");
-        fragment.setArguments(bundle);
-        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+//    private void openPDF() {
+//        Fragment fragment = new PdfViewerFragment();
+//        bundle = new Bundle();
+//        bundle.putString("filename", "adrese_service.pdf");
+//        fragment.setArguments(bundle);
+//        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.content_frame, fragment).addToBackStack(null);
+//        fragmentTransaction.commit();
+//    }
 
 
 }

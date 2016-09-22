@@ -1,106 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="36dp"
-        android:layout_width="184dp"
-        android:layout_height="106dp"
-        android:src="@drawable/livrare"
-        android:layout_gravity="center_horizontal"/>
-
-    <ScrollView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="184dp"
+            android:layout_height="106dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="36dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/livrare" />
+
+
+        <TextView
+            android:id="@+id/half_of_half"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/half_of_half"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/calculator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:text="Calculeaza rapid costul transportului pana la tine acasa"
-                android:paddingTop="4dp"
-                />
-            <TextView
-                android:id="@+id/first_half"
-                android:paddingTop="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
 
-            <TextView
-                android:layout_marginTop="7dp"
-                android:id="@+id/bucharest_cost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinele din Bucuresti-Ilfov."
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/cluj_cost"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinele din Brasov, Sibiu, Cluj-Napoca, Constanta, Suceava si Bacau"
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/craiova_cost"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinul din Craiova, Timisoara"
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/ploiesti_cost"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinul din Ploiesti."
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/targu_mures_cost"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinul din Targu Mures."
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/iasi_cost"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Afla aici costurile pentru magazinul din Iasi."
-                android:textColor="@color/delivery_service_green"
-                android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/calculator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:paddingTop="4dp"
+            android:text="Calculeaza rapid costul transportului pana la tine acasa"
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_marginTop="10dp"
-                android:id="@+id/second_half"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/first_half"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:textColor="@color/black" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/bucharest_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="Afla aici costurile pentru magazinele din Bucuresti-Ilfov."
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
 
-    </ScrollView>
+        <TextView
+            android:id="@+id/cluj_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Afla aici costurile pentru magazinele din Brasov, Sibiu, Cluj-Napoca, Constanta, Suceava si Bacau"
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/craiova_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Afla aici costurile pentru magazinul din Craiova, Timisoara"
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ploiesti_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Afla aici costurile pentru magazinul din Ploiesti."
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/targu_mures_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Afla aici costurile pentru magazinul din Targu Mures."
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/iasi_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Afla aici costurile pentru magazinul din Iasi."
+            android:textColor="@color/delivery_service_green"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/second_half"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

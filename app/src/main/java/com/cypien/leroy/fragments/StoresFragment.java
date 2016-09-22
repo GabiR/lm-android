@@ -148,7 +148,8 @@ public class StoresFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listBtn.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.store_btn_bg_pressed));
-                mapBtn.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.store_btn_bg));
+                mapBtn.setBackgroundColor(getResources().getColor(R.color.transparent));
+                // mapBtn.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.color.transparent));
                 ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Listă magazine");
                 recyclerView.setVisibility(View.VISIBLE);
                 mapView.setVisibility(View.GONE);
@@ -163,7 +164,8 @@ public class StoresFragment extends Fragment {
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listBtn.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.store_btn_bg));
+                listBtn.setBackgroundColor(getResources().getColor(R.color.transparent));
+                // listBtn.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.color.transparent));
                 mapBtn.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.store_btn_bg_pressed));
                 ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Hartă magazine");
                 recyclerView.setVisibility(View.GONE);

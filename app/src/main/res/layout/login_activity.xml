@@ -75,32 +75,34 @@
             android:id="@+id/btnFacem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.42"
+            android:layout_weight="0.413"
             android:adjustViewBounds="true"
             android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
             android:paddingTop="4dp"
             android:src="@drawable/logo_facem" />
 
         <View
             android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_weight="0.16" />
+            android:layout_height="10dp"
+            android:layout_weight="0.174" />
 
         <TextView
             android:id="@+id/btnContact"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.42"
+            android:layout_weight="0.413"
             android:gravity="end"
             android:lines="1"
             android:paddingBottom="6dp"
             android:paddingEnd="16dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="16dp"
             android:paddingRight="16dp"
 
-            android:paddingStart="8dp"
+            android:paddingStart="16dp"
             android:text="Contactează-ne"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -187,6 +189,7 @@
                 android:layout_marginLeft="16dp"
                 android:background="@color/edtTxtBg"
                 android:hint="Parola"
+                android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@color/unpressedblack"
                 android:textColorHint="@color/light_grey" />

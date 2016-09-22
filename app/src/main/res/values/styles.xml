@@ -3,10 +3,13 @@
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="ThemeOverlay.AppCompat.ActionBar">-->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">#5FA437</item>
+        <item name="colorControlHighlight">#5FA437</item>
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">#5FA437</item>
+        <item name="colorControlHighlight">#5FA437</item>
         <item name="android:textColorPrimary">#333333</item>
         <item name="android:background">#FFFFFF</item>
     </style>
@@ -26,4 +29,6 @@
         <item name="cpd_strokeColor">@color/colorPrimaryDark</item>
 
         </style>
+
+    <style name="DialogStyle" parent="Material.App.Dialog.Simple.Light"></style>
 </resources>
