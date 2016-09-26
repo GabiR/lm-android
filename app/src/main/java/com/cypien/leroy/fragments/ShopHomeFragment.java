@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class ShopHomeFragment extends Fragment {
     private RelativeLayout career, clientVoice, advices, calculator, nearestStore;
     private ImageView prices;
     private ArrayList<Store> stores;
+    private Button message;
 
     @Nullable
     @Override
@@ -72,7 +74,7 @@ public class ShopHomeFragment extends Fragment {
         calculator = (RelativeLayout) view.findViewById(R.id.calculator);
         nearestStore = (RelativeLayout) view.findViewById(R.id.nearest_store);
         prices = (ImageView) view.findViewById(R.id.prices);
-
+        message = (Button) view.findViewById(R.id.message);
 
         prices.setOnClickListener(new View.OnClickListener() {
             @Override

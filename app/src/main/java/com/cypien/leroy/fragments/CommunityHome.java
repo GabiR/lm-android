@@ -153,16 +153,6 @@ public class CommunityHome extends Fragment {
         views.setText(sp.getString("profilevisits", ""));
         projects.setText(sp.getString("blognum", ""));
 
-//        email.setText(sp.getString("email",""));
-//        phone.setText(sp.getString("phone", ""));
-//        String daily=sp.getString("dailyposts","");
-//        if(daily.length()>5)
-//            nrDaily.setText(daily.substring(0,5));
-//        else
-//            nrDaily.setText(daily);
-//        nrFriends.setText(sp.getString("friendcount",""));
-//        signUpDate.setText(sp.getString("joindate",""));
-//        nrProjects.setText(sp.getString("blognum",""));
     }
 
     @Override

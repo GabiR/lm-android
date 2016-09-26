@@ -41,7 +41,7 @@ public class ShopDashboard extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
-
+    ArrayList<String> stack = new ArrayList<>();
     public static ArrayList<Service> getServices() {
         ArrayList<Service> services = new ArrayList<>();
 
@@ -93,54 +93,59 @@ public class ShopDashboard extends AppCompatActivity {
         community_button = (LinearLayout) findViewById(R.id.community_button);
         setOnClickAction(community_button);
 
-        prevLayout.callOnClick();
+        prevLayout = catalog_button;
+        home_button.callOnClick();
+       // prevLayout.callOnClick();
 
 
     }
 
     void setOnClickAction(final LinearLayout linearLayout) {
-        linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!linearLayout.getTag().toString().equals("community"))
-                    resolvePrevBtn(linearLayout);
-                switch (linearLayout.getTag().toString()) {
-                    case "home":
-                        //TODO
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        goToFragment(new ShopHomeFragment(), "home");
-                        break;
-                    case "catalog":
-                        goToFragment(new CatalogFragment(), "catalog");
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "shops":
-                        goToFragment(new StoresFragment(), "shops");
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "services":
-                        goToFragment(new ServicesFragment(), "services");
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.services_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "community":
-                        Intent intent;
-                        if (!sp.getBoolean("isConnected", false)) {
-                            intent = new Intent(ShopDashboard.this, LoginActivity.class);
-                            intent.putExtra("source", "shop_dashboard");
-                        } else {
-                            intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
-                        }
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
 
-    }
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!linearLayout.getTag().toString().equals(prevLayout.getTag().toString())) {
+                        if (!linearLayout.getTag().toString().equals("community"))
+                            resolvePrevBtn(linearLayout);
+                        switch (linearLayout.getTag().toString()) {
+                            case "home":
+                                //TODO
+                                ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
+                                ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+                                goToFragment(new ShopHomeFragment(), "home");
+                                break;
+                            case "catalog":
+                                goToFragment(new CatalogFragment(), "catalog");
+                                ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_green));
+                                ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                                break;
+                            case "shops":
+                                goToFragment(new StoresFragment(), "shops");
+                                ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_green));
+                                ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                                break;
+                            case "services":
+                                goToFragment(new ServicesFragment(), "services");
+                                ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.services_green));
+                                ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                                break;
+                            case "community":
+                                Intent intent;
+                                if (!sp.getBoolean("isConnected", false)) {
+                                    intent = new Intent(ShopDashboard.this, LoginActivity.class);
+                                    intent.putExtra("source", "shop_dashboard");
+                                } else {
+                                    intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
+                                }
+                                startActivity(intent);
+                                break;
+                        }
+                    }
+                }
+            });
+            }
 
     void resolvePrevBtn(LinearLayout linearLayout) {
         if (prevLayout != null) {
@@ -168,11 +173,11 @@ public class ShopDashboard extends AppCompatActivity {
     public void goToFragment(Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
             ft.replace(R.id.content_frame, fragment).addToBackStack(tag);
             ft.commit();
         }
     }
+
 
     //metoda apelata din fragmentele ce contin webview pentru a sti care dintre webview-uri este afisat pe activitatea curenta
     public void setCurrentWebview(WebView webview) {

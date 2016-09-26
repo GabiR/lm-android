@@ -15,7 +15,6 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,7 +81,7 @@ public class CommunityDashboard extends AppCompatActivity {
         ((TextView) toolbar.getChildAt(2)).setText("Facem-Facem");
 
         home_button = (LinearLayout) findViewById(R.id.home_button);
-        prevLayout = home_button;
+    //    prevLayout = home_button;
         setOnClickAction(home_button);
         projects_button = (LinearLayout) findViewById(R.id.projects_button);
         setOnClickAction(projects_button);
@@ -92,62 +91,46 @@ public class CommunityDashboard extends AppCompatActivity {
         setOnClickAction(discussions_button);
         contests_button = (LinearLayout) findViewById(R.id.contests_button);
         setOnClickAction(contests_button);
-
-        prevLayout.callOnClick();
+        prevLayout = projects_button;
+        home_button.callOnClick();
+    //    prevLayout.callOnClick();
     }
 
-    private void injectCookies() {
-        Map<String, String> cookies = MapUtil.stringToMap(sp.getString("endpointCookie", ""));
-        Log.e("endpointCookie", sp.getString("endpointCookie", "NUUUUUUUUUU"));
-        CookieSyncManager.createInstance(this);
-
-        String cookieString = "";
-        cookieManager = CookieManager.getInstance();
-        for (Map.Entry<String, String> cookie : cookies.entrySet()) {
-
-            cookieString += cookie.getKey() + "=" + cookie.getValue() + "; ";
-            Log.e("cookieString", cookieString);
-
-
-        }
-        cookieString = "auth=" + cookies.get("value") + "; path=/; domain=www.facem-facem.ro";
-        Log.e("bla", cookieString);
-        cookieManager.setCookie("www.facem-facem.ro", cookieString);
-        CookieSyncManager.getInstance().sync();
-    }
 
     void setOnClickAction(final LinearLayout linearLayout) {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!linearLayout.getTag().toString().equals("shop"))
-                    resolvePrevBtn(linearLayout);
-                switch (linearLayout.getTag().toString()) {
-                    case "home":
-                        goToFragment(new CommunityHome());
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "projects":
-                        goToFragment(new ProjectsListFragment());
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "discussions":
-                        goToFragment(new DiscussionsFragment());
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "contests":
-                        goToFragment(new ContestFragment());
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "shop":
-                        Intent intent = new Intent(CommunityDashboard.this, ShopDashboard.class);
-                        startActivity(intent);
+                if (!linearLayout.getTag().toString().equals(prevLayout.getTag().toString())) {
+                    if (!linearLayout.getTag().toString().equals("shop"))
+                        resolvePrevBtn(linearLayout);
+                    switch (linearLayout.getTag().toString()) {
+                        case "home":
+                            goToFragment(new CommunityHome(), "home");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            break;
+                        case "projects":
+                            goToFragment(new ProjectsListFragment(), "projects");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            break;
+                        case "discussions":
+                            goToFragment(new DiscussionsFragment(), "discussions");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            break;
+                        case "contests":
+                            goToFragment(new ContestFragment(), "contests");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            break;
+                        case "shop":
+                            Intent intent = new Intent(CommunityDashboard.this, ShopDashboard.class);
+                            startActivity(intent);
 
-                        break;
+                            break;
+                    }
                 }
             }
         });
@@ -203,10 +186,10 @@ public class CommunityDashboard extends AppCompatActivity {
         builder.show();
     }
 
-    public void goToFragment(Fragment fragment) {
+    public void goToFragment(Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame_community, fragment);
+            ft.replace(R.id.content_frame_community, fragment).addToBackStack(tag);
             ft.commit();
         }
     }
@@ -269,9 +252,39 @@ public class CommunityDashboard extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!goBack()) {
-            super.onBackPressed();
-            if (getFragmentManager().getBackStackEntryCount() != 0) {
-                getFragmentManager().popBackStack();
+
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                getSupportFragmentManager().popBackStack();
+                if (getSupportFragmentManager().getBackStackEntryCount() - 2 >= 0) {
+                    String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
+                    LinearLayout button;
+                    if (name != null) {
+                        switch (name) {
+
+                            case "projects":
+                                button = projects_button;
+                                break;
+                            case "discussions":
+                                button = discussions_button;
+                                break;
+                            case "contests":
+                                button = contests_button;
+                                break;
+                            default:
+                                button = home_button;
+
+                        }
+                        resolvePrevBtn(button);
+                        ((ImageView) button.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, getResources().getIdentifier(name + "_green", "drawable", getPackageName())));
+                        ((TextView) button.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+
+                        Log.e("bla", name);
+                    }
+                }
+            } else {
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1)
+                    getSupportFragmentManager().popBackStack();
+                super.onBackPressed();
             }
         }
 

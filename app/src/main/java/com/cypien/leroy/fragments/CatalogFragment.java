@@ -138,6 +138,7 @@ public class CatalogFragment extends Fragment {
     private void loadPage() {
 
 
+        seeAllOffers.setEnabled(false);
         if (Connections.isNetworkConnected(mActivity)) {
             noInternet.setVisibility(View.GONE);
             String url = "https://api.publitas.com/v1/groups/leroymerlin/publications.json";
@@ -299,6 +300,7 @@ public class CatalogFragment extends Fragment {
     }
 
     void setUIelements() {
+        seeAllOffers.setEnabled(true);
         //Picasso.with(mActivity).load(cataloage.get(0).getCoverImageURL()).fit().into(coperta_catalog);
         if (Connections.isNetworkConnected(mActivity)) {
             new DownloadImageTask(coperta_catalog)
@@ -357,6 +359,7 @@ public class CatalogFragment extends Fragment {
             }
             return mIcon11;
         }
+
 
         protected void onPostExecute(Bitmap result) {
             cataloage.get(0).buildImageBase(result);

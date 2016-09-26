@@ -86,18 +86,7 @@ public class ProjectsListFragment extends Fragment {
         list.setAdapter(adapter);
 
         loadPage();
-       /* Type myObjectType = new TypeToken<Integer>() {}.getType();
-        Integer nrProjects = (Integer) LeroyApplication.getCacheManager().get("projects_nr", Integer.class, myObjectType);
-        myObjectType = new TypeToken<Project>() {
-        }.getType();
-        if (nrProjects != null) {
-            for (int i = 0; i < nrProjects; i++) {
-                Project project = (Project) LeroyApplication.getCacheManager().get("project_" + i, Project.class, myObjectType);
-                adapter.add(project);
-            }
-        } else {
-            getProjects(adapter.getCount());
-        }*/
+
 
         setListViewHeightBasedOnChildren(list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
