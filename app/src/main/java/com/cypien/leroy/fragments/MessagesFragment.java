@@ -49,14 +49,27 @@ public class MessagesFragment extends Fragment {
         mTracker.setScreenName("Screen: Messages");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
+        Bundle bundle = this.getArguments();
+        if(bundle!=null) {
+            Message mess = (Message) bundle.getSerializable("message");
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.stores_list);
+            if (mess != null && !mess.isRead()) {
+
+                MessageFragment f = new MessageFragment();
+                f.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
+            }
+        }
+        recyclerView = (RecyclerView) view.findViewById(R.id.messages_list);
 
 
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+        SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");//dd/MM/yyyy
         Date now = new Date();
         String strDate = sdfDate.format(now);
-        messages = DatabaseConnector.getHelper(getActivity()).deleteMessagesOlder(strDate);
+        messages = DatabaseConnector.getHelper(getActivity()).loadMessages();
         MessagesAdapter adapter = new MessagesAdapter(messages);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -68,9 +81,9 @@ public class MessagesFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 MessageFragment f = new MessageFragment();
                 Bundle bundle = new Bundle();
-                messages.get(position).setRead(true);
+
                 bundle.putSerializable("message", messages.get(position));
-                DatabaseConnector.getHelper(getActivity()).updateMessage(messages.get(position));
+
                 f.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();

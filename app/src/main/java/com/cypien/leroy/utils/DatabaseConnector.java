@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class DatabaseConnector extends SQLiteOpenHelper {
@@ -81,7 +82,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
         try {
             String myPath = DB_PATH + DB_NAME;
-            Log.e("myPath", myPath);
+
             checkDB = SQLiteDatabase.openDatabase(myPath, null,
                     SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException ignored) {
@@ -128,7 +129,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         ContentValues newCon = new ContentValues();
         newCon.put("Id", store.getId());
         newCon.put("JSON", store.toJson());
-        Log.e("insert", store.getName());
+
         try {
             open();
         } catch (Exception e) {
@@ -168,7 +169,21 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         }
         close();
     }
+    public synchronized void deleteMessage(String id) {
+        try {
+            open();
+        } catch (Exception e) {
 
+            e.printStackTrace();
+        }
+        try {
+            curs = database.rawQuery("delete from Messages where ID='" + id + "'", null);
+            curs.moveToFirst();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        close();
+    }
     public synchronized void deleteAllStores() {
         try {
             open();
@@ -266,12 +281,12 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        database.update("Stores", editCon, "ID=\"" + message.getId() + "\"", null);
+        database.update("Messages", editCon, "ID=\"" + message.getId() + "\"", null);
         close();
     }
+    public synchronized int getUnreadMessagesNumber(String date) {
 
-
-    public synchronized ArrayList<Message> deleteMessagesOlder(String date) {
+        int n = 0;
         ArrayList<Message> messages = loadMessages();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Date dateObj = null;
@@ -292,12 +307,19 @@ public class DatabaseConnector extends SQLiteOpenHelper {
             assert obj != null;
             int days = (int) ((dateObj.getTime() - obj.getTime()) / (24 * 60 * 60 * 1000));
             if (days >= 31) {
-                deleteStore(message.getId());
+                deleteMessage(message.getId());
                 messages.remove(message);
             }
+            else{
+                if(!message.isRead())
+                    n++;
+            }
         }
-        return messages;
+
+        return n;
     }
+
+
 
     public synchronized ArrayList<Message> loadMessages() {
         ArrayList<Message> messages = new ArrayList<>();
@@ -324,7 +346,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         }
 
         close();
-
+        Collections.reverse(messages);
         return messages;
     }
 

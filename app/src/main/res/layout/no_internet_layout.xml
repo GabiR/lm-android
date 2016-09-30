@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/no_internet"
-    android:visibility="gone"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/no_internet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:visibility="gone">
 
     <TextView
         android:id="@+id/txtMesaj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Va rugam sa activati internetul pentru a putea vedea catalogul de oferte!"
-        android:textColor="@color/unpressedblack"
         android:gravity="center_horizontal"
         android:padding="16dp"
-        android:textSize="18sp"/>
+        android:text="Va rugam sa activati internetul pentru a putea vedea catalogul de oferte!"
+        android:textColor="@color/unpressedblack"
+        android:textSize="18sp" />
+
     <com.rey.material.widget.LinearLayout
+        android:id="@+id/retry"
         style="@style/MyRipple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
 
+        android:layout_below="@+id/txtMesaj"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="16dp"
-        android:layout_below="@+id/txtMesaj"
-        android:id="@+id/retry"
 
         >
+
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/retry_icon"
+            android:padding="5dp"
 
-            android:padding="5dp"/>
+            android:src="@drawable/retry_icon" />
 
         <TextView
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reincercare"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
     </com.rey.material.widget.LinearLayout>
 
 

@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -189,7 +188,10 @@ public class CommunityDashboard extends AppCompatActivity {
     public void goToFragment(Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame_community, fragment).addToBackStack(tag);
+           // ft.replace(R.id.content_frame_community, fragment).addToBackStack(tag);
+            while (getSupportFragmentManager().getBackStackEntryCount()>0)
+                getSupportFragmentManager().popBackStackImmediate();
+            ft.replace(R.id.content_frame_community, fragment);
             ft.commit();
         }
     }
@@ -253,7 +255,7 @@ public class CommunityDashboard extends AppCompatActivity {
     public void onBackPressed() {
         if (!goBack()) {
 
-            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            /*if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                 getSupportFragmentManager().popBackStack();
                 if (getSupportFragmentManager().getBackStackEntryCount() - 2 >= 0) {
                     String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
@@ -285,7 +287,12 @@ public class CommunityDashboard extends AppCompatActivity {
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1)
                     getSupportFragmentManager().popBackStack();
                 super.onBackPressed();
-            }
+            }*/
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+
+            } else super.onBackPressed();
+
         }
 
     }

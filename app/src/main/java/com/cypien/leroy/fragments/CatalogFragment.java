@@ -257,7 +257,7 @@ public class CatalogFragment extends Fragment {
 
 
                             pendingRequests.decrementAndGet();
-                            Log.e("request", pendingRequests.get() + " " + slug);
+
                             if (pendingRequests.get() <= 0) {
                                 setUIelements();
                             }

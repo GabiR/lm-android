@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fillViewport="true"
     android:orientation="vertical">
 
@@ -13,13 +12,23 @@
 
         <TableRow>
 
+            <TextView
+                android:padding="8dp"
+                android:text="Calculator acoperire sol"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
             <com.rey.material.widget.Button
                 android:id="@+id/laminated_button"
                 style="@style/Material.Drawable.Ripple.Wave.Light"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/calculator_bg"
+                android:background="@drawable/right_calculator_bg"
                 android:drawablePadding="8dp"
                 android:drawableTop="@drawable/laminated_icon"
                 android:ellipsize="none"
@@ -41,7 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/calculator_bg"
+                android:background="@drawable/right_calculator_bg"
                 android:drawablePadding="8dp"
                 android:drawableTop="@drawable/parquet_icon"
                 android:ellipsize="none"
@@ -65,7 +74,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_weight="1"
-                android:background="@drawable/right_calculator_bg"
+                android:background="@color/white"
                 android:drawablePadding="8dp"
                 android:drawableTop="@drawable/pvc_icon"
                 android:ellipsize="none"
@@ -84,26 +93,38 @@
 
         <TableRow>
 
+            <TextView
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Calculator vopsea lavabilă"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
             <com.rey.material.widget.Button
-                android:id="@+id/varnish_button"
+                android:id="@+id/color_button"
                 style="@style/Material.Drawable.Ripple.Wave.Light"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="@drawable/calculator_bg"
+                android:background="@drawable/right_calculator_bg"
                 android:drawablePadding="8dp"
-                android:drawableTop="@drawable/varnish_icon"
+                android:drawableTop="@drawable/color_icon"
                 android:ellipsize="none"
-                android:lines="2"
+                android:maxLines="2"
                 android:paddingBottom="8dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Lacuire"
+                android:text="Vopsea\ncolorata"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
+
 
             <com.rey.material.widget.Button
                 android:id="@+id/white_button"
@@ -111,7 +132,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/calculator_bg"
+                android:background="@drawable/right_calculator_bg"
                 android:drawablePadding="8dp"
                 android:drawableTop="@drawable/white_paint_icon"
                 android:ellipsize="none"
@@ -131,7 +152,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/right_calculator_bg"
+                android:background="@color/white"
                 android:drawablePadding="8dp"
                 android:drawableTop="@drawable/anti_mold_icon"
                 android:ellipsize="none"
@@ -149,26 +170,17 @@
 
         <TableRow>
 
-            <com.rey.material.widget.Button
-                android:id="@+id/color_button"
-                style="@style/Material.Drawable.Ripple.Wave.Light"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/bottom_calculator_bg"
-                android:drawablePadding="8dp"
-                android:drawableTop="@drawable/color_icon"
-                android:ellipsize="none"
-                android:maxLines="2"
-                android:paddingBottom="8dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingTop="8dp"
-                android:text="Vopsea\ncolorata"
+            <TextView
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Calculator email"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
 
             <com.rey.material.widget.Button
                 android:id="@+id/magnetic_button"
@@ -190,11 +202,115 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
 
+            <com.rey.material.widget.Button
+                android:id="@+id/universal_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/universal_paint_icon"
+                android:ellipsize="none"
+                android:lines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Vopsea universala"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Calculator vopsea lemn"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/varnish_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:clickable="false" />
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/varnish_icon"
+                android:ellipsize="none"
+                android:lines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Lacuire"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Calculator tencuială decorativă"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/coating_button"
+                style="@style/Material.Drawable.Ripple.Wave.Light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/granulated_wall_icon"
+                android:ellipsize="none"
+                android:lines="2"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="8dp"
+                android:text="Tencuiala decorativa"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2" />
+
+
         </TableRow>
     </TableLayout>
 

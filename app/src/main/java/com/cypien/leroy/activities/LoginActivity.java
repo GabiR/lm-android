@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 MyGestureListener.Action action = footerGestureListener.getAction();
                 if (action == MyGestureListener.Action.BT || action == MyGestureListener.Action.None) {
-                    Log.e("footer", "open" + action.toString());
+
                     visibleBottomView = true;
 
                     if (visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
@@ -512,7 +512,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
 
                 JSONObject jsonObject = new JSONObject(answer);
-                Log.e("json", jsonObject.getString("userid"));
+
 
                 LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
                 injectCookies();
@@ -813,13 +813,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void injectCookies() {
         Map<String, String> cookies = MapUtil.stringToMap(sp.getString("endpointCookie", ""));
-        Log.e("endpointCookie", sp.getString("endpointCookie", "NUUUUUUUUUU"));
+
         CookieSyncManager.createInstance(this);
 
         CookieManager cookieManager = CookieManager.getInstance();
         for (Map.Entry<String, String> cookie : cookies.entrySet()) {
             String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
-            Log.e("cookieString", cookieString);
             cookieManager.setCookie("www.facem-facem.ro", cookieString);
             CookieSyncManager.getInstance().sync();
         }

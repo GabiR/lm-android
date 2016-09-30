@@ -159,7 +159,7 @@ public class FinancingFragment extends Fragment {
             byte[] buffer = new byte[1024];
             int read;
             while ((read = in.read(buffer)) != -1) {
-                Log.e("bla", String.valueOf(read));
+
                 out.write(buffer, 0, read);
                 length += read;
             }

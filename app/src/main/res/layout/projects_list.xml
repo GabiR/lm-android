@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:textSize="24sp"
             android:paddingBottom="8dp"
             android:text="Galerie de proiecte"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="Încarcă imagini cu proiectele tale de bricolaj și arată-ne pas cu pas cum ai procedat. Poți pune imagini înainte și după ce a fost realizat pentru a vedea diferența. Adună like-uri de la ceilalți utilizatori. Poți încărca proiectele tale și în zona de concurs."
-            android:textColor="@color/grey"
-            android:layout_marginBottom="10dp"/>
+            android:textColor="@color/grey" />
+
         <ListView
             android:id="@+id/projects_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="20dp">
-        </ListView>
+            android:dividerHeight="20dp"></ListView>
+
         <Button
             android:id="@+id/see_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="6dp"
-            android:paddingTop="8dp"
+            android:background="@color/colorPrimary"
             android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:textSize="20sp"
+            android:paddingTop="8dp"
+            android:text="Vezi mai multe"
             android:textAllCaps="false"
-            android:text="Vezi mai multe" />
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 </ScrollView>

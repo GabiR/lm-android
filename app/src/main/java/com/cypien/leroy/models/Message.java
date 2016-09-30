@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Message implements Serializable {
     String id;
@@ -24,7 +23,6 @@ public class Message implements Serializable {
     }
 
     public Message() {
-        this.id = UUID.randomUUID().toString();
         this.read = false;
     }
 

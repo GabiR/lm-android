@@ -23,8 +23,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,6 +30,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.R;
 import com.cypien.leroy.activities.VoiceActivity;
+import com.cypien.leroy.models.Message;
 import com.cypien.leroy.models.Store;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.DatabaseConnector;
@@ -47,7 +46,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ShopHomeFragment extends Fragment {
@@ -55,9 +56,10 @@ public class ShopHomeFragment extends Fragment {
 
     private View view;
     private RelativeLayout career, clientVoice, advices, calculator, nearestStore;
-    private ImageView prices;
+    private RelativeLayout prices;
     private ArrayList<Store> stores;
-    private Button message;
+    private RelativeLayout message;
+    private TextView noMessages;
 
     @Nullable
     @Override
@@ -68,14 +70,46 @@ public class ShopHomeFragment extends Fragment {
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Leroy Merlin");
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.VISIBLE);
+        Bundle bundle = this.getArguments();
+        if(bundle!=null) {
+            Message mess = (Message) bundle.getSerializable("message");
+            if (mess != null && !mess.isRead()) {
+
+                MessagesFragment f = new MessagesFragment();
+                f.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
+            }
+        }
         career = (RelativeLayout) view.findViewById(R.id.career);
         clientVoice = (RelativeLayout) view.findViewById(R.id.client_voice);
         advices = (RelativeLayout) view.findViewById(R.id.advices);
         calculator = (RelativeLayout) view.findViewById(R.id.calculator);
         nearestStore = (RelativeLayout) view.findViewById(R.id.nearest_store);
-        prices = (ImageView) view.findViewById(R.id.prices);
-        message = (Button) view.findViewById(R.id.message);
+        prices = (RelativeLayout) view.findViewById(R.id.prices);
+        message = (RelativeLayout) view.findViewById(R.id.message);
+        noMessages = (TextView) view.findViewById(R.id.no_messages);
 
+        SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy HH:mm");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        int n = DatabaseConnector.getHelper(getActivity()).getUnreadMessagesNumber(strDate);
+        if(n!=0) {
+            noMessages.setText(String.valueOf(n));
+            noMessages.setVisibility(View.VISIBLE);
+        }
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MessagesFragment f = new MessagesFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                transaction.commit();
+            }
+        });
         prices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +193,6 @@ public class ShopHomeFragment extends Fragment {
 
                 if (location != null) {
                     Store store = getStore(location);
-                    Log.e("store", store.getName());
                     StoreFragment f = new StoreFragment();
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("store", store);
@@ -294,7 +327,6 @@ public class ShopHomeFragment extends Fragment {
             try {
                 request.put("method", "contact_get_all");
                 request.put("params", new JSONArray(parameters));
-                Log.e("request", request.toString());
                 return new JSONObject(getRequest("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + request.toString()));
             } catch (JSONException e) {
                 Log.e("eroare", e.toString());
@@ -370,7 +402,7 @@ public class ShopHomeFragment extends Fragment {
             pg.dismiss();
             if (location != null) {
                 Store store = getStore(location);
-                Log.e("store", store.getName());
+
                 StoreFragment f = new StoreFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("store", store);

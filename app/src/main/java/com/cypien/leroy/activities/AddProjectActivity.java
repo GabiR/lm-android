@@ -181,7 +181,7 @@ public class AddProjectActivity extends AppCompatActivity {
                                 images.put("image3.jpg", encodeImageTobase64(path3));
                             jsn.put("images", images);
                             jsn = makeRequest("project_create", sp.getString("endpointCookie", ""), sp.getString("userid", ""), jsn.toString());
-                            Log.e("project", jsn.toString());
+
                             if (jsn != null && jsn.getJSONObject("result").getString("username").equals(sp.getString("username", ""))) {
                                 // new NotificationDialog(AddProjectActivity.this, "Proiectul dumneavoastră a fost adăugat cu succes!").show();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProjectActivity.this, R.style.AppCompatAlertDialogStyle);

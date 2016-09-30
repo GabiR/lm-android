@@ -1,370 +1,398 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <LinearLayout
-            android:layout_weight="0.2"
-            android:id="@+id/user"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/user_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/unknown_default"
-                app:civ_border_color="#EEEEEE"
-                app:civ_border_width="2dp"
-                android:layout_gravity="center_horizontal"
-                app:civ_shadow="false"/>
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:text="Ion Gheorghe"
+            android:layout_marginTop="16dp"
+            android:weightSum="1">
 
-                android:textColor="@color/username_gray"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginLeft="24dp"
-            android:layout_weight="0.8"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
             <LinearLayout
-                android:weightSum="3"
-                android:layout_alignParentRight="true"
+                android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
+                android:layout_weight="0.2"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/user_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/unknown_default"
+                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_width="2dp"
+                    app:civ_shadow="false" />
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:singleLine="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Postări"
-                            android:textSize="14sp"
-                            android:textColor="@color/username_gray"
-                            />
-                        <TextView
-                            android:id="@+id/posts"
-                            android:paddingTop="5dp"
-                            android:gravity="center_horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="200"
-                            android:textStyle="bold"
-                            android:textColor="@color/lightGreen"
-                            android:textSize="20sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="16dp">
-                    <LinearLayout
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:singleLine="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Vizualizări"
-                            android:textSize="14sp"
-                            android:textColor="@color/username_gray"
-                            />
-                        <TextView
-                            android:id="@+id/views"
-                            android:paddingTop="5dp"
-                            android:gravity="center_horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="5"
-                            android:textStyle="bold"
-                            android:textColor="@color/lightGreen"
-                            android:textSize="20sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="16dp">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:singleLine="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Proiecte"
-                            android:textSize="14sp"
-                            android:textColor="@color/username_gray"
-                            />
-                        <TextView
-                            android:id="@+id/projects"
-                            android:paddingTop="5dp"
-                            android:gravity="center_horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="103"
-                            android:textStyle="bold"
-                            android:textColor="@color/lightGreen"
-                            android:textSize="20sp"/>
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Ion Gheorghe"
+                    android:textColor="@color/username_gray"
+
+                    android:textSize="14sp" />
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/btnEditAccount"
-                android:layout_marginTop="16dp"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:text="Contul meu"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="6dp"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                android:paddingBottom="6dp"
-                android:textColor="@color/username_gray"
-                android:background="@drawable/edit_btn"
-                />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="24dp"
+                android:layout_weight="0.8"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="Postări"
+                                android:textColor="@color/username_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/posts"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingTop="5dp"
+                                android:text="200"
+                                android:textColor="@color/lightGreen"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="Vizualizări"
+                                android:textColor="@color/username_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/views"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingTop="5dp"
+                                android:text="5"
+                                android:textColor="@color/lightGreen"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
+                                android:text="Proiecte"
+                                android:textColor="@color/username_gray"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/projects"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingTop="5dp"
+                                android:text="103"
+                                android:textColor="@color/lightGreen"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/btnEditAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edit_btn"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="6dp"
+                    android:text="Contul meu"
+                    android:textAllCaps="false"
+                    android:textColor="@color/username_gray"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
 
-
-
-    <TextView
-        android:layout_marginTop="32dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="Adaugă"
-        android:textColor="@color/lightGreen"
-        android:paddingBottom="8dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RelativeLayout
-            android:id="@+id/btnAddProject"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/back1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_green_rect"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Proiect"
-
-
-                android:textSize="16sp"
-              android:layout_centerInParent="true"
-                android:paddingBottom="4dp"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/btnAddDiscussion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="14dp">
-            <ImageView
-                android:id="@+id/back2"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_green_rect"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Discuţie"
-                android:textSize="16sp"
-
-                android:paddingBottom="4dp"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/btnAddContest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="14dp">
-            <ImageView
-                android:id="@+id/back3"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_green_rect"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Proiect în\nconcurs"
-                android:gravity="center"
-
-                android:paddingBottom="4dp"
-                android:lineSpacingMultiplier="0.8"
-                android:textSize="16sp"
-                android:layout_centerInParent="true"
-                android:textColor="@color/white"/>
-        </RelativeLayout>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_marginTop="24dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RelativeLayout
-            android:id="@+id/topul_meseriasilor"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/img1"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sfatul_meseriasului"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Topul meseriaşilor"
-                android:lineSpacingMultiplier="0.8"
-                android:paddingBottom="4dp"
-                android:layout_alignLeft="@id/img1"
-                android:layout_alignStart="@+id/img1"
-                android:layout_alignEnd="@+id/img1"
-                android:layout_alignRight="@+id/img1"
-                android:textSize="14sp"
-                android:paddingLeft="2dp"
+            android:layout_marginTop="32dp"
+            android:paddingBottom="8dp"
+            android:text="Adaugă"
+            android:textColor="@color/lightGreen"
+            android:textSize="14sp" />
 
-                android:paddingRight="2dp"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_alignBottom="@+id/img1"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/evenimente"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="14dp">
-            <ImageView
-                android:id="@+id/img2"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/evenimente"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Evenimente"
-                android:paddingBottom="6dp"
-                android:layout_alignRight="@+id/img2"
-                android:layout_alignStart="@+id/img2"
-                android:layout_alignLeft="@+id/img2"
-                android:layout_alignEnd="@+id/img2"
-                android:gravity="center"
+            android:orientation="horizontal">
 
-                android:textSize="14sp"
-                android:paddingLeft="2dp"
-                android:paddingTop="4dp"
-                android:paddingRight="2dp"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/black"
-                android:layout_alignBottom="@+id/img2"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/sfatul_meseriasului"
-            android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btnAddProject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/back1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/add_green_rect" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+
+
+                    android:paddingBottom="4dp"
+                    android:text="Proiect"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnAddDiscussion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/back2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/add_green_rect" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+
+                    android:paddingBottom="4dp"
+                    android:text="Discuţie"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/btnAddContest"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/back3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/add_green_rect" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+
+                    android:lineSpacingMultiplier="0.8"
+                    android:paddingBottom="4dp"
+                    android:text="Proiect în\nconcurs"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="14dp">
-            <ImageView
-                android:id="@+id/img3"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sfatul_meseriasului"/>
-            <TextView
-                android:gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sfatul\nmeseriaşului"
-                android:layout_alignBottom="@+id/img3"
-                android:paddingBottom="4dp"
-                android:layout_alignLeft="@id/img3"
-                android:layout_alignStart="@+id/img3"
-                android:layout_alignEnd="@+id/img3"
-                android:layout_alignRight="@+id/img3"
-                android:lineSpacingMultiplier="0.8"
-                android:textSize="14sp"
-                android:paddingLeft="2dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
 
-                android:paddingRight="2dp"
-                android:textColor="@color/black"
-                android:layout_centerHorizontal="true"/>
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/topul_meseriasilor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/sfatul_meseriasului" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/img1"
+                    android:layout_alignEnd="@+id/img1"
+                    android:layout_alignLeft="@id/img1"
+                    android:layout_alignRight="@+id/img1"
+                    android:layout_alignStart="@+id/img1"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="0.8"
+                    android:paddingBottom="4dp"
+
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:text="Topul meseriaşilor"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/evenimente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/img2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/evenimente" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/img2"
+                    android:layout_alignEnd="@+id/img2"
+                    android:layout_alignLeft="@+id/img2"
+                    android:layout_alignRight="@+id/img2"
+                    android:layout_alignStart="@+id/img2"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingTop="4dp"
+                    android:text="Evenimente"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sfatul_meseriasului"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/img3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/sfatul_meseriasului" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/img3"
+                    android:layout_alignEnd="@+id/img3"
+                    android:layout_alignLeft="@id/img3"
+                    android:layout_alignRight="@+id/img3"
+                    android:layout_alignStart="@+id/img3"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingMultiplier="0.8"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+
+                    android:text="Sfatul\nmeseriaşului"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
 
     </LinearLayout>
-
-
-</LinearLayout>
-    </ScrollView>
+</ScrollView>

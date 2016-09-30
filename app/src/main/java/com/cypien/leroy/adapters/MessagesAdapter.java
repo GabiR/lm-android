@@ -2,6 +2,7 @@ package com.cypien.leroy.adapters;/*
  * Created by Alex on 26.09.2016.
  */
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,13 +14,20 @@ import android.widget.TextView;
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Message;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesListViewHolder> {
     private List<Message> messages;
-
+    SimpleDateFormat sdfFirst;
+    SimpleDateFormat sdf;
     public MessagesAdapter(List<Message> messages) {
         this.messages = messages;
+
+        sdfFirst = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        sdf = new SimpleDateFormat("MMM dd");
     }
 
     @Override
@@ -33,15 +41,31 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     @Override
     public void onBindViewHolder(MessagesListViewHolder holder, int position) {
         Message message = messages.get(position);
+
+        Date date = null;
+        try {
+            date = sdfFirst.parse(message.getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        holder.date.setText(sdf.format(date));
         holder.title.setText(message.getTitle());
        holder.content.setText(message.getContent());
-        holder.date.setText(message.getDate());
         //TODO icon
-        if(message.isRead()){
-            holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+        if(!message.isRead()){
+            holder.icon.setImageResource(R.drawable.unread_icon);
+            holder.title.setTypeface(null,Typeface.BOLD);
+            holder.content.setTypeface(null, Typeface.NORMAL);
+            holder.date.setTypeface(null, Typeface.NORMAL);
+            holder.date.setTextColor(Color.parseColor("#5FA437"));
         }
         else{
-            holder.title.setTypeface(Typeface.DEFAULT);
+            holder.title.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+            holder.content.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+            holder.date.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+            holder.date.setTextColor(Color.parseColor("#979797"));
+            holder.icon.setImageResource(R.drawable.read_icon);
         }
     }
 

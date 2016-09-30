@@ -314,7 +314,7 @@ public class StoresFragment extends Fragment {
             try {
                 request.put("method", "contact_get_all");
                 request.put("params", new JSONArray(parameters));
-                Log.e("request", request.toString());
+
                 return new JSONObject(getRequest("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + request.toString()));
             } catch (JSONException e) {
                 Log.e("eroare", e.toString());

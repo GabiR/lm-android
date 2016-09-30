@@ -51,7 +51,7 @@ dependencies {
     compile 'com.android.support:design:23.0.0'
     compile 'com.android.support:recyclerview-v7:23.0.0'
 
-    compile 'com.google.android.gms:play-services-maps:8.4.0'
+    compile 'com.google.android.gms:play-services-maps:9.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/jsoup-1.8.3.jar')
     compile 'com.loopj.android:android-async-http:1.4.9'
@@ -62,7 +62,7 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
     compile 'com.iainconnor:objectcache:0.0.18-SNAPSHOT'
-    compile 'com.google.android.gms:play-services-analytics:8.4.0'
+    compile 'com.google.android.gms:play-services-analytics:9.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.rey5137:material:1.2.4'
@@ -70,6 +70,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.3@aar') {
         transitive = true;
     }
+    compile 'com.google.firebase:firebase-messaging:9.0.0'
 }
 
 

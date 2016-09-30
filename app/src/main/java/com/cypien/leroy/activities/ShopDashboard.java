@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -69,6 +68,7 @@ public class ShopDashboard extends AppCompatActivity {
         setContentView(R.layout.shop_dashboard);
 
 
+
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
         Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Shop Dashboard")
@@ -76,7 +76,13 @@ public class ShopDashboard extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        if(getIntent().getBooleanExtra("notified", false)){
+          ShopHomeFragment fragment = new ShopHomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("message", getIntent().getSerializableExtra("message"));
+            fragment.setArguments(bundle);
+            goToFragment(fragment, "home");
+        }
         toolbar.getChildAt(0).setVisibility(View.GONE);
         toolbar.getChildAt(1).setVisibility(View.VISIBLE);
         ((TextView) toolbar.getChildAt(2)).setText("Leroy Merlin România");
@@ -173,7 +179,10 @@ public class ShopDashboard extends AppCompatActivity {
     public void goToFragment(Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment).addToBackStack(tag);
+          /*  ft.replace(R.id.content_frame, fragment).addToBackStack(tag);*/
+            while (getSupportFragmentManager().getBackStackEntryCount()>0)
+                getSupportFragmentManager().popBackStackImmediate();
+            ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
     }
@@ -189,9 +198,9 @@ public class ShopDashboard extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-            if (getSupportFragmentManager().getBackStackEntryCount() - 2 >= 0) {
+         /*   if (getSupportFragmentManager().getBackStackEntryCount() - 2 >= 0) {
                 String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
                 LinearLayout button;
                 if (name != null) {
@@ -216,12 +225,13 @@ public class ShopDashboard extends AppCompatActivity {
 
                     Log.e("bla", name);
                 }
-            }
-        } else {
+            }*/
+        } /*else {
             if (getSupportFragmentManager().getBackStackEntryCount() == 1)
                 getSupportFragmentManager().popBackStack();
             super.onBackPressed();
-        }
+        }*/
+        else super.onBackPressed();
 
     }
 

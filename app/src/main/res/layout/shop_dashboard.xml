@@ -38,6 +38,7 @@
             android:paddingEnd="50dp"
             android:paddingLeft="8dp"
             android:paddingRight="50dp"
+            android:paddingStart="8dp"
             android:text="Leroy Merlin Romania"
             android:textColor="@color/white"
             android:textSize="18sp" />
@@ -50,6 +51,7 @@
             android:clickable="true"
             android:onClick="outClicked"
             android:paddingBottom="3dp"
+            android:paddingEnd="16dp"
             android:paddingRight="16dp"
             android:paddingTop="5dp">
 
@@ -79,8 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/bottom_bar"
-        android:layout_below="@+id/toolbar"
-        android:layout_weight="0.999" />
+        android:layout_below="@+id/toolbar" />
 
     <include layout="@layout/toolbar_shadow" />
 
@@ -95,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_weight="0.001"
+
         android:background="@color/menu_bg_gray"
         android:weightSum="1">
 
@@ -108,6 +109,7 @@
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:paddingTop="8dp"
             android:tag="home">
 
@@ -244,14 +246,6 @@
 
             </LinearLayout>
 
-            <!--
-                        <ImageView
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginLeft="5dp"
-                            android:src="@drawable/community_icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:adjustViewBounds="true"/>-->
 
         </LinearLayout>
 
