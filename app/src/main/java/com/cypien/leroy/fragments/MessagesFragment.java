@@ -71,27 +71,32 @@ public class MessagesFragment extends Fragment {
         String strDate = sdfDate.format(now);
         messages = DatabaseConnector.getHelper(getActivity()).loadMessages();
         MessagesAdapter adapter = new MessagesAdapter(messages);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                MessageFragment f = new MessageFragment();
-                Bundle bundle = new Bundle();
+        if(messages.size()==0){
+            recyclerView.setVisibility(View.GONE);
+            view.findViewById(R.id.zero_messages).setVisibility(View.VISIBLE);
+        }
+        else {
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    MessageFragment f = new MessageFragment();
+                    Bundle bundle = new Bundle();
 
-                bundle.putSerializable("message", messages.get(position));
+                    bundle.putSerializable("message", messages.get(position));
 
-                f.setArguments(bundle);
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.content_frame, f).addToBackStack(null);
-                transaction.commit();
-            }
-        }));
-
+                    f.setArguments(bundle);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.content_frame, f).addToBackStack(null);
+                    transaction.commit();
+                }
+            }));
+        }
         ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText("Mesaje");
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);

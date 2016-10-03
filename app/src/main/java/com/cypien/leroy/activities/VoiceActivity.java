@@ -77,6 +77,16 @@ public class VoiceActivity extends AppCompatActivity {
         sendMessage = (Button) findViewById(R.id.send_message);
 
 
+
+
+       setFocus(findViewById(R.id.first_name_focus), firstName);
+        setFocus(findViewById(R.id.last_name_focus), lastName);
+        setFocus(findViewById(R.id.email_focus), email);
+        setFocus(findViewById(R.id.phone_focus), phone);
+        setFocus(findViewById(R.id.subject_focus), subject);
+        setFocus(findViewById(R.id.store_focus),store);
+
+
         findViewById(R.id.back_arrow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +254,14 @@ public class VoiceActivity extends AppCompatActivity {
                 break;
         }
     }
-
+    private void setFocus(View viewById, final View view) {
+        viewById.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.requestFocus();
+            }
+        });
+    }
     private String fileToBase64(String filePath) {
         InputStream inputStream = null;
         try {

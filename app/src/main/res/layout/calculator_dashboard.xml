@@ -16,7 +16,7 @@
                 android:padding="8dp"
                 android:text="Calculator acoperire sol"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="#333333"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -98,7 +98,7 @@
                 android:padding="8dp"
                 android:text="Calculator vopsea lavabilă"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="#333333"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -175,7 +175,7 @@
                 android:padding="8dp"
                 android:text="Calculator email"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="#333333"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -237,7 +237,7 @@
                 android:padding="8dp"
                 android:text="Calculator vopsea lemn"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="#333333"
                 android:textSize="16sp" />
         </TableRow>
 
@@ -277,7 +277,7 @@
                 android:padding="8dp"
                 android:text="Calculator tencuială decorativă"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="#333333"
                 android:textSize="16sp" />
 
         </TableRow>
