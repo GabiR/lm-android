@@ -120,7 +120,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Vopsea\ncolorata"
+                android:text="Vopsea\ncolorată"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
@@ -141,7 +141,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Vopsea\nalba"
+                android:text="Vopsea\nalbă"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
@@ -197,7 +197,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Vopsea\nmagnetica"
+                android:text="Vopsea\nmagnetică"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
@@ -218,7 +218,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Vopsea universala"
+                android:text="Vopsea universală"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
@@ -259,7 +259,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Lacuire"
+                android:text="Lăcuire"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
@@ -300,7 +300,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:text="Tencuiala decorativa"
+                android:text="Tencuială decorativă"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />

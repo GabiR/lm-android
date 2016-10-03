@@ -6,28 +6,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cypien.leroy.LeroyApplication;
-import com.cypien.leroy.R;
-import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.Encrypt;
 import com.cypien.leroy.utils.MapUtil;
 import com.cypien.leroy.utils.NotificationDialog;
 import com.cypien.leroy.utils.WebServiceConnector;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
-import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnProfileListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,8 +25,6 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -64,7 +52,7 @@ public class OldLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
 
-        setContentView(R.layout.login_screen);
+       /* setContentView(R.layout.login_screen);
 
 
         LeroyApplication application = (LeroyApplication) getApplication();
@@ -281,7 +269,7 @@ public class OldLoginActivity extends Activity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 

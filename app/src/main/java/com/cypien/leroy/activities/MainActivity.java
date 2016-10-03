@@ -11,13 +11,11 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.cypien.leroy.fragments.AdvicesFragment;
 import com.cypien.leroy.fragments.CatalogViewFragment;
-import com.cypien.leroy.fragments.DashboardFragment;
 import com.cypien.leroy.fragments.EventsFragment;
 import com.cypien.leroy.fragments.FacebookFragment;
 import com.cypien.leroy.fragments.InfoStoresFragment;
@@ -81,31 +79,24 @@ public class MainActivity extends FragmentActivity {
             getUserInformation();
         }
 
-        ((TextView)findViewById(R.id.user)).setText(sp.getString("username", ""));
+        //((TextView)findViewById(R.id.user)).setText(sp.getString("username", ""));
 
-        ((TextView)findViewById(R.id.user)).setText(sp.getString("username",""));
+       // ((TextView)findViewById(R.id.user)).setText(sp.getString("username",""));
 
-        if(sp.getBoolean("isConnected",false)){
+       /* if(sp.getBoolean("isConnected",false)){
             findViewById(R.id.relative).setVisibility(View.VISIBLE);
             findViewById(R.id.login).setVisibility(View.GONE);
         }else {
             findViewById(R.id.login).setVisibility(View.VISIBLE);
             findViewById(R.id.relative).setVisibility(View.GONE);
-        }
+        }*/
         drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         drawer=findViewById(R.id.drawer);
 
-        facemDashboard = (Button) findViewById(R.id.facem_dashboard);
-        facemDashboard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                f = new DashboardFragment();
-                drawerLayout.closeDrawer(drawer);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).addToBackStack(null).commit();
-            }
-        });
+      //  facemDashboard = (Button) findViewById(R.id.facem_dashboard);
 
-        projects = (Button) findViewById(R.id.projects);
+
+       // projects = (Button) findViewById(R.id.projects);
         projects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +109,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        contest = (Button) findViewById(R.id.contest);
+     //   contest = (Button) findViewById(R.id.contest);
         contest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +123,7 @@ public class MainActivity extends FragmentActivity {
         });
 
 
-        forum = (Button) findViewById(R.id.forum);
+       // forum = (Button) findViewById(R.id.forum);
         forum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +135,7 @@ public class MainActivity extends FragmentActivity {
                     new NotificationDialog(MainActivity.this,"Pentru a putea adăuga discuții, vă rugăm să vă autentificați!").show();
             }
         });
-        topUsers = (Button) findViewById(R.id.top_users);
+        //topUsers = (Button) findViewById(R.id.top_users);
         topUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +148,7 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-        events = (Button) findViewById(R.id.events);
+       // events = (Button) findViewById(R.id.events);
         events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +161,7 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-        advice = (Button) findViewById(R.id.advice);
+        //advice = (Button) findViewById(R.id.advice);
         advice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,21 +174,21 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-        account = (Button) findViewById(R.id.account);
+        //account = (Button) findViewById(R.id.account);
         account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.closeDrawer(drawer);
                 if (sp.getBoolean("isConnected",false)) {
-                    Intent intent = new Intent(MainActivity.this,AccountActivity.class);
-                    intent.putExtra("source", "existing");
-                    startActivity(intent);
+                  //  Intent intent = new Intent(MainActivity.this,AccountActivity.class);
+                   // intent.putExtra("source", "existing");
+                   // startActivity(intent);
                 }else
                     new NotificationDialog(MainActivity.this,"Pentru a putea vedea informații despre contul dumneavoastră, vă rugăm să vă autentificați!").show();
             }
         });
 
-        storeDashboard = (Button) findViewById(R.id.store_dashboard);
+       // storeDashboard = (Button) findViewById(R.id.store_dashboard);
         storeDashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +198,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        catalog = (Button) findViewById(R.id.catalog);
+        //catalog = (Button) findViewById(R.id.catalog);
         catalog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,7 +222,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        storeServices = (Button) findViewById(R.id.services);
+      //  storeServices = (Button) findViewById(R.id.services);
         storeServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +232,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        clientVoice = (Button) findViewById(R.id.client_voice);
+        //clientVoice = (Button) findViewById(R.id.client_voice);
         clientVoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +246,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        facebookPage = (Button) findViewById(R.id.facebook_page);
+        //facebookPage = (Button) findViewById(R.id.facebook_page);
         facebookPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,7 +260,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        backButton= (LinearLayout)findViewById(R.id.back_button);
+        //backButton= (LinearLayout)findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -278,7 +269,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        menuButton=(LinearLayout)findViewById(R.id.menu_button);
+      //  menuButton=(LinearLayout)findViewById(R.id.menu_button);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,7 +281,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        login = (Button) findViewById(R.id.login);
+        //login = (Button) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -300,7 +291,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        logout = (Button) findViewById(R.id.logout);
+     //   logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,7 +304,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
-        f = new DashboardFragment();
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, f).commit();
 
     }

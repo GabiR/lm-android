@@ -2,126 +2,142 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   android:padding="16dp" >
+    android:padding="16dp">
+
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/avatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/com_facebook_profile_picture_blank_square"/>
+        android:src="@drawable/com_facebook_profile_picture_blank_square" />
+
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DjDeeNo"
-        android:textColor="@color/green"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textAllCaps="true"
+        android:layout_alignTop="@id/avatar"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_alignTop="@id/avatar"
+        android:layout_toEndOf="@+id/avatar"
         android:layout_toRightOf="@id/avatar"
-        android:layout_toEndOf="@+id/avatar"/>
+        android:text="DjDeeNo"
+        android:textAllCaps="true"
+        android:textColor="@color/green"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/comment"
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/avatar"
+        android:layout_margin="10dp"
         android:text="Frumos, Felicitari!"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        android:layout_below="@id/avatar"/>
+        android:textSize="15sp" />
+
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/comment"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
         <TextView
-            android:layout_marginLeft="10dp"
             android:id="@+id/comm_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="75"
-            android:textSize="14sp"
-            android:textColor="@color/black"
+            android:layout_marginEnd="6dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="6dp"
+            android:layout_marginStart="10dp"
+            android:text="75"
+            android:textColor="@color/black"
+            android:textSize="14sp"
             android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/hands"
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:adjustViewBounds="true"
             android:src="@drawable/hands" />
+
         <TextView
-            android:layout_marginLeft="16dp"
             android:id="@+id/publish_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:text="24.09.2015 09:27PM"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/linear"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
-        android:layout_marginTop="10dp">
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:background="@color/colorPrimary"
-            android:text="Șterge comentariu"
-            android:textSize="16sp"
-            android:gravity="center"
-
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:maxLines="2"
+            android:background="@color/colorPrimary"
             android:ellipsize="end"
+
+            android:gravity="center"
+            android:maxLines="2"
+            android:padding="6dp"
+            android:text="Șterge comentariu"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:padding="6dp" />
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/answer"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:background="@color/colorPrimary"
-            android:text="Răspunde"
-            android:gravity="center"
-            android:textSize="16sp"
-
-            android:layout_toRightOf="@id/delete"
-            android:textColor="@color/white"
-            android:padding="6dp"
-            android:textAllCaps="false"
             android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/delete"
+            android:layout_toRightOf="@id/delete"
+
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="Răspunde"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
         <Button
-            android:layout_toRightOf="@id/answer"
             android:id="@+id/like_comment"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/answer"
+            android:layout_toRightOf="@id/answer"
             android:background="@color/colorPrimary"
             android:drawableLeft="@drawable/like_b"
-            android:drawableStart="@drawable/like_b"
             android:drawablePadding="4dp"
-            android:textAllCaps="false"
-            android:text="Util"
+            android:drawableStart="@drawable/like_b"
 
-            android:lines="1"
-            android:textSize="16sp"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:lines="1"
             android:padding="6dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"/>
+            android:text="Util"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </RelativeLayout>
 
 

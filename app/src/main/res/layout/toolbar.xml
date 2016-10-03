@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-    android:layout_height="64dp"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar"
 
     android:layout_width="match_parent"
-    android:minHeight="?attr/actionBarSize"
+    android:layout_height="64dp"
     android:background="@drawable/toolbar_background"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:minHeight="?attr/actionBarSize">
 
     <ImageView
         android:id="@+id/back_arrow"
@@ -14,34 +14,38 @@
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:src="@drawable/back_arrow"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <ImageView
-        android:paddingBottom="5dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/logo_circle"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        android:paddingBottom="5dp"
+        android:src="@drawable/logo_circle" />
 
     <TextView
-        android:paddingLeft="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Facem-FacemFacem-FacemFacem-FacemFacem-FacemFacem-Facem"
-        android:singleLine="true"
+        android:layout_marginEnd="70dp"
         android:layout_marginRight="70dp"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:singleLine="true"
+        android:text="Facem-FacemFacem-FacemFacem-FacemFacem-FacemFacem-Facem"
         android:textColor="@color/white"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/logout"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="16dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="right"
-        android:src="@drawable/logout_icon"
-        android:onClick="logoutClicked"/>
+        android:onClick="logoutClicked"
+        android:paddingBottom="5dp"
+        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="5dp"
+        android:src="@drawable/logout_icon" />
 </android.support.v7.widget.Toolbar>

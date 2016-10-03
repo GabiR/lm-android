@@ -11,26 +11,15 @@ import android.util.Base64OutputStream;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cypien.leroy.LeroyApplication;
-import com.cypien.leroy.R;
-import com.cypien.leroy.utils.NotificationDialog;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -57,7 +46,7 @@ public class VoiceFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=(ScrollView) getActivity().getLayoutInflater().inflate(R.layout.voice_screen,container,false);
+       /* view=(ScrollView) getActivity().getLayoutInflater().inflate(R.layout.voice_screen,container,false);
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
 
         View actionBarView = getActivity().findViewById(R.id.actionbar);
@@ -171,7 +160,7 @@ public class VoiceFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
         return view;
     }
 

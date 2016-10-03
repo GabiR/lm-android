@@ -12,8 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.util.TypedValue;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,13 +51,18 @@ public class CommunityDashboard extends AppCompatActivity {
 
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
-    private CookieManager cookieManager;
+    private int inactive;
+    private int active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = CommunityDashboard.this;
         setContentView(R.layout.community_dashboard);
+
+        float density = context.getResources().getDisplayMetrics().density;
+        inactive = (int) (density * 8);
+        active = (int) (density * 6);
         Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Screen: Community Screen"));
         LeroyApplication application = (LeroyApplication) getApplication();
@@ -67,7 +72,6 @@ public class CommunityDashboard extends AppCompatActivity {
 
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
         if (sp.getBoolean("isConnected", false)) {
-            //  injectCookies();
             getUserInformation();
         }
 
@@ -80,7 +84,7 @@ public class CommunityDashboard extends AppCompatActivity {
         ((TextView) toolbar.getChildAt(2)).setText("Facem-Facem");
 
         home_button = (LinearLayout) findViewById(R.id.home_button);
-    //    prevLayout = home_button;
+        //    prevLayout = home_button;
         setOnClickAction(home_button);
         projects_button = (LinearLayout) findViewById(R.id.projects_button);
         setOnClickAction(projects_button);
@@ -92,7 +96,7 @@ public class CommunityDashboard extends AppCompatActivity {
         setOnClickAction(contests_button);
         prevLayout = projects_button;
         home_button.callOnClick();
-    //    prevLayout.callOnClick();
+        //    prevLayout.callOnClick();
     }
 
 
@@ -108,21 +112,29 @@ public class CommunityDashboard extends AppCompatActivity {
                             goToFragment(new CommunityHome(), "home");
                             ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
                             ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
                             break;
                         case "projects":
                             goToFragment(new ProjectsListFragment(), "projects");
                             ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.projects_green));
                             ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
                             break;
                         case "discussions":
                             goToFragment(new DiscussionsFragment(), "discussions");
                             ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.discussions_green));
                             ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
                             break;
                         case "contests":
                             goToFragment(new ContestFragment(), "contests");
                             ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.contests_green));
                             ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
                             break;
                         case "shop":
                             Intent intent = new Intent(CommunityDashboard.this, ShopDashboard.class);
@@ -153,7 +165,9 @@ public class CommunityDashboard extends AppCompatActivity {
                     break;
             }
 
-            ((TextView) prevLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.black));
+            ((TextView) prevLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            ((TextView) prevLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.unpressedblack));
+            prevLayout.setPadding(0, inactive, 0, inactive);
         }
 
         prevLayout = linearLayout;
@@ -188,8 +202,8 @@ public class CommunityDashboard extends AppCompatActivity {
     public void goToFragment(Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-           // ft.replace(R.id.content_frame_community, fragment).addToBackStack(tag);
-            while (getSupportFragmentManager().getBackStackEntryCount()>0)
+            // ft.replace(R.id.content_frame_community, fragment).addToBackStack(tag);
+            while (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 getSupportFragmentManager().popBackStackImmediate();
             ft.replace(R.id.content_frame_community, fragment);
             ft.commit();
@@ -254,40 +268,6 @@ public class CommunityDashboard extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!goBack()) {
-
-            /*if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                getSupportFragmentManager().popBackStack();
-                if (getSupportFragmentManager().getBackStackEntryCount() - 2 >= 0) {
-                    String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
-                    LinearLayout button;
-                    if (name != null) {
-                        switch (name) {
-
-                            case "projects":
-                                button = projects_button;
-                                break;
-                            case "discussions":
-                                button = discussions_button;
-                                break;
-                            case "contests":
-                                button = contests_button;
-                                break;
-                            default:
-                                button = home_button;
-
-                        }
-                        resolvePrevBtn(button);
-                        ((ImageView) button.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, getResources().getIdentifier(name + "_green", "drawable", getPackageName())));
-                        ((TextView) button.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-
-                        Log.e("bla", name);
-                    }
-                }
-            } else {
-                if (getSupportFragmentManager().getBackStackEntryCount() == 1)
-                    getSupportFragmentManager().popBackStack();
-                super.onBackPressed();
-            }*/
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
 
@@ -300,21 +280,6 @@ public class CommunityDashboard extends AppCompatActivity {
     //controleaza apasarea butoanelor de back
     private boolean goBack() {
         if (currentWebview != null) {
-           /* if (currentWebview.canGoBack()&&htmlStack.size()>0) {
-                if(currentWebview.copyBackForwardList().getCurrentIndex()==1){
-
-                    currentWebview.loadDataWithBaseURL(null, htmlStack.pop(), "text/html", "UTF-8", null);
-                    currentWebview.clearHistory();
-                }else {
-                    currentWebview.goBack();
-                }
-                return true;
-            }
-            if (htmlStack.size() > 1) {
-                htmlStack.pop();
-                currentWebview.loadDataWithBaseURL(null, htmlStack.lastElement(), "text/html", "UTF-8", null);
-                return true;
-            }*/
             if (currentWebview.canGoBack()) {
                 currentWebview.goBack();
                 return true;

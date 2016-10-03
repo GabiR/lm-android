@@ -87,9 +87,6 @@
             android:hardwareAccelerated="true">
         </activity>
 
-        <activity android:name="com.cypien.leroy.activities.AccountActivity"
-            android:configChanges="orientation|screenSize"/>
-
         <activity android:name="com.cypien.leroy.activities.AddPhotoActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".activities.NewCreateAccountActivity"/>
