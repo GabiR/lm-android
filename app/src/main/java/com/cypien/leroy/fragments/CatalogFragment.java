@@ -69,12 +69,13 @@ public class CatalogFragment extends Fragment {
     private com.rey.material.widget.LinearLayout retry;
     private FragmentActivity mActivity;
     private ProgressView progressLayout;
-
+    private boolean fromCache = true;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.catalog_fragment, container, false);
 
+        fromCache = true;
         Answers.getInstance().logContentView(new ContentViewEvent()
                 .putContentName("Screen: Catalog"));
         ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText("Cataloage");
@@ -138,9 +139,13 @@ public class CatalogFragment extends Fragment {
     private void loadPage() {
 
 
+        boolean test = loadFromCache();
         seeAllOffers.setEnabled(false);
         if (Connections.isNetworkConnected(mActivity)) {
+            fromCache = false;
             noInternet.setVisibility(View.GONE);
+            cataloage.clear();
+
             String url = "https://api.publitas.com/v1/groups/leroymerlin/publications.json";
             JsonArrayRequest obreq = new JsonArrayRequest(Request.Method.GET, url,
                     new Response.Listener<JSONArray>() {
@@ -201,27 +206,34 @@ public class CatalogFragment extends Fragment {
             requestQueue.add(obreq);
             //   new PageLoaderCommunity(mActivity, mWebView).execute(urlLink);
         } else {
-            Type myObjectType = new TypeToken<Integer>() {
-            }.getType();
-            Integer nrCatalog = (Integer) LeroyApplication.getCacheManager().get("catalog_nr", Integer.class, myObjectType);
-            myObjectType = new TypeToken<Catalog>() {
-            }.getType();
-            if (nrCatalog != null) {
-                for (int i = 0; i < nrCatalog; i++) {
-                    Catalog catalog = (Catalog) LeroyApplication.getCacheManager().get("catalog_" + i, Catalog.class, myObjectType);
-                    if (catalog != null) {
-                        catalog.buildImage();
-                        cataloage.add(catalog);
-                    }
-
-                }
-                setUIelements();
-            } else {
+            if(!test)
                 noInternet.setVisibility(View.VISIBLE);
-            }
+
 
 
         }
+    }
+    private boolean loadFromCache(){
+        Type myObjectType = new TypeToken<Integer>() {}.getType();
+        Integer nrCatalog = (Integer) LeroyApplication.getCacheManager().get("catalog_nr", Integer.class, myObjectType);
+        myObjectType = new TypeToken<Catalog>() {
+        }.getType();
+        if (nrCatalog != null) {
+
+            for (int i = 0; i < nrCatalog; i++) {
+                Catalog catalog = (Catalog) LeroyApplication.getCacheManager().get("catalog_" + i, Catalog.class, myObjectType);
+                if (catalog != null) {
+                    catalog.buildImage();
+                    cataloage.add(catalog);
+                }
+
+            }
+
+            setUIelements();
+            return true;
+        }
+        fromCache = false;
+        return false;
     }
 
     private void changeFragment(int position) {
@@ -259,6 +271,7 @@ public class CatalogFragment extends Fragment {
                             pendingRequests.decrementAndGet();
 
                             if (pendingRequests.get() <= 0) {
+
                                 setUIelements();
                             }
 
@@ -302,33 +315,41 @@ public class CatalogFragment extends Fragment {
     void setUIelements() {
         seeAllOffers.setEnabled(true);
         //Picasso.with(mActivity).load(cataloage.get(0).getCoverImageURL()).fit().into(coperta_catalog);
-        if (Connections.isNetworkConnected(mActivity)) {
+        if (Connections.isNetworkConnected(mActivity) && !fromCache) {
+            progressView.setVisibility(View.VISIBLE);
             new DownloadImageTask(coperta_catalog)
                     .execute(cataloage.get(0).getCoverImageURL());
         } else {
-            coperta_catalog.setImageBitmap(cataloage.get(0).getCover());
-            progressView.setVisibility(View.GONE);
+            if(fromCache) {
+                coperta_catalog.setImageBitmap(cataloage.get(0).getCover());
+                progressView.setVisibility(View.GONE);
+            }
 
         }
 
-        CatalogAdapter adapter = new CatalogAdapter(cataloage.subList(1, cataloage.size()), mActivity);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
-        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        progressLayout.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(mActivity, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View v, int position) {
 
-                        changeFragment(position + 1);
-                    }
-                })
-        );
+        CatalogAdapter adapter = new CatalogAdapter(cataloage.subList(1, cataloage.size()), mActivity, fromCache);
+        if(fromCache) {
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(mActivity);
+            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(mActivity, new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View v, int position) {
+
+                            changeFragment(position + 1);
+                        }
+                    })
+            );
+        }
+        progressLayout.setVisibility(View.GONE);
+        recyclerView.setAdapter(adapter);
+
 
 
     }
@@ -362,6 +383,7 @@ public class CatalogFragment extends Fragment {
 
 
         protected void onPostExecute(Bitmap result) {
+            Log.e("pe", "SUNT AICI");
             cataloage.get(0).buildImageBase(result);
             LeroyApplication.getCacheManager().put("catalog_0", cataloage.get(0));
             //        LeroyApplication.getCacheManager().put("catalog_nr", 1);
