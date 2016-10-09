@@ -226,7 +226,6 @@ public class DiscussionsFragment extends Fragment {
         CookieManager cookieManager = CookieManager.getInstance();
         for (Map.Entry<String, String> cookie : cookies.entrySet()) {
             String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
-            Log.e("cookieString", cookieString);
             cookieManager.setCookie("www.facem-facem.ro", cookieString);
             CookieSyncManager.getInstance().sync();
         }

@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,13 +21,10 @@ import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.rey.material.app.Dialog;
-import com.rey.material.app.DialogFragment;
-import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.Spinner;
 
-public class CalculatorDashboardFragment extends Fragment implements View.OnClickListener, TextWatcher {
+public class CalculatorDashboardFragment extends Fragment implements View.OnClickListener{
 
 
     private FragmentActivity mActivity;
@@ -73,6 +68,8 @@ public class CalculatorDashboardFragment extends Fragment implements View.OnClic
         Button antiMoldButton = (Button) view.findViewById(R.id.anti_mold_button);
         Button colorPaintButton = (Button) view.findViewById(R.id.color_button);
         Button magneticPaintButton = (Button) view.findViewById(R.id.magnetic_button);
+        Button coatingButton = (Button) view.findViewById(R.id.coating_button);
+        Button universalButton = (Button) view.findViewById(R.id.universal_button);
 
         laminatedButton.setOnClickListener(this);
         parquetButton.setOnClickListener(this);
@@ -82,6 +79,8 @@ public class CalculatorDashboardFragment extends Fragment implements View.OnClic
         antiMoldButton.setOnClickListener(this);
         colorPaintButton.setOnClickListener(this);
         magneticPaintButton.setOnClickListener(this);
+        coatingButton.setOnClickListener(this);
+        universalButton.setOnClickListener(this);
         return view;
     }
 
@@ -95,438 +94,56 @@ public class CalculatorDashboardFragment extends Fragment implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Dialog.Builder builder = null;
+        CalculatorFragment fragment = new CalculatorFragment();
+        Bundle bundle = new Bundle();
+        String type = "laminated";
+
         switch (v.getId()) {
 
-            case R.id.laminated_button:
-                unit = " pachete";
-                i = 0;
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
-
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mActivity, R.array.parquet_modes, R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-
-                        modes.setAdapter(adapter);
-
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        modes.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(Spinner parent, View view, int position, long id) {
-                                calculate();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator parchet laminat")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
-                break;
             case R.id.parquet_button:
-                unit = " pachete";
-                i = 0;
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
 
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mActivity, R.array.parquet_modes, R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-
-                        modes.setAdapter(adapter);
-
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        modes.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(Spinner parent, View view, int position, long id) {
-                                calculate();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator parchet din lemn masiv")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "parquet";
                 break;
             case R.id.pvc_button:
-                i = 0;
 
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
-
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mActivity, R.array.parquet_modes, R.layout.simple_spinner_item);
-                        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-
-                        modes.setAdapter(adapter);
-
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        modes.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(Spinner parent, View view, int position, long id) {
-                                calculate();
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator covor PVC")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "pvc";
                 break;
             case R.id.varnish_button:
-                i = 1;
-                unit = " găleți/mână";
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
 
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        result.setText("- găleți/mână");
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        modes.setVisibility(View.GONE);
-                        surfacePack.setHint("Acoperire/găleată");
-                        lengthInput.setHint("Înălțime");
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator lăcuire")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "varnish";
                 break;
             case R.id.white_button:
-                i = 2;
-                unit = " găleți";
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
 
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        result.setText("- găleți");
-                        dialog.findViewById(R.id.hands).setVisibility(View.VISIBLE);
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        modes.setVisibility(View.GONE);
-                        noHands = (EditText) dialog.findViewById(R.id.no_hands);
-
-                        surfacePack.setHint("Acoperire/găleată");
-                        lengthInput.setHint("Înălțime");
-                        noHands.addTextChangedListener(CalculatorDashboardFragment.this);
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator vopsea albă")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "white";
                 break;
             case R.id.anti_mold_button:
-                i = 2;
-                unit = " găleți";
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
 
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        result.setText("- găleți");
-                        dialog.findViewById(R.id.hands).setVisibility(View.VISIBLE);
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        modes.setVisibility(View.GONE);
-                        noHands = (EditText) dialog.findViewById(R.id.no_hands);
-
-                        surfacePack.setHint("Acoperire/găleată");
-                        lengthInput.setHint("Înălțime");
-                        noHands.addTextChangedListener(CalculatorDashboardFragment.this);
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator vopsea antimucegai")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "antimold";
                 break;
             case R.id.color_button:
-                i = 2;
-                unit = " găleți";
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
 
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        result.setText("- găleți");
-                        dialog.findViewById(R.id.hands).setVisibility(View.VISIBLE);
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        modes.setVisibility(View.GONE);
-                        noHands = (EditText) dialog.findViewById(R.id.no_hands);
-
-                        surfacePack.setHint("Acoperire/găleată");
-                        lengthInput.setHint("Înălțime");
-                        noHands.addTextChangedListener(CalculatorDashboardFragment.this);
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator vopsea colorată")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "color";
                 break;
             case R.id.magnetic_button:
-                i = 1;
-                unit = " găleți/mână";
-                builder = new SimpleDialog.Builder(R.style.DialogStyle) {
-                    @Override
-                    protected Dialog onBuild(Context context, int styleId) {
-                        return super.onBuild(context, styleId);
 
-                    }
-
-                    @Override
-                    protected void onBuildDone(Dialog dialog) {
-                        dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        result = (TextView) dialog.findViewById(R.id.result);
-                        result.setText("- găleți/mână");
-                        lengthInput = (android.widget.EditText) dialog.findViewById(R.id.length);
-                        widthInput = (EditText) dialog.findViewById(R.id.width);
-                        surfacePack = (EditText) dialog.findViewById(R.id.per_pack);
-                        modes = (Spinner) dialog.findViewById(R.id.mode);
-                        modes.setVisibility(View.GONE);
-                        surfacePack.setHint("Acoperire/găleată");
-                        lengthInput.setHint("Înălțime");
-                        surfacePack.addTextChangedListener(CalculatorDashboardFragment.this);
-                        widthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-                        lengthInput.addTextChangedListener(CalculatorDashboardFragment.this);
-
-
-                    }
-
-                    @Override
-                    public void onPositiveActionClicked(DialogFragment fragment) {
-                        fragment.getDialog().dismiss();
-                    }
-
-
-                };
-
-
-                builder.title("Calculator vopsea magnetică")
-                        .positiveAction("ÎNCHIDE")
-                        .contentView(R.layout.custom_calculator_dialog);
+                type = "magnetic";
                 break;
+            case R.id.coating_button:
+                type = "coating";
+                break;
+            case R.id.universal_button:
+                type = "universal";
         }
-        DialogFragment fragment = DialogFragment.newInstance(builder);
-        fragment.show(getFragmentManager(), null);
-    }
+        bundle.putString("type", type);
+        fragment.setArguments(bundle);
 
-    private void calculate() {
-        String q = surfacePack.getText().toString();
-
-        if (!q.equals("") && Float.valueOf(q) != 0f) {
-            float length, width;
-            try {
-                length = Float.parseFloat(lengthInput.getText().toString());
-
-            } catch (NumberFormatException ex) {
-                length = 0.0f;
-            }
-            try {
-                width = Float.parseFloat(widthInput.getText().toString());
-
-            } catch (NumberFormatException ex) {
-                width = 0.0f;
-            }
-
-            int percent = (modes.getSelectedItemPosition() + 1) * 5;
-            if (i != 0) {
-                percent = 5;
-            }
-
-            float surface = length * width;
-            //  float res = percent*surface/100;
-            if (i == 2) {
-                try {
-                    surface *= Float.parseFloat(noHands.getText().toString());
-
-                } catch (NumberFormatException ignored) {
-
-                }
-            }
-            float r = surface / Float.parseFloat(q) + percent * surface / 100;
-
-            result.setText(r + unit);
-        } else {
-            result.setText("-" + unit);
-        }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, fragment).addToBackStack(null);
+        transaction.commit();
 
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-    }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-        calculate();
-    }
+
 }

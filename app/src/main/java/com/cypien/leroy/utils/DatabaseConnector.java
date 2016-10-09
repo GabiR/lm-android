@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.cypien.leroy.models.Message;
 import com.cypien.leroy.models.Store;
 
 import org.json.JSONObject;
@@ -19,7 +20,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 public class DatabaseConnector extends SQLiteOpenHelper {
 
@@ -77,7 +82,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
         try {
             String myPath = DB_PATH + DB_NAME;
-            Log.e("myPath", myPath);
+
             checkDB = SQLiteDatabase.openDatabase(myPath, null,
                     SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException ignored) {
@@ -124,7 +129,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         ContentValues newCon = new ContentValues();
         newCon.put("Id", store.getId());
         newCon.put("JSON", store.toJson());
-        Log.e("insert", store.getName());
+
         try {
             open();
         } catch (Exception e) {
@@ -148,6 +153,7 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         close();
     }
 
+
     public synchronized void deleteStore(String id) {
         try {
             open();
@@ -163,7 +169,21 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         }
         close();
     }
+    public synchronized void deleteMessage(String id) {
+        try {
+            open();
+        } catch (Exception e) {
 
+            e.printStackTrace();
+        }
+        try {
+            curs = database.rawQuery("delete from Messages where ID='" + id + "'", null);
+            curs.moveToFirst();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        close();
+    }
     public synchronized void deleteAllStores() {
         try {
             open();
@@ -236,5 +256,98 @@ public class DatabaseConnector extends SQLiteOpenHelper {
         return stores;
     }
 
+    //Messages
+    public synchronized void insertMessage(Message message) {
+        ContentValues newCon = new ContentValues();
+        newCon.put("ID", message.getId());
+        newCon.put("JSON", message.toJson());
+
+        try {
+            open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        database.insert("Messages", null, newCon);
+        close();
+    }
+
+    public synchronized void updateMessage(Message message) {
+        ContentValues editCon = new ContentValues();
+        editCon.put("ID", message.getId());
+        editCon.put("JSON", message.toJson());
+
+        try {
+            open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        database.update("Messages", editCon, "ID=\"" + message.getId() + "\"", null);
+        close();
+    }
+    public synchronized int getUnreadMessagesNumber(String date) {
+
+        int n = 0;
+        ArrayList<Message> messages = loadMessages();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        Date dateObj = null;
+        try {
+            dateObj = sdf.parse(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (Message message : messages) {
+            Date obj = null;
+            try {
+                obj = sdf.parse(message.getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            assert dateObj != null;
+            assert obj != null;
+            int days = (int) ((dateObj.getTime() - obj.getTime()) / (24 * 60 * 60 * 1000));
+            if (days >= 31) {
+                deleteMessage(message.getId());
+                messages.remove(message);
+            }
+            else{
+                if(!message.isRead())
+                    n++;
+            }
+        }
+
+        return n;
+    }
+
+
+
+    public synchronized ArrayList<Message> loadMessages() {
+        ArrayList<Message> messages = new ArrayList<>();
+        try {
+            open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            curs = database.rawQuery("select * from Messages", null);
+            curs.moveToFirst();
+            do {
+                String JSON = curs.getString(1);
+                JSONObject jsn = new JSONObject(JSON);
+                Message message = new Message();
+                message.setId(curs.getString(0));
+                message = message.fromJson(jsn);
+                messages.add(message);
+
+            } while (curs.moveToNext());
+            curs.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        close();
+        Collections.reverse(messages);
+        return messages;
+    }
 
 }

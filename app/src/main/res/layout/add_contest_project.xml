@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:layout_alignParentTop="true"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_alignParentTop="true"
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize">
 
@@ -35,29 +35,32 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
     </android.support.v7.widget.Toolbar>
+
     <ScrollView
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
 
-        android:fillViewport="true"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="100dp"
                 android:orientation="vertical">
+
                 <View
                     android:id="@+id/focus_thief"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -128,13 +131,12 @@
 
 
                     <com.rey.material.widget.Spinner
-                        app:rd_style="@style/Material.Drawable.Ripple.Wave"
-                        style="@style/Material.Widget.Spinner"
                         android:id="@+id/contests"
-                        app:spn_labelEnable="false"
+                        style="@style/Material.Widget.Spinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
+                        android:dropDownWidth="wrap_content"
                         android:gravity="center_vertical"
                         android:imeOptions="actionNext"
                         android:paddingEnd="8dp"
@@ -142,11 +144,11 @@
                         android:paddingRight="8dp"
                         android:paddingStart="16dp"
                         android:singleLine="true"
-                        android:dropDownWidth="wrap_content"
                         android:spinnerMode="dropdown"
+                        app:rd_style="@style/Material.Drawable.Ripple.Wave"
                         app:spn_arrowColor="#00000000"
                         app:spn_dividerHeight="0dp"
-                        />
+                        app:spn_labelEnable="false" />
 
                     <TextView
 
@@ -171,13 +173,13 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:paddingBottom="8dp"
                     android:paddingEnd="16dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingStart="16dp"
                     android:paddingTop="16dp"
-                    android:layout_marginTop="16dp"
                     android:text="DETALII PROIECT"
                     android:textAllCaps="true"
                     android:textColor="#333333" />
@@ -201,15 +203,15 @@
                         android:gravity="top"
                         android:imeOptions="actionNext"
                         android:inputType="textMultiLine|textCapSentences"
+                        android:lines="4"
+                        android:paddingBottom="4dp"
                         android:paddingEnd="8dp"
                         android:paddingLeft="16dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
                         android:paddingRight="8dp"
-                        android:scrollbars="vertical"
-                        android:lines="4"
-
                         android:paddingStart="16dp"
+                        android:paddingTop="4dp"
+
+                        android:scrollbars="vertical"
                         android:textColor="#333333"
                         android:textSize="14sp" />
 
@@ -237,13 +239,13 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:paddingBottom="8dp"
                     android:paddingEnd="16dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingStart="16dp"
                     android:paddingTop="16dp"
-                    android:layout_marginTop="16dp"
                     android:text="IMAGINI PROIECT"
                     android:textAllCaps="true"
                     android:textColor="#333333" />
@@ -253,12 +255,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
 
-                    android:weightSum="1"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
                     <ImageView
                         android:id="@+id/picture1"
                         android:layout_width="0dp"
@@ -266,6 +269,7 @@
                         android:layout_weight="0.33"
                         android:scaleType="fitCenter"
                         android:src="@drawable/add_picture" />
+
                     <ImageView
                         android:id="@+id/picture2"
 
@@ -274,31 +278,33 @@
                         android:layout_weight="0.33"
                         android:scaleType="fitCenter"
                         android:src="@drawable/add_picture" />
+
                     <ImageView
                         android:id="@+id/picture3"
                         android:layout_width="0dp"
-                        android:scaleType="fitCenter"
                         android:layout_height="85dp"
                         android:layout_weight="0.33"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/add_picture" />
                 </LinearLayout>
 
 
             </LinearLayout>
+
             <Button
                 android:id="@+id/add_project"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:background="@color/colorPrimary"
                 android:text="Adaugă proiect"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true"
-                />
+                android:textColor="@color/white" />
         </RelativeLayout>
 
     </ScrollView>
-    <include layout="@layout/toolbar_shadow"/>
+
+    <include layout="@layout/toolbar_shadow" />
 </RelativeLayout>

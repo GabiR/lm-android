@@ -45,11 +45,11 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Alex on 03/11/15.
  */
-public class AddContestProjectActivity extends AppCompatActivity{
+public class AddContestProjectActivity extends AppCompatActivity {
     private final String titleError = "<font color=\"#D50000\">Completați titlul</font>";
     private final String detailsError = "<font color=\"#D50000\">Prea puține detalii</font>";
     //  private static String selectedCategoriesIndexes,selectedCategories;
-    private final int IMAGE1=175,IMAGE2=176,IMAGE3=177;
+    private final int IMAGE1 = 175, IMAGE2 = 176, IMAGE3 = 177;
     boolean[] errors = new boolean[2];
     private EditText title, details;
     private ImageView image1, image2, image3;
@@ -95,17 +95,17 @@ public class AddContestProjectActivity extends AppCompatActivity{
         image3.setTag(IMAGE3);
         getImage(image3);
 
-        title = (EditText)findViewById(R.id.project_name);
+        title = (EditText) findViewById(R.id.project_name);
 
         details = (EditText) findViewById(R.id.project_details);
         contests = (Spinner) findViewById(R.id.contests);
 
-       adapter = new ArrayAdapter<>(AddContestProjectActivity.this, R.layout.simple_spinner_item);
+        adapter = new ArrayAdapter<>(AddContestProjectActivity.this, R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
         getContests();
-        if(adapter.getCount()>0)
-        contests.setAdapter(adapter);
-   
+        if (adapter.getCount() > 0)
+            contests.setAdapter(adapter);
+
         // controleaza disparitia erorilor
 
         placeImages();
@@ -149,7 +149,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
                         errors[1] = true;
                         ok = false;
                     }
-                    if(errors[0] || errors[1])
+                    if (errors[0] || errors[1])
                         return;
 
                     if (ok) {
@@ -158,7 +158,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
                             jsn.put("pagetext", details.getText().toString());
                             jsn.put("title", title.getText().toString());
                             jsn.put("userid", sp.getString("userid", ""));
-                            jsn.put("parentnode", ((Contest)contests.getSelectedItem()).getContestId());
+                            jsn.put("parentnode", ((Contest) contests.getSelectedItem()).getContestId());
                             jsn.put("mainimagename", title.getText().toString() + ".jpg");
                             if (path1 != null) {
                                 jsn.put("mainimage", encodeImageTobase64(path1));
@@ -178,7 +178,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
                             if (path3 != null)
                                 images.put("image3.jpg", encodeImageTobase64(path3));
                             jsn.put("images", images);
-                            jsn = makeRequest("CMS_create",sp.getString("endpointCookie", ""), sp.getString("userid", ""), jsn.toString());
+                            jsn = makeRequest("CMS_create", sp.getString("endpointCookie", ""), sp.getString("userid", ""), jsn.toString());
                             if (jsn != null && jsn.getJSONObject("result").getString("userid").equals(sp.getString("userid", ""))) {
                                 //   new NotificationDialog(getActivity(), "Proiectul dumneavoastră a fost adăugat cu succes !").show();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddContestProjectActivity.this, R.style.AppCompatAlertDialogStyle);
@@ -200,7 +200,7 @@ public class AddContestProjectActivity extends AppCompatActivity{
 
                     }
                 } else {
-                    new NotificationDialog(AddContestProjectActivity.this,"Pentru a putea adăuga proiectul dumneavoastră, vă rugăm să va conectați la internet!").show();
+                    new NotificationDialog(AddContestProjectActivity.this, "Pentru a putea adăuga proiectul dumneavoastră, vă rugăm să va conectați la internet!").show();
                 }
             }
         });
@@ -222,9 +222,9 @@ public class AddContestProjectActivity extends AppCompatActivity{
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // picturesError.setVisibility(View.GONE);
+                // picturesError.setVisibility(View.GONE);
                 Intent intent = new Intent(AddContestProjectActivity.this, AddPhotoActivity.class);
-                startActivityForResult(intent, (int)v.getTag());
+                startActivityForResult(intent, (int) v.getTag());
             }
         });
     }
@@ -257,17 +257,17 @@ public class AddContestProjectActivity extends AppCompatActivity{
     //preia adresa imaginii
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode== RESULT_OK){
+        if (resultCode == RESULT_OK) {
 
-            if (requestCode==IMAGE1) {
+            if (requestCode == IMAGE1) {
                 path1 = data.getStringExtra("path");
                 pathIsNull(path1);
             }
-            if (requestCode==IMAGE2) {
+            if (requestCode == IMAGE2) {
                 path2 = data.getStringExtra("path");
                 pathIsNull(path2);
             }
-            if (requestCode==IMAGE3) {
+            if (requestCode == IMAGE3) {
                 path3 = data.getStringExtra("path");
                 pathIsNull(path3);
             }
@@ -291,15 +291,15 @@ public class AddContestProjectActivity extends AppCompatActivity{
         return imageEncoded;
     }
 
-    public JSONObject makeRequest(String... params){
+    public JSONObject makeRequest(String... params) {
         JSONArray array = new JSONArray();
         try {
             array.put(params[2]);
             array.put(new JSONObject(params[2]));
             JSONObject request = new JSONObject();
             request.put("method", params[0]);
-            request.put("params",array);
-            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/"+LeroyApplication.getInstance().APIVersion, params[1], "q=" + URLEncoder.encode(request.toString())).get());
+            request.put("params", array);
+            return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/" + LeroyApplication.getInstance().APIVersion, params[1], "q=" + URLEncoder.encode(request.toString())).get());
 
         } catch (JSONException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -308,27 +308,27 @@ public class AddContestProjectActivity extends AppCompatActivity{
         return null;
     }
 
-    private void getContests(){
+    private void getContests() {
         JSONObject response = LeroyApplication.getInstance().makeRequest("CMS_get_contests", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
         try {
             JSONArray resultArray = response.getJSONArray("result");
-            for(int i=0;i<resultArray.length();i++){
+            for (int i = 0; i < resultArray.length(); i++) {
                 Contest contest = new Contest();
-                contest=contest.fromJson(resultArray.getJSONObject(i));
-                if(!contest.getTitle().contains("Castigatorii"))
+                contest = contest.fromJson(resultArray.getJSONObject(i));
+                if (!contest.getTitle().contains("Castigatorii"))
                     adapter.add(contest);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (adapter.getCount()==0){
+        if (adapter.getCount() == 0) {
             new NotificationDialog(AddContestProjectActivity.this, "Ne pare rău, dar momentan nu există niciun concurs în desfășurare!").show();
         }
 
     }
 
-    private void pathIsNull(String path){
-        if(path==null)
-            new NotificationDialog(AddContestProjectActivity.this,"Ne pare rău, dar imaginea pe care ați selectat-o nu se găsește stocată pe dispozitivul dumneavoastră!").show();
+    private void pathIsNull(String path) {
+        if (path == null)
+            new NotificationDialog(AddContestProjectActivity.this, "Ne pare rău, dar imaginea pe care ați selectat-o nu se găsește stocată pe dispozitivul dumneavoastră!").show();
     }
 }

@@ -1,7 +1,6 @@
 package com.cypien.leroy.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,11 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cypien.leroy.LeroyApplication;
-import com.cypien.leroy.R;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 /**
  * Created by Alex on 8/14/2015.
  */
@@ -32,7 +26,7 @@ public class MyAccountFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = getActivity().getLayoutInflater().inflate(R.layout.my_account_screen, container, false);
+       /* view = getActivity().getLayoutInflater().inflate(R.layout.my_account_screen, container, false);
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
 
         View actionBarView = getActivity().findViewById(R.id.actionbar);
@@ -69,7 +63,7 @@ public class MyAccountFragment extends Fragment{
                 transaction.commit();
             }
         });
-
+*/
         return view;
     }
 

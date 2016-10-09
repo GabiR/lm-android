@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <include
-        android:id="@+id/actionbar"
-        layout="@layout/action_bar"/>
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -22,7 +20,7 @@
             android:orientation="vertical"
             android:layout_gravity="start"
             android:id="@+id/drawer">
-            <include layout="@layout/menu_layout"/>
+
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

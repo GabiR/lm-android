@@ -1,18 +1,13 @@
 package com.cypien.leroy.fragments;
 
-import android.support.v4.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.cypien.leroy.R;
-import com.cypien.leroy.utils.Connections;
-import com.cypien.leroy.utils.NotificationDialog;
 
 /**
  * Created by alexa on 10/12/2015.
@@ -27,7 +22,7 @@ public class InfoStoresFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = getActivity().getLayoutInflater().inflate(R.layout.info_stores_dashboard_screen, container, false);
+       /* view = getActivity().getLayoutInflater().inflate(R.layout.info_stores_dashboard_screen, container, false);
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
 
         View actionBarView = getActivity().findViewById(R.id.actionbar);
@@ -81,7 +76,7 @@ public class InfoStoresFragment extends Fragment{
                     new NotificationDialog(getActivity(),"Pentru a putea trimite mesaje prin vocea clientului, vă rugăm să vă autentificați!").show();
             }
         });
-
+*/
         return view;
     }
 }

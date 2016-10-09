@@ -15,6 +15,7 @@ import com.cypien.leroy.utils.Connections;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,13 +23,17 @@ import java.util.List;
  */
 public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogViewHolder> {
 
-    private List<Catalog> cataloage;
+    private List<Catalog> cataloage = new ArrayList<>();
     private Context context;
     private boolean notCached = true;
+    private boolean cache;
 
-    public CatalogAdapter(List<Catalog> cataloage, Context context) {
-        this.cataloage = cataloage;
+    public CatalogAdapter(List<Catalog> cataloage, Context context, boolean cache) {
+        this.cataloage.addAll(cataloage);
+        //this.cataloage = cataloage;
         this.context = context;
+        this.cache = cache;
+        if(!cache)
         LeroyApplication.getCacheManager().put("catalog_nr", cataloage.size() + 1);
     }
 
@@ -44,7 +49,7 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.CatalogV
     public void onBindViewHolder(final CatalogViewHolder holder, final int position) {
         final Catalog catalog = cataloage.get(position);
 
-        if (Connections.isNetworkConnected(context)) {
+        if (Connections.isNetworkConnected(context) && !cache) {
 
             Picasso.with(context).load(catalog.getCoverImageURL()).fit().into(holder.imageView, new Callback() {
                 @Override

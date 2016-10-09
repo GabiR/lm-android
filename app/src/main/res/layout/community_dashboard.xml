@@ -87,16 +87,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
-        android:layout_below="@+id/toolbar"
-        android:layout_weight="0.999">
+        android:layout_below="@+id/toolbar">
 
     </FrameLayout>
 
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="@drawable/bottom_shadow"
-        android:layout_below="@+id/toolbar"/>-->
     <include layout="@layout/toolbar_shadow" />
 
     <View
@@ -108,42 +102,44 @@
     <LinearLayout
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:layout_weight="0.001"
         android:background="@color/menu_bg_gray"
-        android:weightSum="1">
+        android:baselineAligned="false"
+        android:weightSum="1.05">
 
         <LinearLayout
             android:id="@+id/home_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="8dp"
-            android:paddingLeft="10dp"
             android:paddingTop="8dp"
             android:tag="home">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:adjustViewBounds="true"
                 android:src="@drawable/home_green" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="Home"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/projects_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -152,23 +148,26 @@
             android:tag="projects">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:adjustViewBounds="true"
                 android:src="@drawable/projects_gray" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="Proiecte"
-                android:textColor="@color/unpressedblack" />
+                android:textColor="@color/unpressedblack"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/discussions_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -177,23 +176,25 @@
             android:tag="discussions">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/discussions_gray" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="Discuții"
-                android:textColor="@color/unpressedblack" />
+                android:textColor="@color/unpressedblack"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/contests_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="0.20"
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -202,25 +203,28 @@
             android:tag="contests">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:adjustViewBounds="true"
                 android:src="@drawable/contests_gray" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/menu_button_text_padding"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="Concursuri"
-                android:textColor="@color/unpressedblack" />
+                android:textColor="@color/unpressedblack"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/shop_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
 
-            android:layout_height="wrap_content"
-            android:layout_weight="0.20"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
             android:orientation="horizontal"
             android:tag="shop">
 
@@ -231,13 +235,7 @@
                 android:layout_marginTop="11dp"
                 android:background="@color/gray" />
 
-            <!--<ImageView
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/shop_icon"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:adjustViewBounds="true"/>-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -250,17 +248,19 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="29dp"
                     android:adjustViewBounds="true"
                     android:src="@drawable/shop_icon" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/menu_button_text_padding"
-
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
                     android:text="Magazin"
-                    android:textColor="@color/unpressedblack" />
+
+                    android:textColor="@color/unpressedblack"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

@@ -1,18 +1,16 @@
 {
   "project_info": {
-    "project_id": "leroyapplication",
     "project_number": "332398575907",
-    "name": "LeroyApplication"
+    "firebase_url": "https://leroyapplication.firebaseio.com",
+    "project_id": "leroyapplication",
+    "storage_bucket": "leroyapplication.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:332398575907:android:43f53128e3d927a2",
-        "client_id": "android:com.cypien.leroy",
-        "client_type": 1,
         "android_client_info": {
-          "package_name": "com.cypien.leroy",
-          "certificate_hash": []
+          "package_name": "com.cypien.leroy"
         }
       },
       "oauth_client": [
@@ -23,9 +21,21 @@
             "package_name": "com.cypien.leroy",
             "certificate_hash": "A8C08FF9E3725F907AB61854DC442C97B8BC7FDF"
           }
+        },
+        {
+          "client_id": "332398575907-0e87i4hiekublh49ekvo9vorf9tvh4is.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "332398575907-n5inoqh1q5hdblu6k0oc07o98b3n3ueo.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK3mUl6vQS8ituBmitbAHu7eZgZ8GkYW0"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 2,
@@ -33,23 +43,20 @@
             "tracking_id": "UA-74913432-1"
           }
         },
-        "cloud_messaging_service": {
-          "status": 1,
-          "apns_config": []
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 1
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332398575907-0e87i4hiekublh49ekvo9vorf9tvh4is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }

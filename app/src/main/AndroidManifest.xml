@@ -21,11 +21,11 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+   // <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:protectionLevel="signature"
-        android:name="com.cypien.leroy.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.cypien.leroy.permission.C2D_MESSAGE" />
+   <!-- <permission android:protectionLevel="signature"
+        android:name="com.cypien.leroy.permission.C2D_MESSAGE" />-->
+   // <uses-permission android:name="com.cypien.leroy.permission.C2D_MESSAGE" />
 
 
     <application
@@ -77,16 +77,15 @@
         <activity
             android:name=".activities.ShopDashboard"
             android:configChanges="orientation|screenSize"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustPan">
+
         </activity>
         <activity
             android:name=".activities.CommunityDashboard"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true">
         </activity>
-
-        <activity android:name="com.cypien.leroy.activities.AccountActivity"
-            android:configChanges="orientation|screenSize"/>
 
         <activity android:name="com.cypien.leroy.activities.AddPhotoActivity"
             android:configChanges="orientation|screenSize"/>
@@ -122,14 +121,14 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
+        <!--<receiver android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
                 <category android:name="com.cypien.leroy" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
@@ -150,6 +149,20 @@
             </intent-filter>
         </receiver>
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+        <service
+            android:name=".utils.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".utils.RegistrationIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

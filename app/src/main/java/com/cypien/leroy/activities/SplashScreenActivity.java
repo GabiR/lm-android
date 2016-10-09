@@ -11,11 +11,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
 import com.cypien.leroy.R;
 import com.cypien.leroy.models.Store;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.DatabaseConnector;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,8 +28,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
-
 public class SplashScreenActivity extends AppCompatActivity {
     private SharedPreferences.Editor spEditor;
     private SharedPreferences sp;
@@ -37,10 +35,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Fabric.with(this, new Crashlytics());
-
+        FirebaseMessaging.getInstance().subscribeToTopic("leroy");
         setContentView(R.layout.splash_screen);
+
 
     }
 
@@ -94,7 +91,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             try {
                 request.put("method", "contact_get_all");
                 request.put("params", new JSONArray(parameters));
-                Log.e("request", request.toString());
+
                 return new JSONObject(getRequest("http://www.leroymerlin.ro/api/publicEndpoint", "q=" + request.toString()));
             } catch (JSONException e) {
                 Log.e("eroare", e.toString());

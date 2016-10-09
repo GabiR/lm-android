@@ -31,7 +31,7 @@ import org.json.JSONObject;
 public class AddDiscussionActivity extends AppCompatActivity {
     private final String subjectError = "<font color=\"#D50000\">Completați titlul</font>";
     private final String messageError = "<font color=\"#D50000\">Completați mesajul</font>";
-    private View view;
+    ;
     private Button addDiscussionButton;
     private EditText subject, message;
 

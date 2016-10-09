@@ -230,8 +230,7 @@ public class NewCreateAccountActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-                //   new NotificationDialog(NewCreateAccountActivity.this, "Vă rugăm să vă conectați la internet pentru a vă putea inregistra!").show();
-                //    showRulesPopup();
+
             }
         });
         create.setOnClickListener(new View.OnClickListener() {

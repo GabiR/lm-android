@@ -4,25 +4,75 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+
         android:orientation="vertical"
         android:paddingBottom="32dp">
-
-        <ImageView
-            android:id="@+id/prices"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/home_banner" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <RelativeLayout
+                android:id="@+id/prices"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="12dp"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingTop="39dp">
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="61dp"
+                    android:layout_centerHorizontal="true"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/home_banner" />
+
+                <TextView
+                    android:id="@+id/text3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/image3"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="6dp"
+
+                    android:text="Descoperă produsele cu preț inegalabil"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/text3"
+                    android:src="@drawable/next_arrow" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/text3"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/image3"
+                    android:layout_marginBottom="-6dp"
+                    android:layout_marginEnd="-20dp"
+
+                    android:layout_marginRight="-20dp"
+                    android:background="#cdcdcd" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/calculator"
@@ -68,25 +118,36 @@
                     android:layout_below="@+id/text1"
                     android:src="@drawable/next_arrow" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/text1"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/image1"
-                    android:layout_marginBottom="-6dp"
-                    android:layout_marginEnd="-20dp"
 
-                    android:layout_marginRight="-20dp"
-                    android:background="#cdcdcd" />
             </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#4297c47c"
+            android:gravity="center"
+            android:paddingBottom="8dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="8dp"
+            android:text="Prețuri uimitoare pentru o casă uimitoare!"
+            android:textColor="#9ba1a3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/nearest_store"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clipToPadding="false"
                 android:paddingBottom="12dp"
                 android:paddingEnd="20dp"
                 android:paddingLeft="20dp"
@@ -105,7 +166,7 @@
                     android:id="@+id/text2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/image2"
+                    android:layout_below="@+id/image2"
                     android:gravity="center"
                     android:paddingBottom="2dp"
                     android:paddingTop="6dp"
@@ -122,7 +183,66 @@
                     android:layout_below="@+id/text2"
                     android:src="@drawable/next_arrow" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/text2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/image2"
+                    android:layout_marginBottom="-6dp"
+                    android:layout_marginEnd="-20dp"
+
+                    android:layout_marginRight="-20dp"
+                    android:background="#cdcdcd" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/career"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="12dp"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingTop="39dp">
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="61dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/career_icon" />
+
+                <TextView
+                    android:id="@+id/text4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image4"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:paddingTop="8dp"
+
+                    android:text="Vino și tu în echipa Leroy Merlin!"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_below="@+id/text4"
+                    android:src="@drawable/next_arrow" />
+
+
+            </RelativeLayout>
+
+
         </LinearLayout>
 
         <TextView
@@ -140,6 +260,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -167,8 +288,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/icon1"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:paddingTop="8dp"
                     android:text="Sfaturi\nutile"
                     android:textColor="#abacad" />
 
@@ -186,7 +307,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/client_voice"
+                android:id="@+id/message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -198,22 +319,50 @@
                 android:paddingStart="16dp"
                 android:paddingTop="30dp">
 
-                <ImageView
-                    android:id="@+id/icon2"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/layout_icon2"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/message_icon" />
+
+
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:id="@+id/icon2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/message_icon" />
+
+                    <TextView
+                        android:id="@+id/no_messages"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_alignBottom="@+id/icon2"
+                        android:layout_alignEnd="@+id/icon2"
+                        android:layout_alignRight="@+id/icon2"
+                        android:layout_marginEnd="-6dp"
+                        android:layout_marginRight="-6dp"
+                        android:background="@drawable/circle_background"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:textColor="@color/white"
+
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/text_icon2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/icon2"
+                    android:layout_below="@id/layout_icon2"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:paddingTop="8dp"
+                    android:lines="2"
 
-                    android:text="Vocea clientului"
+                    android:text="Mesagerie"
                     android:textColor="#abacad" />
 
                 <View
@@ -222,7 +371,7 @@
                     android:layout_alignBottom="@+id/text_icon2"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/icon2"
+                    android:layout_alignTop="@+id/layout_icon2"
                     android:layout_marginEnd="-16dp"
                     android:layout_marginRight="-16dp"
                     android:layout_marginTop="-8dp"
@@ -230,7 +379,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/career"
+                android:id="@+id/client_voice"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -242,25 +391,27 @@
                 android:paddingStart="16dp"
                 android:paddingTop="30dp">
 
+
                 <ImageView
                     android:id="@+id/icon3"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/career_icon" />
+                    android:src="@drawable/voice_icon" />
 
                 <TextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/icon3"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:paddingTop="8dp"
-
-                    android:text="Cariere"
+                    android:lines="2"
+                    android:text="Vocea clientului"
                     android:textColor="#abacad" />
 
             </RelativeLayout>
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

@@ -1,18 +1,14 @@
 package com.cypien.leroy.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,14 +16,9 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.Encrypt;
-import com.cypien.leroy.utils.NotificationDialog;
 import com.cypien.leroy.utils.WebServiceConnector;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +44,7 @@ public class NewAccountFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        view = (ScrollView) getActivity().getLayoutInflater().inflate(R.layout.new_account_screen, container, false);
+       /* view = (ScrollView) getActivity().getLayoutInflater().inflate(R.layout.new_account_screen, container, false);
 
         View actionBarView = getActivity().findViewById(R.id.actionbar);
         ((TextView) actionBarView.findViewById(R.id.title)).setText("Creează cont");
@@ -264,7 +255,7 @@ public class NewAccountFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
         return view;
     }
 

@@ -20,15 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.adapters.CategoriesAdapter;
-import com.cypien.leroy.models.Category;
 import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.NotificationDialog;
 import com.cypien.leroy.utils.WebServiceConnector;
@@ -44,8 +40,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -64,9 +58,7 @@ public class AddProjectActivity extends AppCompatActivity {
     private String path1, path2, path3;
     private SharedPreferences sp;
     private Spinner category;
-    private ListView categoriesList;
-    private PopupWindow categoriesWindow;
-    private CategoriesAdapter adapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -181,7 +173,7 @@ public class AddProjectActivity extends AppCompatActivity {
                                 images.put("image3.jpg", encodeImageTobase64(path3));
                             jsn.put("images", images);
                             jsn = makeRequest("project_create", sp.getString("endpointCookie", ""), sp.getString("userid", ""), jsn.toString());
-                            Log.e("project", jsn.toString());
+
                             if (jsn != null && jsn.getJSONObject("result").getString("username").equals(sp.getString("username", ""))) {
                                 // new NotificationDialog(AddProjectActivity.this, "Proiectul dumneavoastră a fost adăugat cu succes!").show();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(AddProjectActivity.this, R.style.AppCompatAlertDialogStyle);
@@ -261,12 +253,7 @@ public class AddProjectActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-           /* view.post(new Runnable() {
-                @Override
-                public void run() {
-                    ((ScrollView) view).fullScroll(ScrollView.FOCUS_DOWN);
-                }
-            });*/
+
             if (requestCode == IMAGE1) {
                 path1 = data.getStringExtra("path");
                 pathIsNull(path1);
@@ -299,13 +286,6 @@ public class AddProjectActivity extends AppCompatActivity {
         return imageEncoded;
     }
 
-    private ArrayList<Category> getCategories() {
-        ArrayList<Category> categories = new ArrayList<>();
-        for (String cat : Arrays.asList((getResources().getStringArray(R.array.categories_array)))) {
-            categories.add(new Category(cat));
-        }
-        return categories;
-    }
 
     public JSONObject makeRequest(String... params) {
         JSONArray array = new JSONArray();

@@ -10,4 +10,9 @@
         <item>Drept</item>
         <item>Diagonal</item>
     </string-array>
+    <string-array name="coating_modes">
+        <item>1.5 mm</item>
+        <item>2 mm</item>
+        <item>2.5 mm</item>
+    </string-array>
 </resources>

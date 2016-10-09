@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,7 +190,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
                 JSONObject jsn = LeroyApplication.getInstance().makeRequest(type + "_add_comment", sp.getString("endpointCookie", ""), sp.getString("userid", ""), blogId, comment.getText().toString());
 
-                Log.e("jsn", jsn.toString());
+
                 getComments();
                 notifyDataSetChanged();
                 ((ProjectFragment) fragmentManager.findFragmentByTag("project")).setListViewHeightBasedOnChildren();

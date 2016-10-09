@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.cypien.leroy.utils.WebServiceConnector;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -23,6 +24,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
+
+import io.fabric.sdk.android.Fabric;
 
 
 /**
@@ -60,6 +63,7 @@ public class LeroyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         Parse.initialize(this, "RfatUQhgwN4eeOo4kegWEcvNT6nExRl47MdTk88n", "KTT9oKDaxtDw947t8TUZm9zPHx0Z9CCSH1dps3Z6");
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParsePush.subscribeInBackground("", null);
@@ -87,11 +91,10 @@ public class LeroyApplication extends Application {
         ArrayList<String> parameters = new ArrayList<>();
         parameters.addAll(Arrays.asList(params).subList(2, params.length));
         JSONObject request = new JSONObject();
-        Log.e("count", "accese privateEndpoint");
+
         try {
             request.put("method", params[0]);
             request.put("params", new JSONArray(parameters));
-            Log.e("request", request.toString());
             return new JSONObject(new WebServiceConnector().execute("http://www.facem-facem.ro/customAPI/privateEndpoint/" + APIVersion, params[1], "q=" + request.toString()).get());
         } catch (JSONException | InterruptedException | ExecutionException e) {
             Log.e("eroare app", e.toString());

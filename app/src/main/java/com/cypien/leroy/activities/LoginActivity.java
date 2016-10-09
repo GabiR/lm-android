@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 MyGestureListener.Action action = footerGestureListener.getAction();
                 if (action == MyGestureListener.Action.BT || action == MyGestureListener.Action.None) {
-                    Log.e("footer", "open" + action.toString());
+
                     visibleBottomView = true;
 
                     if (visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
@@ -229,11 +229,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             bottom_dialog.setLayerType(View.LAYER_TYPE_NONE, null);
-                           /* if(visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())){
-                                Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
-                                startActivity(intent);
-                                finish();
-                            }*/
+
                         }
 
                         @Override
@@ -288,7 +284,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
                     move.start();
 
-                    //   bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+
                 }
             }
         });
@@ -324,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 move.start();
-                //  bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
+
 
             }
         });
@@ -512,7 +508,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
 
                 JSONObject jsonObject = new JSONObject(answer);
-                Log.e("json", jsonObject.getString("userid"));
+
 
                 LeroyApplication.getInstance().makePublicRequest("user_update_fbdata", jsonObject.getString("userid"), fbId, fbName, Encrypt.getMD5UTFEncryptedPass(fbId), fbAccessToken);
                 injectCookies();
@@ -617,10 +613,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("endpointCookie", sp.getString("endpointCookie", ""));
 
                     try {
-                       /* if(facebook){
-                            LeroyApplication.getInstance().makeRequest("user_restore_pw", sp.getString("endpointCookie", ""), sp.getString("userid", ""));
 
-                        }*/
                         Map<String, String> cookeis = new GetCookies().execute(username, password).get();
                         if (cookeis != null) {
                             spEditor.putString("cookies", MapUtil.mapToString(cookeis));
@@ -781,7 +774,6 @@ public class LoginActivity extends AppCompatActivity {
 
         if (visibleBottomView) {
             visibleBottomView = false;
-            //  bottom_dialog.animate().translationY(screenHeight - skyImageSize).withLayer().start();
 
             ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", 0, screenHeight - skyImageSize);
             move.setDuration(600);
@@ -813,13 +805,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void injectCookies() {
         Map<String, String> cookies = MapUtil.stringToMap(sp.getString("endpointCookie", ""));
-        Log.e("endpointCookie", sp.getString("endpointCookie", "NUUUUUUUUUU"));
+
         CookieSyncManager.createInstance(this);
 
         CookieManager cookieManager = CookieManager.getInstance();
         for (Map.Entry<String, String> cookie : cookies.entrySet()) {
             String cookieString = cookie.getKey() + "=" + cookie.getValue() + "; domain=" + "www.facem-facem.ro";
-            Log.e("cookieString", cookieString);
             cookieManager.setCookie("www.facem-facem.ro", cookieString);
             CookieSyncManager.getInstance().sync();
         }

@@ -12,7 +12,6 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,8 +21,6 @@ import android.widget.TextView;
 
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.activities.AddPhotoActivity;
-import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.Encrypt;
 import com.cypien.leroy.utils.NotificationDialog;
 import com.cypien.leroy.utils.WebServiceConnector;
@@ -32,11 +29,11 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -64,7 +61,7 @@ public class EditAccountFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=(ScrollView)getActivity().getLayoutInflater().inflate(R.layout.edit_account_screen,container,false);
+       /* view=(ScrollView)getActivity().getLayoutInflater().inflate(R.layout.edit_account_screen,container,false);
         sp = getActivity().getSharedPreferences("com.cypien.leroy_preferences", getActivity().MODE_PRIVATE);
 
         View actionBarView = getActivity().findViewById(R.id.actionbar);
@@ -206,6 +203,7 @@ public class EditAccountFragment extends Fragment{
             }
         });
 
+        return view;*/
         return view;
     }
 

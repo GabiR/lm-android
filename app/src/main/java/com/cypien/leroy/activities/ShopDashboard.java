@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -38,9 +38,10 @@ public class ShopDashboard extends AppCompatActivity {
     Context context;
     private WebView currentWebview;
     private Stack<String> htmlStack;
-
     private SharedPreferences sp;
-    private SharedPreferences.Editor spEditor;
+
+    private int inactive;
+    private int active;
 
     public static ArrayList<Service> getServices() {
         ArrayList<Service> services = new ArrayList<>();
@@ -68,6 +69,10 @@ public class ShopDashboard extends AppCompatActivity {
         context = ShopDashboard.this;
         setContentView(R.layout.shop_dashboard);
 
+        float density = context.getResources().getDisplayMetrics().density;
+        inactive = (int) (density * 8);
+        active = (int) (density * 6);
+
 
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
         Answers.getInstance().logContentView(new ContentViewEvent()
@@ -76,7 +81,13 @@ public class ShopDashboard extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        if (getIntent().getBooleanExtra("notified", false)) {
+            ShopHomeFragment fragment = new ShopHomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("message", getIntent().getSerializableExtra("message"));
+            fragment.setArguments(bundle);
+            goToFragment(fragment, "home");
+        }
         toolbar.getChildAt(0).setVisibility(View.GONE);
         toolbar.getChildAt(1).setVisibility(View.VISIBLE);
         ((TextView) toolbar.getChildAt(2)).setText("Leroy Merlin România");
@@ -93,53 +104,66 @@ public class ShopDashboard extends AppCompatActivity {
         community_button = (LinearLayout) findViewById(R.id.community_button);
         setOnClickAction(community_button);
 
-        prevLayout.callOnClick();
+        prevLayout = catalog_button;
+        home_button.callOnClick();
 
 
     }
 
     void setOnClickAction(final LinearLayout linearLayout) {
+
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!linearLayout.getTag().toString().equals("community"))
-                    resolvePrevBtn(linearLayout);
-                switch (linearLayout.getTag().toString()) {
-                    case "home":
-                        //TODO
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        goToFragment(new ShopHomeFragment(), "home");
-                        break;
-                    case "catalog":
-                        goToFragment(new CatalogFragment(), "catalog");
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "shops":
-                        goToFragment(new StoresFragment(), "shops");
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "services":
-                        goToFragment(new ServicesFragment(), "services");
-                        ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.services_green));
-                        ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                        break;
-                    case "community":
-                        Intent intent;
-                        if (!sp.getBoolean("isConnected", false)) {
-                            intent = new Intent(ShopDashboard.this, LoginActivity.class);
-                            intent.putExtra("source", "shop_dashboard");
-                        } else {
-                            intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
-                        }
-                        startActivity(intent);
-                        break;
+                if (!linearLayout.getTag().toString().equals(prevLayout.getTag().toString())) {
+                    if (!linearLayout.getTag().toString().equals("community"))
+                        resolvePrevBtn(linearLayout);
+                    switch (linearLayout.getTag().toString()) {
+                        case "home":
+                            //TODO
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.home_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
+                            goToFragment(new ShopHomeFragment(), "home");
+                            break;
+                        case "catalog":
+                            goToFragment(new CatalogFragment(), "catalog");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.catalog_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
+                            break;
+                        case "shops":
+                            goToFragment(new StoresFragment(), "shops");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.shops_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
+                            break;
+                        case "services":
+                            goToFragment(new ServicesFragment(), "services");
+                            ((ImageView) linearLayout.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, R.drawable.services_green));
+                            ((TextView) linearLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                            ((TextView) linearLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                            linearLayout.setPadding(0, active, 0, inactive);
+                            break;
+                        case "community":
+                            Intent intent;
+                            if (!sp.getBoolean("isConnected", false)) {
+                                intent = new Intent(ShopDashboard.this, LoginActivity.class);
+                                intent.putExtra("source", "shop_dashboard");
+                            } else {
+                                intent = new Intent(ShopDashboard.this, CommunityDashboard.class);
+                            }
+                            startActivity(intent);
+                            break;
+                    }
+
+
                 }
             }
         });
-
     }
 
     void resolvePrevBtn(LinearLayout linearLayout) {
@@ -159,7 +183,9 @@ public class ShopDashboard extends AppCompatActivity {
                     break;
             }
 
-            ((TextView) prevLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.black));
+            ((TextView) prevLayout.getChildAt(1)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            ((TextView) prevLayout.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.unpressedblack));
+            prevLayout.setPadding(0, inactive, 0, inactive);
         }
 
         prevLayout = linearLayout;
@@ -168,55 +194,22 @@ public class ShopDashboard extends AppCompatActivity {
     public void goToFragment(Fragment fragment, String tag) {
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-            ft.replace(R.id.content_frame, fragment).addToBackStack(tag);
+          /*  ft.replace(R.id.content_frame, fragment).addToBackStack(tag);*/
+            while (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                getSupportFragmentManager().popBackStackImmediate();
+            ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
-    }
-
-    //metoda apelata din fragmentele ce contin webview pentru a sti care dintre webview-uri este afisat pe activitatea curenta
-    public void setCurrentWebview(WebView webview) {
-        currentWebview = webview;
-        htmlStack = new Stack<>();
     }
 
 
     @Override
     public void onBackPressed() {
 
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             getSupportFragmentManager().popBackStack();
-            if (getSupportFragmentManager().getBackStackEntryCount() - 2 >= 0) {
-                String name = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 2).getName();
-                LinearLayout button;
-                if (name != null) {
-                    switch (name) {
 
-                        case "catalog":
-                            button = catalog_button;
-                            break;
-                        case "shops":
-                            button = shop_button;
-                            break;
-                        case "services":
-                            button = services_button;
-                            break;
-                        default:
-                            button = home_button;
-
-                    }
-                    resolvePrevBtn(button);
-                    ((ImageView) button.getChildAt(0)).setImageDrawable(ContextCompat.getDrawable(context, getResources().getIdentifier(name + "_green", "drawable", getPackageName())));
-                    ((TextView) button.getChildAt(1)).setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-
-                    Log.e("bla", name);
-                }
-            }
-        } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() == 1)
-                getSupportFragmentManager().popBackStack();
-            super.onBackPressed();
-        }
+        } else super.onBackPressed();
 
     }
 
@@ -226,5 +219,10 @@ public class ShopDashboard extends AppCompatActivity {
         intent.putExtra("fromShop", true);
         startActivity(intent);
         finish();
+    }
+
+    public void setCurrentWebview(WebView webview) {
+        currentWebview = webview;
+        htmlStack = new Stack<>();
     }
 }
