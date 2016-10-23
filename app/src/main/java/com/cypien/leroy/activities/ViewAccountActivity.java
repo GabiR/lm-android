@@ -79,7 +79,7 @@ public class ViewAccountActivity extends AppCompatActivity {
         email.setText(sp.getString("email", ""));
         phone.setText(sp.getString("phone", ""));
         name.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
-        signUpDate.setText(sp.getString("joindate", ""));
+        signUpDate.setText(sp.getString("joindate2", ""));
         birthDate.setText(sp.getString("birthdate", ""));
 
         friends.setText(sp.getString("friendcount", ""));

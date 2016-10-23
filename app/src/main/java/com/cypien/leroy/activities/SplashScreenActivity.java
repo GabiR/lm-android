@@ -35,7 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseMessaging.getInstance().subscribeToTopic("leroy");
+        FirebaseMessaging.getInstance().subscribeToTopic("leroyAndroid");
         setContentView(R.layout.splash_screen);
 
 

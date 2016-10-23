@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_alignParentBottom="true"
+    android:layout_below="@+id/toolbar"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View
+                    android:id="@+id/focus_thief"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:text="Vă rugăm să vă completați datele!"
+                    android:paddingStart="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="#333333"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingStart="16dp"
+                    android:text="INFORMAȚII UTILIZATOR"
+                    android:textAllCaps="true"
+                    android:textColor="#333333" />
+
+                <include layout="@layout/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:lines="1"
+                        android:paddingEnd="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="8dp"
+                        android:paddingStart="16dp"
+                        android:singleLine="true"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:id="@+id/last_name_focus"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:ellipsize="end"
+                        android:gravity="end|center_vertical"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="8dp"
+                        android:text="Nume"
+                        android:textColor="#878080"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <include layout="@layout/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:lines="1"
+                        android:paddingEnd="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="8dp"
+                        android:paddingStart="16dp"
+                        android:singleLine="true"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:id="@+id/first_name_focus"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:ellipsize="end"
+                        android:gravity="end|center_vertical"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="8dp"
+                        android:text="Prenume"
+                        android:textColor="#878080"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <include layout="@layout/divider" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:inputType="phone"
+                        android:lines="1"
+                        android:paddingEnd="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="8dp"
+                        android:paddingStart="16dp"
+                        android:singleLine="true"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:id="@+id/phone_focus"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:ellipsize="end"
+                        android:gravity="end|center_vertical"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="8dp"
+                        android:text="Telefon"
+                        android:textColor="#878080"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <include layout="@layout/divider" />
+
+
+
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <com.rey.material.widget.Spinner
+                        android:id="@+id/county"
+                        style="@style/Material.Widget.Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:dropDownWidth="wrap_content"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionNext"
+                        android:paddingEnd="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="8dp"
+                        android:paddingStart="16dp"
+                        android:singleLine="true"
+                        android:spinnerMode="dropdown"
+                        app:rd_style="@style/Material.Drawable.Ripple.Wave"
+                        app:spn_arrowColor="@color/colorPrimaryDark"
+                        app:spn_dividerHeight="0dp"
+                        app:spn_labelEnable="false" />
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:ellipsize="end"
+                        android:gravity="end|center_vertical"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="8dp"
+                        android:text="Judet"
+                        android:textColor="#878080"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <include layout="@layout/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <EditText
+                        android:id="@+id/city"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapWords"
+                        android:lines="1"
+                        android:paddingEnd="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="8dp"
+                        android:paddingStart="16dp"
+                        android:singleLine="true"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+
+                    <TextView
+
+                        android:id="@+id/city_focus"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:ellipsize="end"
+                        android:gravity="end|center_vertical"
+                        android:maxLines="1"
+                        android:paddingEnd="16dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="16dp"
+                        android:paddingStart="8dp"
+                        android:text="Localitate"
+                        android:textColor="#878080"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <include layout="@layout/divider" />
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@null"
+                    android:text="Salvează"
+                    android:textColor="@color/colorPrimaryDark"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_marginTop="24dp"
+                    android:textAllCaps="true"
+                    android:textSize="16sp"
+                    android:paddingRight="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingLeft="16dp"
+                    />
+
+            </LinearLayout>
+
+
+
+    </ScrollView>

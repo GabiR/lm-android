@@ -226,7 +226,7 @@
                     android:paddingBottom="2dp"
                     android:paddingTop="8dp"
 
-                    android:text="Vino și tu în echipa Leroy Merlin!"
+                    android:text="Echipă inimoasă, căutăm colegi!"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
