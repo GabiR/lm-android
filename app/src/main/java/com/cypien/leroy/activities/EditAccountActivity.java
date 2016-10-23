@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -54,8 +55,8 @@ import cz.msebera.android.httpclient.HttpResponse;
 
 public class EditAccountActivity extends AppCompatActivity {
 
-    private final String lastNameError = "<font color=\"#D50000\">Completați nume</font>";
-    private final String firstNameError = "<font color=\"#D50000\">Completați prenume</font>";
+    private final String lastNameError = "<font color=\"#D50000\">Completați numele</font>";
+    private final String firstNameError = "<font color=\"#D50000\">Completați prenumele</font>";
     private final String phoneError = "<font color=\"#D50000\">Număr invalid de cifre</font>";
     private final String emailError = "<font color=\"#D50000\">Adresă de email invalidă</font>";
     private final String passwordError = "<font color=\"#D50000\">Parolele nu sunt identice</font>";
@@ -486,7 +487,10 @@ public class EditAccountActivity extends AppCompatActivity {
                 "&api_v=" + sp.getString("apiversion", "") +
                 "&api_sig=" + sp.getString("signature", "");
         try {
-            new WebServiceConnector().execute(link, parameters).get();
+            Log.e("parameters", parameters);
+            Log.e("link", link);
+            String response = new WebServiceConnector().execute(link, parameters).get();
+            Log.e("response", response);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

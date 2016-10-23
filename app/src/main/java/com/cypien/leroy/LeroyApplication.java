@@ -32,6 +32,7 @@ import io.fabric.sdk.android.Fabric;
  * Created by Alex on 9/24/2015.
  */
 public class LeroyApplication extends Application {
+    public static boolean shownDialog = false;
     public static final float BYTES_IN_MB = 1024.0f * 1024.0f;
     private static LeroyApplication singleton;
     private static DiskCache diskCache;

@@ -1,5 +1,6 @@
 package com.cypien.leroy.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,13 +12,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
@@ -27,24 +35,40 @@ import com.cypien.leroy.fragments.CommunityHome;
 import com.cypien.leroy.fragments.ContestFragment;
 import com.cypien.leroy.fragments.DiscussionsFragment;
 import com.cypien.leroy.fragments.ProjectsListFragment;
+import com.cypien.leroy.utils.Connections;
 import com.cypien.leroy.utils.MapUtil;
+import com.cypien.leroy.utils.NotificationDialog;
+import com.cypien.leroy.utils.WebServiceConnector;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.rey.material.widget.Spinner;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by GabiRotaru on 24/08/16.
  */
 public class CommunityDashboard extends AppCompatActivity {
-    LinearLayout home_button, projects_button, discussions_button, contests_button, shop_button;
-    LinearLayout prevLayout;
-    Context context;
+
+
+    private final String lastNameError = "<font color=\"#D50000\">Completați numele</font>";
+    private final String firstNameError = "<font color=\"#D50000\">Completați prenumele</font>";
+    private final String phoneError = "<font color=\"#D50000\">Număr invalid de cifre</font>";
+    private final String cityError = "<font color=\"#D50000\">Completați localitatea</font>";
+    private final String secondPhoneError = "<font color=\"#D50000\">Număr invalid de telefon</font>";
+
+    private LinearLayout prevLayout;
+    private Context context;
 
     private WebView currentWebview;
     private Stack<String> htmlStack;
@@ -73,6 +97,176 @@ public class CommunityDashboard extends AppCompatActivity {
         sp = getSharedPreferences("com.cypien.leroy_preferences", MODE_PRIVATE);
         if (sp.getBoolean("isConnected", false)) {
             getUserInformation();
+            if(sp.getString("phone", "0700000000").equals("0700000000") && !LeroyApplication.shownDialog){
+                LeroyApplication.shownDialog = true;
+                long timestamp = Long.parseLong(sp.getString("joindate", "0"));
+                long actualTimestamp = System.currentTimeMillis();
+                long msDiff = actualTimestamp - timestamp;
+                long days = TimeUnit.MILLISECONDS.toDays(msDiff);
+                if(days>=10 ){
+                    //insert dialog here
+                    final boolean[] errors = new boolean[4];
+                Arrays.fill(errors, false);
+                    final Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.edit_account_dialog);
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+
+                Window window = dialog.getWindow();
+                lp.copyFrom(window.getAttributes());
+//This makes the dialog take up the full width
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                window.setAttributes(lp);
+
+
+
+                    dialog.setCancelable(true);
+
+
+
+                    android.widget.Button save = (android.widget.Button) dialog.findViewById(R.id.save);
+                final EditText lastName = (EditText) dialog.findViewById(R.id.last_name);
+                final EditText firstName = (EditText) dialog.findViewById(R.id.first_name);
+                final EditText city = (EditText) dialog.findViewById(R.id.city);
+                final EditText phone = (EditText) dialog.findViewById(R.id.phone);
+                final Spinner county = (Spinner) dialog.findViewById(R.id.county);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.judete, R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+
+                county.setAdapter(adapter);
+
+                    //phone.setText(sp.getString("phone", ""));
+
+                    firstName.setText(sp.getString("firstname", ""));
+                    lastName.setText(sp.getString("lastname", ""));
+
+                   // city.setText(sp.getString("address", ""));
+                    int position = Arrays.asList((getResources().getStringArray(R.array.judete))).indexOf(sp.getString("city", ""));
+                    county.setSelection(position);
+                firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (errors[0] && hasFocus) {
+                            errors[0] = false;
+                            firstName.setText("");
+                        }
+                        if (hasFocus)
+                            firstName.setSelection(firstName.length());
+                    }
+                });
+
+
+
+                lastName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (errors[1] && hasFocus) {
+                            errors[1] = false;
+                            lastName.setText("");
+
+                        }
+                        if (hasFocus)
+                            lastName.setSelection(lastName.length());
+                    }
+                });
+
+                phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (errors[2] && hasFocus) {
+                            errors[2] = false;
+                            phone.setText("");
+                        }
+                        if (hasFocus)
+                            phone.setSelection(phone.length());
+                    }
+                });
+
+
+
+
+                city.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (errors[3] && hasFocus) {
+                            errors[3] = false;
+                            city.setText("");
+                        }
+                        if (hasFocus)
+                            city.setSelection(city.length());
+                    }
+                });
+                    save.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            boolean ok = true;
+                            if (firstName.getText().toString().equals("")) {
+                                firstName.setText(Html.fromHtml(firstNameError));
+                                ok = false;
+                                errors[0] = true;
+
+
+                            }
+                            if (lastName.getText().toString().equals("")) {
+                                lastName.setText(Html.fromHtml(lastNameError));
+                                ok = false;
+                                errors[1] = true;
+
+
+                            }
+
+                            Pattern pattern = Pattern.compile("\\d{10}");
+                            Matcher matcher = pattern.matcher(phone.getText().toString());
+                            if (!matcher.matches()) {
+                                phone.setText(Html.fromHtml(phoneError));
+                                ok = false;
+                                errors[2] = true;
+                            } else if (phone.getText().toString().equals("0700000000")) {
+                                phone.setText(Html.fromHtml(secondPhoneError));
+                                ok = false;
+                                errors[2] = true;
+                            }
+
+
+                            if (city.getText().toString().equals("")) {
+                                city.setText(Html.fromHtml(cityError));
+                                ok = false;
+                                errors[3] = true;
+
+                            }
+
+                           /* lastName.clearFocus();
+                            firstName.clearFocus();
+                            city.clearFocus();
+                            phone.clearFocus();*/
+
+                            for (int i = 0; i < 4; i++)
+                                if (errors[i]) {
+                                    dialog.findViewById(R.id.focus_thief).requestFocus();
+                                    return;
+                                }
+                            if (ok) {
+                                if (Connections.isNetworkConnected(context)) {
+                                    editProfileInformation(firstName.getText().toString(), lastName.getText().toString(), phone.getText().toString(), county.getSelectedItemPosition() + 1, city.getText().toString());
+                                    getUserInformation();
+                                    Toast.makeText(context, "Modificările au fost realizate cu succes!", Toast.LENGTH_LONG).show();
+                                    dialog.dismiss();
+                                } else {
+                                    new NotificationDialog(context, "Vă rugăm să vă conectați la internet pentru a vă putea salva modificările!").show();
+                                }
+                            }
+
+
+                        }
+                    }  );
+
+
+
+                    dialog.show();
+               }
+            }
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,23 +277,45 @@ public class CommunityDashboard extends AppCompatActivity {
         toolbar.getChildAt(1).setVisibility(View.VISIBLE);
         ((TextView) toolbar.getChildAt(2)).setText("Facem-Facem");
 
-        home_button = (LinearLayout) findViewById(R.id.home_button);
+        LinearLayout home_button = (LinearLayout) findViewById(R.id.home_button);
         //    prevLayout = home_button;
         setOnClickAction(home_button);
-        projects_button = (LinearLayout) findViewById(R.id.projects_button);
+        LinearLayout projects_button = (LinearLayout) findViewById(R.id.projects_button);
         setOnClickAction(projects_button);
-        shop_button = (LinearLayout) findViewById(R.id.shop_button);
+        LinearLayout shop_button = (LinearLayout) findViewById(R.id.shop_button);
         setOnClickAction(shop_button);
-        discussions_button = (LinearLayout) findViewById(R.id.discussions_button);
+        LinearLayout discussions_button = (LinearLayout) findViewById(R.id.discussions_button);
         setOnClickAction(discussions_button);
-        contests_button = (LinearLayout) findViewById(R.id.contests_button);
+        LinearLayout contests_button = (LinearLayout) findViewById(R.id.contests_button);
         setOnClickAction(contests_button);
         prevLayout = projects_button;
         home_button.callOnClick();
         //    prevLayout.callOnClick();
     }
 
-
+    private void editProfileInformation(String firstName, String lastName, String phone, int county, String city) {
+        String link = "http://facem-facem.ro/api.php";
+        String parameters = "";
+        String response="";
+        parameters = "api_m=" + "profile_updateprofile" +
+                "&userfield[field5]=" + firstName +
+                "&userfield[field6]=" + lastName +
+                "&userfield[field10]=" + phone +
+                "&userfield[field12]=" + county+
+                "&userfield[field13]=" + city +
+                "&api_c=" + sp.getString("apiclientid", "") +
+                "&api_s=" + sp.getString("apiaccesstoken", "") +
+                "&api_v=" + sp.getString("apiversion", "") +
+                "&api_sig=" + sp.getString("signature", "");
+        try {
+            Log.e("link", link);
+            Log.e("PARAMETERS", parameters);
+            response = new WebServiceConnector().execute(link, parameters).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.e("response", response);
+    }
     void setOnClickAction(final LinearLayout linearLayout) {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +435,7 @@ public class CommunityDashboard extends AppCompatActivity {
             response = response.getJSONObject("result");
 
             spEditor = sp.edit();
+            spEditor.putString("joindate", response.getString("joindate"));
             spEditor.putString("email", response.getString("email"));
             spEditor.putString("birthday", response.getString("birthday"));
             spEditor.putString("firstname", response.getString("firstname"));
@@ -230,10 +447,16 @@ public class CommunityDashboard extends AppCompatActivity {
             spEditor.putString("posts", response.getString("posts"));
             spEditor.putString("dailyposts", "" + (response.getDouble("dailyposts") % 2f));
             spEditor.putString("friendcount", response.getString("friendcount"));
-            spEditor.putString("joindate", getDate(Long.parseLong(response.getString("joindate") + "000")));
+            spEditor.putString("joindate2", getDate(Long.parseLong(response.getString("joindate") + "000")));
             spEditor.putString("profilevisits", response.getString("profilevisits"));
             spEditor.putString("blognum", response.getString("blognum"));
+            if(response.getString("phone").equals("0700000000") && sp.getLong("timestamp", -1)==-1){
+                long timestamp = System.currentTimeMillis() ;
+                Log.e("timestamp", String.valueOf(timestamp));
+               spEditor.putLong("timestamp", timestamp);
+            }
             spEditor.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
