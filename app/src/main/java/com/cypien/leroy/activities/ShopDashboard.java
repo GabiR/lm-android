@@ -24,8 +24,10 @@ import com.cypien.leroy.fragments.ServicesFragment;
 import com.cypien.leroy.fragments.ShopHomeFragment;
 import com.cypien.leroy.fragments.StoresFragment;
 import com.cypien.leroy.models.Service;
+import com.cypien.leroy.utils.MapUtil;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -224,5 +226,17 @@ public class ShopDashboard extends AppCompatActivity {
     public void setCurrentWebview(WebView webview) {
         currentWebview = webview;
         htmlStack = new Stack<>();
+    }
+
+    //intoarce cookieurile site-ului
+    public Map<String, String> getCookies() {
+        Map<String, String> cookies;
+        cookies = MapUtil.stringToMap(sp.getString("cookies", ""));
+        return cookies;
+    }
+
+    // intoarce stiva ce contine paginile html pe care le-a parcurs userul
+    public Stack<String> getHtmlStack() {
+        return htmlStack;
     }
 }

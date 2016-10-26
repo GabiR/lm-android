@@ -483,7 +483,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:background="@color/colorPrimary"
-                android:text="Salvează"
+                android:text="SALVEAZĂ"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
         </RelativeLayout>

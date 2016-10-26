@@ -27,7 +27,6 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.activities.MainActivity;
 import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.utils.PageLoader;
 import com.google.android.gms.analytics.HitBuilders;
@@ -126,7 +125,7 @@ public class FacebookFragment extends Fragment {
                     view.loadUrl("http://docs.google.com/gview?embedded=true&url=" + url);
                     return false;
                 }
-                new PageLoader(((MainActivity) getActivity()), view).execute(url);
+                new PageLoader(((ShopDashboard) getActivity()), view).execute(url);
                 return true;
             } else {
                 view.loadUrl(url);

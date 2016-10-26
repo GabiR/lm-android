@@ -234,6 +234,16 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/zero_comments"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/title"
+            android:layout_marginTop="5dp"
+            android:text="Nu sunt comentarii pentru acest proiect!"/>
+
         <ListView
             android:id="@+id/comments"
             android:layout_width="match_parent"

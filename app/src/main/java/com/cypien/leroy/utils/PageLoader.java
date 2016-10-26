@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 
-import com.cypien.leroy.activities.MainActivity;
+import com.cypien.leroy.activities.ShopDashboard;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,10 +17,10 @@ import java.util.Map;
  */
 public class PageLoader extends AsyncTask<String,Void,String> {
     private WebView mWebView;
-    private MainActivity mainActivity;
+    private ShopDashboard mainActivity;
     private Map<String,String > cookies;
 
-    public PageLoader(MainActivity activity, WebView mWebView){
+    public PageLoader(ShopDashboard activity, WebView mWebView){
         this.mWebView=mWebView;
         this.mainActivity=activity;
         cookies=mainActivity.getCookies();

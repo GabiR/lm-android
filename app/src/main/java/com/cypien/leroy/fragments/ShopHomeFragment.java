@@ -152,7 +152,7 @@ public class ShopHomeFragment extends Fragment {
                 ViewPageFragment f = new ViewPageFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Sfaturi UTILE");
-                bundle.putString("url", "http://www.leroymerlin.ro/sfaturi-utile");
+                bundle.putString("url", "http://www.leroymerlin.ro/sfaturi-utile?desktop=1");
                 f.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();

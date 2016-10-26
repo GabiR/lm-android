@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +30,9 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.cypien.leroy.LeroyApplication;
 import com.cypien.leroy.R;
-import com.cypien.leroy.activities.CommunityDashboard;
+import com.cypien.leroy.activities.ShopDashboard;
 import com.cypien.leroy.utils.Connections;
-import com.cypien.leroy.utils.PageLoaderCommunity;
+import com.cypien.leroy.utils.PageLoader;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -48,7 +47,6 @@ public class ViewCatalogFragment extends Fragment {
     private TextView urlLabel;
     private LinearLayout retry;
     private String urlLink = "";
-    private FragmentActivity mActivity;
 
     @Nullable
     @Override
@@ -63,15 +61,15 @@ public class ViewCatalogFragment extends Fragment {
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         final Bundle bundle = getArguments();
         urlLink = bundle.getString("url", "");
-        ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText(bundle.getString("title", "Catalog"));
-        ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
-        ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
+        ((TextView) ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(2)).setText(bundle.getString("title", "Catalog"));
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.VISIBLE);
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(1).setVisibility(View.GONE);
 
 
-        ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mActivity.onBackPressed();
+                getActivity().onBackPressed();
               /*  ((TextView) ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(2)).setText("Cataloage");
                 if (!bundle.getBoolean("fromList")) {
                     ((Toolbar) mActivity.findViewById(R.id.toolbar)).getChildAt(0).setVisibility(View.GONE);
@@ -109,10 +107,10 @@ public class ViewCatalogFragment extends Fragment {
         clipboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("url", urlLink);
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(mActivity, "Link copiat in clipboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Link copiat in clipboard", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -145,7 +143,7 @@ public class ViewCatalogFragment extends Fragment {
 
     // verfica daca exista internet si incarca pagina
     private void loadPage() {
-        if (Connections.isNetworkConnected(mActivity)) {
+        if (Connections.isNetworkConnected(getActivity())) {
             noInternet.setVisibility(View.GONE);
             mWebViewContainer.setVisibility(View.VISIBLE);
             mWebView.loadUrl(urlLink);
@@ -156,18 +154,11 @@ public class ViewCatalogFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof FragmentActivity)
-            mActivity = (FragmentActivity) context;
-    }
-
     // controleaza comportamentul webview-ului la incarcarea paginilor
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Connections.isNetworkConnected(mActivity)) {
+            if (Connections.isNetworkConnected(getActivity())) {
                 noInternet.setVisibility(View.GONE);
                 if (url.contains("http://"))
                     urlLabel.setText(url.substring(url.indexOf("http://") + "http://".length()));
@@ -182,7 +173,8 @@ public class ViewCatalogFragment extends Fragment {
                         view.loadUrl(url);
                         return false;
                     }
-                    new PageLoaderCommunity(((CommunityDashboard) mActivity), view).execute(url);
+                    new PageLoader((ShopDashboard) getActivity(), view).execute(url);
+//                    new PageLoaderCommunity(((CommunityDashboard) mActivity), view).execute(url);
                     return true;
                 } else {
                     view.loadUrl(url);

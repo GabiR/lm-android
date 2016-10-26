@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.crashlytics.android.answers.Answers;
@@ -37,15 +38,8 @@ import com.viewpagerindicator.PageIndicator;
 public class ProjectFragment extends Fragment {
     private View view;
     private CircularImageView avatar;
-    private TextView userName;
-    private TextView projectName;
-    private TextView views;
-    private TextView commentsNumber;
-    private TextView rating;
-    private TextView publishDate;
-    private TextView time;
-    private TextView cost;
-    private TextView details;
+    private TextView userName, projectName, views, commentsNumber, rating, publishDate, time,
+            cost, details, zero_comments;
     private Button likeButton;
     private Button addCommentButton;
     private Project project;
@@ -95,6 +89,7 @@ public class ProjectFragment extends Fragment {
         projectName = (TextView) view.findViewById(R.id.project_name);
         views = (TextView) view.findViewById(R.id.viz_n);
         commentsNumber = (TextView) view.findViewById(R.id.comm_n);
+        zero_comments = (TextView) view.findViewById(R.id.zero_comments);
         rating = (TextView) view.findViewById(R.id.like_n);
         publishDate = (TextView) view.findViewById(R.id.publish_date);
         time = (TextView) view.findViewById(R.id.project_time);
@@ -121,6 +116,10 @@ public class ProjectFragment extends Fragment {
         adapter = new ImagesAdapter(getActivity(), project.getBlogid(), type);
         pager = (ViewPager) view.findViewById(R.id.pager);
         pager.setAdapter(adapter);
+
+        if(adapter.getCount() == 0)
+            pager.setVisibility(View.GONE);
+
         indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         indicator.setViewPager(pager);
         ((CirclePageIndicator) indicator).setSnap(true);
@@ -144,10 +143,6 @@ public class ProjectFragment extends Fragment {
             }
         });
 
-        commentsList = (ListView) view.findViewById(R.id.comments);
-        commAdapter = new CommentsAdapter(getFragmentManager(), getActivity(), project.getBlogid(), type);
-        commentsList.setAdapter(commAdapter);
-        setListViewHeightBasedOnChildren();
 
         addCommentButton = (Button) view.findViewById(R.id.add_comment);
         addCommentButton.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +151,40 @@ public class ProjectFragment extends Fragment {
                 commAdapter.showAddCommentDialog();
             }
         });
+        commentsList = (ListView) view.findViewById(R.id.comments);
+
+        String nrCommString = project.getComments();
+        int nrComm;
+        try {
+            nrComm = Integer.parseInt(nrCommString);
+        } catch (Exception e) {
+            nrComm = 0;
+        }
+
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+
+        if(nrComm > 0) {
+            commAdapter = new CommentsAdapter(getFragmentManager(), getActivity(), project.getBlogid(), type);
+            commentsList.setAdapter(commAdapter);
+            setListViewHeightBasedOnChildren();
+            zero_comments.setVisibility(View.GONE);
+            commentsList.setVisibility(View.VISIBLE);
+            p.addRule(RelativeLayout.BELOW, R.id.comments);
+
+        } else {
+            zero_comments.setVisibility(View.VISIBLE);
+            commentsList.setVisibility(View.GONE);
+            p.addRule(RelativeLayout.BELOW, R.id.zero_comments);
+        }
+
+        p.setMargins(0, 60, 0, 30);
+        p.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        addCommentButton.setLayoutParams(p);
+
 
         if (!sp.getBoolean("isConnected", false)) {
             view.findViewById(R.id.not_connected).setVisibility(View.VISIBLE);

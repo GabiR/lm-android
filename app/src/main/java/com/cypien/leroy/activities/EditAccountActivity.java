@@ -2,11 +2,18 @@ package com.cypien.leroy.activities;/*
  * Created by Alex on 29.08.2016.
  */
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.InputType;
@@ -80,6 +87,7 @@ public class EditAccountActivity extends AppCompatActivity {
     private String lastPassword = "";
     private String lastConfirmPassword = "";
     private String imagePath;
+    Picasso picasso;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,6 +115,13 @@ public class EditAccountActivity extends AppCompatActivity {
         save = (Button) findViewById(R.id.save_profile);
         userImage = (CircularImageView) findViewById(R.id.user_image);
         editImage = (ImageView) findViewById(R.id.edit_image);
+
+        picasso = new Picasso.Builder(EditAccountActivity.this).listener(new Picasso.Listener() {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                exception.printStackTrace();
+            }
+        }).build();
 
 
         Arrays.fill(errors, false);
@@ -142,7 +157,7 @@ public class EditAccountActivity extends AppCompatActivity {
             }
         });
         if (imagePath != null) {
-            Picasso.with(EditAccountActivity.this)
+            picasso
                     .load(new File(imagePath))
                     .fit().centerInside()
                     .into(userImage);
@@ -323,8 +338,7 @@ public class EditAccountActivity extends AppCompatActivity {
                         } else {
                             editProfileInformation();
                             getUserInformation();
-                            new NotificationDialog(EditAccountActivity.this, "Modificările au fost realizate cu succes!").show();
-                            finish();
+                            new NotificationSuccessDialog(EditAccountActivity.this, "Modificările au fost realizate!").show();
                         }
 
                     } else {
@@ -375,10 +389,27 @@ public class EditAccountActivity extends AppCompatActivity {
             if (requestCode == IMAGE) {
                 imagePath = data.getStringExtra("path");
                 pathIsNull(imagePath);
-                Picasso.with(EditAccountActivity.this)
-                        .load(new File(imagePath))
-                        .fit().centerInside()
-                        .into(userImage);
+
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!Settings.System.canWrite(this)) {
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE}, 2909);
+                    } else {
+                        picasso
+                                .load(new File(imagePath))
+                                .fit().centerInside()
+                                .into(userImage);
+                    }
+                } else {
+                    picasso
+                            .load(new File(imagePath))
+                            .fit().centerInside()
+                            .into(userImage);
+                }
+
+
             }
         }
     }
@@ -411,12 +442,12 @@ public class EditAccountActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 getUserInformation();
-                new NotificationDialog(EditAccountActivity.this, "Modificările au fost realizate cu succes!").show();
-                finish();
+                new NotificationSuccessDialog(EditAccountActivity.this, "Modificările au fost realizate!").show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("edit_account_avatar", "eroare");
 
             }
         });
@@ -501,4 +532,48 @@ public class EditAccountActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
+
+    public class NotificationSuccessDialog {
+        Context context;
+        String message;
+
+        public NotificationSuccessDialog(Context context, String message) {
+            this.context = context;
+            this.message = message;
+        }
+
+        public void show() {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            builder.setMessage(Html.fromHtml(message));
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            builder.show();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 2909: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    picasso
+                            .load(new File(imagePath))
+                            .fit().centerInside()
+                            .placeholder(R.drawable.unknown)
+                            .into(userImage);
+                } else {
+                    Log.e("Permission", "Denied");
+                }
+                return;
+            }
+        }
+    }
+
 }

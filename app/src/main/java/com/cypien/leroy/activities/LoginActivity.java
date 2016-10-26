@@ -213,10 +213,12 @@ public class LoginActivity extends AppCompatActivity {
                     visibleBottomView = true;
 
                     if (visibleBottomView && sp.getBoolean("isConnected", false) && Connections.isNetworkConnected(getApplicationContext())) {
-                        Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
-                        startActivity(intent);
-                        finish();
-                        return;
+                        login(sp.getString("username", ""), sp.getString("password", ""), "unknown");
+//
+//                        Intent intent = new Intent(LoginActivity.this, CommunityDashboard.class);
+//                        startActivity(intent);
+//                        finish();
+//                        return;
                     }
                     ObjectAnimator move = ObjectAnimator.ofFloat(bottom_dialog, "translationY", screenHeight - skyImageSize, 0);
                     move.setDuration(600);

@@ -63,7 +63,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         private void uploadStores() throws JSONException {
             DatabaseConnector.getHelper(SplashScreenActivity.this).deleteAllStores();
             JSONObject jsonObject = makePublicRequest();
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONArray jsonArray;
+            try {
+                jsonArray = jsonObject.getJSONArray("result");
+            } catch (Exception e) {
+                jsonArray = null;
+            }
             int size = jsonArray != null ? jsonArray.length() : 0;
             for (int i = 0; i < size; i++) {
                 JSONObject jsn = jsonArray.getJSONObject(i);

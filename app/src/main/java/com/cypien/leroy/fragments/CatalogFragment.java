@@ -271,7 +271,7 @@ public class CatalogFragment extends Fragment {
                             pendingRequests.decrementAndGet();
 
                             if (pendingRequests.get() <= 0) {
-
+                                //TODO
                                 setUIelements();
                             }
 
@@ -317,6 +317,8 @@ public class CatalogFragment extends Fragment {
         //Picasso.with(mActivity).load(cataloage.get(0).getCoverImageURL()).fit().into(coperta_catalog);
         if (Connections.isNetworkConnected(mActivity) && !fromCache) {
             progressView.setVisibility(View.VISIBLE);
+            //index out of bounds
+            //TODO
             new DownloadImageTask(coperta_catalog)
                     .execute(cataloage.get(0).getCoverImageURL());
         } else {
